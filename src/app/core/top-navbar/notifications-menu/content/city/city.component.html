@@ -1,0 +1,32 @@
+<div class="city">
+    <h1>{{city | uppercase }}</h1>
+
+    <div *ngIf="weather">
+        <div [ngSwitch]="weather.type">
+            <img *ngSwitchCase="WeatherType.cloud" src="assets/cloud.png" alt="cloud">
+            <img *ngSwitchCase="WeatherType.fog" src="assets/fog.png" alt="fog">
+            <img *ngSwitchCase="WeatherType.rain" src="assets/rain.png" alt="rain">
+            <img *ngSwitchCase="WeatherType.snow" src="assets/snow.png" alt="snow">
+            <img *ngSwitchCase="WeatherType.lightning" src="assets/lightning.png" alt="lightning">
+            <img *ngSwitchCase="WeatherType.unknown" src="assets/unknown.png" alt="Look out the window.">
+            <ng-container *ngSwitchCase="WeatherType.clear">
+                <img *ngIf="isDay()" src="assets/sun.png" alt="clear day">
+                <img *ngIf="!isDay()" src="assets/moon.png" alt="clear night">
+            </ng-container>
+
+            <ng-container *ngSwitchCase="WeatherType.partialClear">
+                <img *ngIf="isDay()" src="assets/partial-sun.png" alt="partial clear day">
+                <img *ngIf="!isDay()" src="assets/partial-moon.png" alt="partial clear night">
+            </ng-container>
+        </div>
+
+        <div class="temp">{{weather.tempature | number:'1.1-1'}}&#8451;</div>
+    </div>
+    <ng-container *ngIf="failedToLoad">
+        <div>
+            <img src="assets/unknown.png" alt="Look out the window.">
+        </div>
+        <div>Weather is not available.</div>
+        <div>Try looking out the window.</div>
+    </ng-container>
+</div>

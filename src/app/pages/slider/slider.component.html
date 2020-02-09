@@ -1,0 +1,9 @@
+<div class="slider-container">
+    <div class="slides" #slides>
+        <ng-content select="[appSliderItem]" #sliderItem></ng-content>
+    </div>
+    <div >
+        <mat-icon class="btn_prev" (click)="onClickLeft()">skip_previous</mat-icon>
+        <mat-icon class="btn_next" (click)="onClickRight()">skip_next</mat-icon>
+    </div>
+</div>

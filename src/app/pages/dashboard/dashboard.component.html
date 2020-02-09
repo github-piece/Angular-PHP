@@ -1,0 +1,419 @@
+<div id="dashboard" class="row">
+  <div class="col-lg-12">
+    <div class="card list-dashboard">
+      <div class="list-body">
+        <div class="list-single">
+          <img class="list-image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile1.jpeg'" alt="list-pic">
+          <div class="list-single-content">
+            <div class="list-single-left">
+              <h3 class="list-title">Sales Presentation - Live Group Call</h3>
+              <div class="list-single-subtitle">
+                <span class="list-single-subtitle-item">
+                  paul21@mymail.com
+                </span>
+                <span class="list-single-subtitle-item">
+                  Started 3 min ago
+                </span>
+              </div>
+            </div>
+            <div class="list-single-right">
+              <div class="list-image-group">
+                <img class="list-image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile2.jpeg'" alt="list-pic">
+                <img class="list-image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile3.jpeg'" alt="list-pic">
+                <img class="list-image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile4.jpeg'" alt="list-pic">
+                <img class="list-image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile5.jpeg'" alt="list-pic">
+              </div>
+              <div class="list-text-group">
+                <span class="list-single-text">+5 more</span>
+                <span class="list-single-text">You are invited</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="list-single-action btn">Join now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card dashboard-card">
+      <div class="dashboard-card-icon">
+        <i class="fa fa-user"></i>
+      </div>
+      <div class="dashboard-card-data">
+        <span class="dashboard-card-data-title">Followers</span>
+        <span class="dashboard-card-data-number">125,282</span>
+      </div>
+      <div class="dashboard-card-percentage">
+        <i class="fa fa-arrow-circle-up"></i>
+        <span class="dashboard-card-percentage-number">0.02%</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card dashboard-card">
+      <div class="dashboard-card-icon">
+        <i class="fa fa-heart-o color-aqua"></i>
+      </div>
+      <div class="dashboard-card-data">
+        <span class="dashboard-card-data-title">Likes</span>
+        <span class="dashboard-card-data-number color-aqua">2,815</span>
+      </div>
+      <div class="dashboard-card-percentage">
+        <i class="fa fa-arrow-circle-up"></i>
+        <span class="dashboard-card-percentage-number">80.68%</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card dashboard-card">
+      <div class="dashboard-card-icon">
+        <i class="fa fa-comment color-green"></i>
+      </div>
+      <div class="dashboard-card-data">
+        <span class="dashboard-card-data-title">Comments</span>
+        <span class="dashboard-card-data-number color-green">26</span>
+      </div>
+      <div class="dashboard-card-percentage">
+        <i class="fa fa-arrow-circle-up"></i>
+        <span class="dashboard-card-percentage-number">100%</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="card dashboard-card">
+      <div class="dashboard-card-icon">
+        <i class="fa fa-camera-retro color-orange"></i>
+      </div>
+      <div class="dashboard-card-data">
+        <span class="dashboard-card-data-title">Posts</span>
+        <span class="dashboard-card-data-number color-orange">165</span>
+      </div>
+      <div class="dashboard-card-percentage">
+        <i class="fa fa-arrow-circle-down color-red"></i>
+        <span class="dashboard-card-percentage-number color-red">0.61%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="chart">
+        <canvas *ngIf="isBrowser" baseChart class="ng2-chart"
+          [datasets]="charts.lineChart.data"
+          [labels]="charts.lineChart.labels"
+          [options]="charts.lineChart.options"
+          [colors]="charts.lineChart.colors"
+          [legend]="charts.lineChart.Legend"
+          [chartType]="charts.lineChart.type">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="orders">
+        <div class="orders-left">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="orders-text">ORDERS</span>
+          <!-- <span class="orders-number">633</span> -->
+          <mat-button-toggle-group vertical="true" multiple="false" value="day" #ordersValue="matButtonToggleGroup">
+            <mat-button-toggle value="day">DAY</mat-button-toggle>
+            <mat-button-toggle value="week">WEEK</mat-button-toggle>
+            <mat-button-toggle value="month">MONTH</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div class="orders-right">
+          <div class="table-wrapper">
+            <table class="table table-lines">
+              <tbody class="table-body">
+                <tr *ngFor="let order of orders" class="table-row">
+                  <td class="table-cell">
+                    <span class="order-title">{{ order.title }}</span>
+                    <span class="order-value" *ngIf="ordersValue.value == 'day'">{{ order.day }}</span>
+                    <span class="order-value" *ngIf="ordersValue.value == 'week'">{{ order.week }}</span>
+                    <span class="order-value" *ngIf="ordersValue.value == 'month'">{{ order.month }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card card-no-padding card-tabs">
+      <mat-tab-group disableRipple [@.disabled]="true" class="tabs-folder">
+        <mat-tab label="SESSIONS">
+          <div class="chart-data-container">
+            <div class="chart-data-chart">
+              <canvas *ngIf="isBrowser" baseChart class="ng2-chart"
+                [data]="charts.doughnutChart.data"
+                [labels]="charts.doughnutChart.labels"
+                [options]="charts.doughnutChart.options"
+                [chartType]="charts.doughnutChart.type"
+                [colors]="charts.doughnutChart.colors">
+              </canvas>
+              <i class="fa fa-plane"></i>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="NOTIFICATIONS">
+          <h2 class="tab-content-title">The notifications text</h2>
+          <p class="tab-content-text">
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui
+            blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
+            et quasimus qui blanditiis praesentium voluptatum dele. At vero eos et
+            accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+            voluptatum deleniti atque corrupti quos dolores et quasimus qui
+            blanditiis praesentium voluptatum dele. At vero eos et accusamus et
+            iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+            deleniti atque corrupti quos dolores et quasimus qui blanditiis
+            praesentium voluptatum dele.
+          </p>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card dashboard-lists">
+      <h2 class="dashboard-list-title">
+        <strong>Active Task (3/4)</strong> Today
+      </h2>
+      <ul class="dashboard-list">
+        <li class="dashboard-list-item">
+          <mat-checkbox class="dashboard-list-item-checkbox" disableRipple></mat-checkbox>
+          <img class="dashboard-list-item-image image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile6.jpeg'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title">EMAIL</h3>
+            <span class="dashboard-list-item-text">
+              Send over investment documents
+            </span>
+            <span class="dashboard-list-item-sub">
+              Assigned to Mark R + Added 12 Jun 2018
+            </span>
+          </div>
+          <div class="dashboard-list-item-action">
+            <i class="fa fa-pencil-square"></i>
+          </div>
+        </li>
+        <li class="dashboard-list-item">
+          <mat-checkbox class="dashboard-list-item-checkbox" disableRipple></mat-checkbox>
+          <img class="dashboard-list-item-image image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile7.jpeg'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title">DOCUMENT</h3>
+            <span class="dashboard-list-item-text">
+              Send over investment documents
+            </span>
+            <span class="dashboard-list-item-sub">
+              Assigned to Mark R + Added 12 Jun 2018
+            </span>
+          </div>
+          <div class="dashboard-list-item-action">
+            <i class="fa fa-pencil-square"></i>
+          </div>
+        </li>
+        <li class="dashboard-list-item">
+          <mat-checkbox class="dashboard-list-item-checkbox" disableRipple></mat-checkbox>
+          <img class="dashboard-list-item-image image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile8.jpeg'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title color-red">SCHEDULE - OVERDUE FOR 3 DAYS</h3>
+            <span class="dashboard-list-item-text">
+              Send over investment documents
+            </span>
+            <span class="dashboard-list-item-sub">
+              Assigned to Mark R + Added 12 Jun 2018
+            </span>
+          </div>
+          <div class="dashboard-list-item-action">
+            <i class="fa fa-pencil-square"></i>
+          </div>
+        </li>
+        <li class="dashboard-list-item">
+          <mat-checkbox class="dashboard-list-item-checkbox" disableRipple [checked]="true"></mat-checkbox>
+          <img class="dashboard-list-item-image image-circle" [src]="baseUrl + '/assets/imgs/profiles/profile9.jpeg'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title">EMAIL</h3>
+            <span class="dashboard-list-item-text">
+              Send over investment documents
+            </span>
+            <span class="dashboard-list-item-sub">
+              Assigned to Mark R + Added 12 Jun 2018
+            </span>
+          </div>
+          <div class="dashboard-list-item-action">
+            <i class="fa fa-pencil-square"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card campaigns">
+      <h2 class="dashboard-list-title">
+        <strong>Active Campaigns</strong>
+      </h2>
+      <ul class="dashboard-list">
+        <li class="dashboard-list-item">
+          <img class="dashboard-list-item-image" [src]="baseUrl + '/assets/imgs/dashboard/hive_logo.png'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title">Hive cowork</h3>
+            <div class="dashboard-list-item-subcontent">
+              <span class="dashboard-list-item-text">
+                20K
+                <span class="dashboard-list-item-sub">
+                  Reach
+                </span>
+              </span>
+              <span class="dashboard-list-item-text">
+                $2K
+                <span class="dashboard-list-item-sub">
+                  Budget
+                </span>
+              </span>
+              <span class="dashboard-list-item-text">
+                14
+                <span class="dashboard-list-item-sub">
+                  Influencers
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="dashboard-list-item-action">
+            <span class="dashboard-list-item-action-text">
+              Ends: 22/12/2018
+            </span>
+            <i class="fa fa-pencil-square"></i>
+            <i class="fa fa-external-link"></i>
+          </div>
+        </li>
+        <li class="dashboard-list-item">
+          <img class="dashboard-list-item-image" [src]="baseUrl + '/assets/imgs/dashboard/wework_logo.png'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title">WeWork</h3>
+            <div class="dashboard-list-item-subcontent">
+              <span class="dashboard-list-item-text">
+                310K
+                <span class="dashboard-list-item-sub">
+                  Reach
+                </span>
+              </span>
+              <span class="dashboard-list-item-text">
+                $7K
+                <span class="dashboard-list-item-sub">
+                  Budget
+                </span>
+              </span>
+              <span class="dashboard-list-item-text">
+                200
+                <span class="dashboard-list-item-sub">
+                  Influencers
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="dashboard-list-item-action">
+            <span class="dashboard-list-item-action-text">
+              Ends: 22/12/2018
+            </span>
+            <i class="fa fa-pencil-square"></i>
+            <i class="fa fa-external-link"></i>
+          </div>
+        </li>
+        <li class="dashboard-list-item">
+          <img class="dashboard-list-item-image" [src]="baseUrl + '/assets/imgs/dashboard/sinergia_logo.png'" alt="dashboard-list-pic">
+          <div class="dashboard-list-item-content">
+            <h3 class="dashboard-list-item-title">Sinergia</h3>
+            <div class="dashboard-list-item-subcontent">
+              <span class="dashboard-list-item-text">
+                310K
+                <span class="dashboard-list-item-sub">
+                  Reach
+                </span>
+              </span>
+              <span class="dashboard-list-item-text">
+                $7K
+                <span class="dashboard-list-item-sub">
+                  Budget
+                </span>
+              </span>
+              <span class="dashboard-list-item-text">
+                34
+                <span class="dashboard-list-item-sub">
+                  Influencers
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="dashboard-list-item-action">
+            <span class="dashboard-list-item-action-text">
+              Ends: 22/12/2018
+            </span>
+            <i class="fa fa-pencil-square"></i>
+            <i class="fa fa-external-link"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-12">
+    <div class="card">
+      <header class="row title">
+        <div class="col-lg-12">
+          <h2 class="main-title">Transactions in progress</h2>
+          <span class="sub-title">Users who did an order but had an issue with the product</span>
+        </div>
+      </header>
+
+      <div class="row">
+        <div id="extended-tables" class="col-xs-12 table-wrapper">
+          <table mat-table [dataSource]="tableDataSource" class="table table-stripes">
+            <ng-container matColumnDef="picture">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <img class="profile-pic" [src]="element.picture">
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td [attr.cell-name]="'status'" [attr.cell-value]="element.status" mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+            <ng-container matColumnDef="progress">
+              <th mat-header-cell *matHeaderCellDef> Progress </th>
+              <td [attr.cell-name]="'progress'" [attr.cell-value]="element.progress" mat-cell *matCellDef="let element">
+                <mat-progress-bar [value]="element.progress" class="mat-progress-bar-round"
+                  [ngClass]="'color ' + ((element.progress <= 30) ? 'color-red' : (element.progress < 70) ? 'color-yellow' : 'color-green')">
+                </mat-progress-bar>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="comments">
+              <th class="comments-title" mat-header-cell *matHeaderCellDef> Comments </th>
+              <td [attr.cell-name]="'comments'" [attr.cell-value]="element.comments" mat-cell *matCellDef="let element"> {{element.comments}} </td>
+            </ng-container>
+            <ng-container matColumnDef="policy">
+              <th mat-header-cell *matHeaderCellDef> Policy </th>
+              <td [attr.cell-name]="'policy'" [attr.cell-value]="element.policy" mat-cell *matCellDef="let element">
+                <span class="policy-value">${{ element.policy }}</span>
+                <span *ngIf="element.policy === 0" class="policy-plan policy-plan-free">Free Trial</span>
+                <span *ngIf="element.policy >= 5000 && element.policy < 10000" class="policy-plan policy-plan-basic">Basic Plan</span>
+                <span *ngIf="element.policy >= 10000 && element.policy < 20000 " class="policy-plan policy-plan-pro">Pro Plan</span>
+                <span *ngIf="element.policy >= 20000" class="policy-plan policy-plan-king">King Plan</span>
+              </td>
+            </ng-container>
+             <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
+             <tr mat-row *matRowDef="let row; columns: tableDisplayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

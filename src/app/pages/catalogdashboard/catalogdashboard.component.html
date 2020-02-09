@@ -1,0 +1,553 @@
+<div *ngIf="showActions" style="margin:20px;">
+    <h1 class="mat-h1">Catalogue</h1>
+    <form action="action_page.php" method="post" class="search-box">
+        <div class="input-form">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Search" class="input-text" name="search">
+        </div>
+        <button mat-flat-button class="search-basic-btn" type="submit">Search</button>
+    </form>
+    <mat-accordion *ngFor="let business of mainBusiness; let index = index;">
+        <mat-expansion-panel style="margin-bottom: 16px; margin-top: 16px;">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{business['business name']}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="card-header" style="text-align:right;">
+                {{business["how much they're raising"]}},000 remaining... &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button class="btn btn-success" (click)="catalogueService.populateForm()">
+                    &nbsp;Edit&nbsp;
+                </button>&nbsp;
+                <button mat-raised-button class="btn btn-danger" (click)="onDelete()">
+                    Delete
+                </button>
+            </div>
+            <mat-tab-group class="tabs-vertical menu-tab">
+                <mat-tab label="Business Summary">
+                    <mat-tab-group class="body-tab">
+                        <mat-tab label="Business Information">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="bg" [style.background-image] ="'url(mse/' + mainBusiness[index]['image for front page'] + ')'"></div>
+                                    <div *ngIf="!mainBusiness[index][10]" class="bg" [style.background-image] ="'url(https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg)'"></div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="min-width: 200px">Metric</th>
+                                            <th>Value</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Business Name:</td>
+                                            <td>{{business['business name']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Listing Date:</td>
+                                            <td>{{business['date completed']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ShortName:</td>
+                                            <td>{{business['short name']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sector:</td>
+                                            <td>{{business['sector']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of employees:</td>
+                                            <td>{{business['number of employees']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Is company registered?</td>
+                                            <td>{{business['registration status']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Amount they are seeking:</td>
+                                            <td>{{business['how much they\'re raising']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Year's in business:</td>
+                                            <td>{{business['years in business']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tenure to see return on:</td>
+                                            <td>{{business['tenure to see return']}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+                <mat-tab label="Financial Summary">
+                    <mat-tab-group class="body-tab">
+                        <mat-tab label="Financial Information">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Number of employees:</td>
+                                    <td>{{business['number of employees']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Average Wages</td>
+                                    <td>{{business['average wages']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Annual Sales Forecast</td>
+                                    <td>{{business['annual sales forecast']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Asset Turnover</td>
+                                    <td>{{business['total asset turnover']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fixed Asset Turnover</td>
+                                    <td>{{business['fixed asset turnover']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Inventory Turnover:I think wrong8</td>
+                                    <td>{{business['inventory turnover']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Current Ratio</td>
+                                    <td>{{business['current ratio']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Ratio</td>
+                                    <td>{{business['cash ratio']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Defensive Interval</td>
+                                    <td>{{business['defensive interval']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Debt-to-Equity</td>
+                                    <td>{{business['debt-to-equity']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Debt-to-Asset</td>
+                                    <td>{{business['debt-to-asset']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Conversion Cycle</td>
+                                    <td>{{business['cash conversion cycle']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Net Profit Margin</td>
+                                    <td>{{business['net profit margin']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gross Margin</td>
+                                    <td>{{business['gross margin']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Annual Projected CoGS</td>
+                                    <td>{{business['annual projected cogs']}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Return on Assets</td>
+                                    <td>{{business['return on assets']}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </mat-tab>
+                        <mat-tab label="Balance Sheet">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Item Type</th>
+                                    <th>Amount</th>
+                                    <th>Date Submitted</th>
+                                    <th>Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Current Asset</td>
+                                    <td>{{business['current assets']/mainBusiness[index]['total assets']}}%</td>
+                                    <td>{{business['date completed']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Non - Current Asset</td>
+                                    <td>{{business['non-current assets']/mainBusiness[index]['total assets']}}%</td>
+                                    <td>{{business['date completed']}}</td>
+                                    <td><button class="btn btn-success">Button 2</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Asset</td>
+                                    <td>{{business['total assets']}}</td>
+                                    <td>{{business['date completed']}}</td>
+                                    <td><button class="btn btn-success">Button 2</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Current Liability</td>
+                                    <td>{{business['current liabilities']/mainBusiness[index]['total liabilities']}}%</td>
+                                    <td>{{business['date completed']}}</td>
+                                    <td><button class="btn btn-success">Button 2</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Non - Current Liability</td>
+                                    <td>{{business['non-current liabilities']/mainBusiness[index]['total liabilities']}}%</td>
+                                    <td>{{business['date completed']}}</td>
+                                    <td><button class="btn btn-success">Button 2</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Liability</td>
+                                    <td>{{business['total liabilites']}}</td>
+                                    <td>{{business['date completed']}}</td>
+                                    <td><button class="btn btn-success">Button 2</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </mat-tab>
+                        <mat-tab label="Income Statement">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Income State Items</th>
+                                    <th>Amount</th>
+                                    <th>Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of mainBusiness[index]['income items'].split(','); let item_index = index;">
+                                    <td >
+                                        {{item}}
+                                    </td>
+                                    <td >
+                                        {{mainBusiness[index]['income amounts'].split(',')[item_index]}}
+                                    </td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </mat-tab>
+                        <mat-tab label="Cash Flow Statement">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Cash Flow Items</th>
+                                    <th>Amount</th>
+                                    <th>Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Cash Paid for Operational Reasons</td>
+                                    <td>{{business['cash paid for operational reasons']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Paid for Investing Activities</td>
+                                    <td>{{business['cash paid for investing activities']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Paid for Financing Activities</td>
+                                    <td>{{business['cash paid for financing activities']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Received from Operations</td>
+                                    <td>{{business['cash received from operations']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Received from Investing Activities</td>
+                                    <td>{{business['cash received from investing activities']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cash Received from Financing Activities</td>
+                                    <td>{{business['cash received from financing activities']}}</td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+                <mat-tab label="Sustainability Measures">
+                    <mat-tab-group class="body-tab">
+                        <mat-tab label="UN SDG's">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Goal Number</th>
+                                    <th>Goal Description</th>
+                                    <th>Comment</th>
+                                    <th>Scout Comment</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let unSdg_path of unSdg[index]['path']; let sdg_index = index;">
+                                    <td>
+                                        <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+unSdg_path+')'"></div>
+                                    </td>
+                                    <td>
+                                        {{unSdg[index]['goal_number'][sdg_index]}}
+                                    </td>
+                                    <td>
+                                        {{unSdg[index]['goal_description'][sdg_index]}}
+                                    </td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                    <td><button class="btn btn-success">Button 1</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </mat-tab>
+                        <mat-tab label="Interactions" class="full-height">
+                            <div class="full-height">
+                                <div class="col-xs-12 full-height">
+                                    <div class="col-xs-3  tab-scroll">
+                                        <p class="padding-top-20">*Please select goal interaction.</p>
+                                        <ng-container *ngFor="let goal_number of unSdg[index]['goal_number']">
+                                            <label class="form-label full-width padding-top-20">
+                                                <span>{{goal_number}}</span>&nbsp;<span>Interaction.</span>
+                                                <mat-select class="form-control" >
+                                                    <mat-option *ngFor="let interaction of interactions[index][goal_number]; let goal_index = index;" (click)="explain_content(goal_index, index)">
+                                                        <p>{{interaction['goal_main']}}  -  {{interaction['goal_alternative_1']}}</p>
+                                                    </mat-option>
+                                                </mat-select>
+                                            </label>
+                                        </ng-container>
+                                    </div>
+                                    <div class="col-xs-9 tab-scroll">
+                                        <ng-container *ngFor="let interaction_item of interactions[index]|keyvalue; let goal_index = index;">
+                                            <ng-container *ngIf="(explain_index == goal_index)&&(click_flag == index)">
+                                                <div class="full-width padding-top-20">
+                                                    <ng-container *ngFor="let interaction of interaction_item.value">
+                                                        <ng-container *ngFor="let interact of interaction|keyvalue">
+                                                            <h6>- {{interact.key}}</h6>
+                                                            {{interact.value}}
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </div>
+                                                <mat-divider></mat-divider>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Stakeholders" class="full-height">
+                            <div class="full-height">
+                                <div class="col-xs-12  tab-scroll">
+                                    <div class="col-xs-2  btn_stake_group">
+                                        <ng-container >
+                                            <button class="btn btn-success full-width" (click)="explain_content('stake_country',index)">Country</button>
+                                            <br>
+                                            <button class="btn btn-success full-width" (click)="explain_content('stake_button_3', index)">Button 3</button>
+                                            <br>
+                                            <button class="btn btn-success full-width" (click)="explain_content('stake_button_4', index)">Button 4</button>
+                                            <br>
+                                            <button class="btn btn-success full-width" (click)="explain_content('stake_consideration', index)">Considerations</button>
+                                            <br>
+                                        </ng-container>
+                                    </div>
+                                    <div class="col-xs-6 tab-scroll">
+                                        <ng-container *ngIf="(explain_index=='stake_country'||explain_index==0)&&(click_flag == index||click_flag==0)">
+                                            <ng-container *ngFor="let stakeholder_country_item of stakeholdersCountry[index]">
+                                                <ng-container *ngIf="stakeholder_country_item">
+                                                    <ng-container *ngFor="let item of stakeholder_country_item|keyvalue">
+                                                        <h5>
+                                                            - {{item.key}}.
+                                                        </h5>
+                                                        <p>
+                                                            {{item.value}}
+                                                        </p>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="(explain_index=='stake_button_3'||explain_index==0)&&(click_flag == index||click_flag==0)">
+                                            <ng-container *ngFor="let stakeholder_button3_item of stakeholdersButton3[index]">
+                                                <ng-container *ngIf="stakeholder_button3_item">
+                                                    <ng-container *ngFor="let item of stakeholder_button3_item|keyvalue">
+                                                        <h5>
+                                                            - {{item.key}}.
+                                                        </h5>
+                                                        <p>
+                                                            {{item.value}}
+                                                        </p>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="(explain_index=='stake_button_4')&&(click_flag == index)">
+                                            <ng-container *ngFor="let stakeholder_button4_item of stakeholdersButton4[index]">
+                                                <ng-container *ngIf="stakeholder_button4_item">
+                                                    <ng-container *ngFor="let item of stakeholder_button4_item|keyvalue">
+                                                        <h5>
+                                                            - {{item.key}}.
+                                                        </h5>
+                                                        <p>
+                                                            {{item.value}}
+                                                        </p>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container  *ngIf="(explain_index=='stake_consideration')&&(click_flag == index)">
+                                            <ng-container *ngFor="let stakeholder_consideration_item of stakeholdersConsideration[index]">
+                                                <ng-container *ngIf="stakeholder_consideration_item">
+                                                    <ng-container *ngFor="let item of stakeholder_consideration_item|keyvalue">
+                                                        <h5>
+                                                            - {{item.key}}.
+                                                        </h5>
+                                                        <p>
+                                                            {{item.value}}
+                                                        </p>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                    <div class="col-xs-4 text-center full-height">
+                                        <h1>Stakeholder Map</h1>
+                                        <table class="table_financial_summary">
+                                            <tr>
+                                                <th>Categorization</th>
+                                                <th>Stakeholder Members</th>
+                                            </tr>
+                                            <tr *ngFor="let stakeholder of stakeholdersMap[index]|keyvalue">
+                                                <td>{{stakeholder.key}}</td>
+                                                <td>
+                                                    <ng-container *ngIf="stakeholder.value">
+                                                        <ng-container *ngFor="let stakeholder_item of stakeholder.value">
+                                                            <span>{{stakeholder_item}}</span>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+                <mat-tab label="Scoring Summary">
+                    <mat-tab-group class="body-tab">
+                        <mat-tab label="Scoring Summary">
+                            <div class="row">
+                                <div class="col-4 pl-5">
+                                    <h4>Skills distribution</h4>
+                                    <h6>By team members</h6>
+                                    <div class="chart-wrapper">
+                                        <canvas baseChart
+                                                [datasets]="radarChartData[index]"
+                                                [options]="radarChartOptions"
+                                                [labels]="radarChartLabels"
+                                                [chartType]="radarChartType">
+                                        </canvas>
+                                    </div>
+                                </div>
+                                <div class="col-8" style="overflow: auto">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Resource Counter</th>
+                                            <th>Opportunity Counter</th>
+                                            <th>Venture Life Cycle</th>
+                                            <th>Liability of Age Size</th>
+                                            <th>Organisation</th>
+                                            <th>Entrepreneur</th>
+                                            <th>Environment</th>
+                                            <th>Impact Sector</th>
+                                        </tr>
+                                        </thead>
+                                        <tr>
+                                            <td>Business Name</td>
+                                            <td>{{business['resource counter']}}</td>
+                                            <td>{{business['opportunity counter']}}</td>
+                                            <td>{{business['venture life cycle']}}</td>
+                                            <td>{{business['liability of age size']}}</td>
+                                            <td>{{business['organisation']}}</td>
+                                            <td>{{business['entrepreneur']}}</td>
+                                            <td>{{business['environment']}}</td>
+                                            <td>{{business['impact sector']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Average</td>
+                                            <td>{{business['resource counter']/businessInfo['business_length']}}</td>
+                                            <td>{{business['opportunity counter']/businessInfo['business_length']}}</td>
+                                            <td>{{business['venture life cycle']/businessInfo['business_length']}}</td>
+                                            <td>{{business['liability of age size']/businessInfo['business_length']}}</td>
+                                            <td>{{business['organisation']/businessInfo['business_length']}}</td>
+                                            <td>{{business['entrepreneur']/businessInfo['business_length']}}</td>
+                                            <td>{{business['environment']/businessInfo['business_length']}}</td>
+                                            <td>{{business['impact sector']/businessInfo['business_length']}}</td>
+                                        </tr>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+                <mat-tab label="Funding Channels">
+                    <mat-tab-group class="body-tab">
+                        <mat-tab label="Funding Chanel">
+                            <div class="fund_btn_1  col-xs-6 full-height">
+                                <button class="btn btn-success">Button 1</button>
+                                <button class="btn btn-success">Button 2</button>
+                                <button class="btn btn-success">Button 3</button>
+                            </div>
+                            <div class="fund_btn_2 col-xs-6 full-height">
+                                <button class="btn btn-success ">Button 4</button>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+                <mat-tab label="Badges">
+                    <mat-tab-group class="body-tab">
+                        <mat-tab label="Badges">
+                            <ng-container *ngFor="let goal_list of unSdg[index]['path']">
+                                <div class="col-xs-2 padding-top-20">
+                                    <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+goal_list+')'"></div>
+                                </div>
+                            </ng-container>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-tab>
+            </mat-tab-group>
+            <div class="card-header" style="text-align:right;">
+                <button mat-raised-button class="btn btn-success mr-3" (click)="buy(business['u_id'], business)">
+                    FUND BUSINESS
+                </button>
+                <button mat-raised-button class="btn btn-success" (click)="sell(businessUser.id)" *ngIf="businessInfo.sell_enabled">
+                    SELL FINANCIAL INTEREST
+                </button>
+                <button mat-raised-button class="btn btn-danger" *ngIf="!businessInfo.sell_enabled">
+                    You cannot Sell!
+                </button>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+<div *ngIf="!showActions">
+    <div style="text-align:center">
+        <h1>
+            Welcome to MSE site!
+        </h1>
+        <img width="300" alt="Angular Logo"
+             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+    <h2 style="text-align:center;">Now you cannot access to page. Please login. </h2>
+</div>

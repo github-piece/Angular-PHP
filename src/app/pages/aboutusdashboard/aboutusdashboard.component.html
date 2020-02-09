@@ -1,0 +1,156 @@
+<div class="grid-container" *ngIf="showActions">
+    <h1 class="mat-h1" style="margin-left: 20px;margin-bottom: 48px">About Us</h1>
+    <div class="container">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        About Us
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Description
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row" style="padding: 0 16px 16px 16px;">
+                    <mat-card class="description" style="background: #f4f6f8">
+                        <div class="header px-5 pt-5 pb-2">
+                            <img src="../../assets/imgs/small-logo.png" class="logo-title" alt="img"/>
+                            <span>MSE</span>
+                        </div>
+                        <p class="pb-5 pt-2 px-5 text-justify" style="color: black">
+                            &nbsp;Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen
+                            book. It has survived not only five centuries, but also the leap into electronic
+                            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                            release of Letraset sheets containing Lorem Ipsum passages, and more recently with
+                            desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen
+                            book. It has survived not only five centuries, but also the leap into electronic
+                            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
+                            release of Letraset sheets containing Lorem Ipsum passages, and more recently with
+                            desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                        </p>
+                    </mat-card>
+                </div>
+                <mat-action-row>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Card
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Card Data
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 my-4" *ngFor="let carddata of rowData">
+                        <mat-card (click)="updateCard(carddata)" class="custom-mat-card">
+                            <img [src]="carddata.imgurl" class="custom-card-img" alt="">
+                            <mat-card-content>
+                                <mat-card-title>{{carddata.headline}}</mat-card-title>
+                                <mat-card-subtitle>{{carddata.section1}}</mat-card-subtitle>
+                                <p>
+                                    {{carddata.section2}}
+                                </p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" *ngIf="showCrud">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Create Card
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row" style="display: block;">
+                    <div>
+                        <form enctype="multipart/form-data" [formGroup]="aboutForm">
+                            <div class="row" *ngFor="let card of cards | async" style="height: auto;">
+                                <mat-card class="dashboard-card">
+                                    <div *ngIf="card.showoption == 'section1'">
+                                        <div class="form-group text-center">
+                                            <input type="file" #fileInput (change)="fileChangeEvent($event)"
+                                                   style="display: none;"/>
+                                            <img class="user-avatar" (click)="chooseImage()" [src]="croppedImage"
+                                                 style="display: block;margin: 0 auto 15px auto;"/>
+                                            <div *ngIf="imageSelected" class="image-cropper-container">
+                                                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                                                               [aspectRatio]="1.5 / 1.5" [resizeToWidth]="128"
+                                                               [cropperMinWidth]="128" [onlyScaleDown]="true" [roundCropper]="false"
+                                                               format="png" outputType="base64"
+                                                               (imageCropped)="imageCropped($event)"
+                                                               (imageLoaded)="imageLoaded()"
+                                                               [style.display]="showCropper ? null : 'none'"
+                                                               [alignImage]="'center'"></image-cropper>
+                                                <div class="divider"></div>
+                                                <div style="width: 100%;padding: 0 10px;margin-bottom: 15px;">
+                                                    <div class="half-width">
+                                                        <button type="button" (click)="imageSelected = false">Use
+                                                            this photo
+                                                        </button>
+                                                    </div>
+                                                    <div class="half-width">
+                                                        <button type="button" (click)="chooseImage()">another
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button mat-raised-button style="background: #1b5e20;color: white;" (click)="chooseImage()">
+                                                <i class="fa fa-image"></i>
+                                                Add Photo
+                                            </button>
+                                        </div>
+                                        <mat-form-field style="width: 100%">
+                                            <input matInput type="text" placeholder="Name" value={{rowselect_headline}}
+                                                   formControlName="headline" [ngClass]="{ 'is-invalid': submitted && f.headline.errors }">
+                                        </mat-form-field>
+                                        <mat-form-field style="width: 100%">
+                                            <textarea matInput placeholder="Sur Name" formControlName="section1" value={{rowselect_section1}}
+                                                      [ngClass]="{ 'is-invalid': submitted && f.section1.errors }"></textarea>
+                                        </mat-form-field>
+                                        <mat-form-field style="width: 100%">
+                                            <textarea matInput placeholder="Short Details..." formControlName="section2" value={{rowselect_section2}}
+                                                      [ngClass]="{ 'is-invalid': submitted && f.section2.errors }"></textarea>
+                                        </mat-form-field>
+                                        <div class="row" style="padding: 0 32px 0 32px;">
+                                            <button mat-raised-button style="background: #1b5e20;color: white;width: 100%" [disabled]="articleloading"
+                                                    (click)="submitArticle();">
+                                                Create Card
+                                                <img *ngIf="articleloading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">End</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
+<div *ngIf="!showActions">
+    <div style="text-align:center">
+        <h1>
+            Welcome to MSE site!
+        </h1>
+        <img width="300" alt="Angular Logo"
+             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+    <h2 style="text-align:center;">Now you cannot access to page. </h2>
+</div>

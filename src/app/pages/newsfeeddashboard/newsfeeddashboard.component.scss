@@ -1,0 +1,59 @@
+@import "../../common/styles/_variables";
+
+.grid-container {
+  margin: 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  }
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: left;
+}
+.ag-header-cell-label {
+  justify-content: center;
+}
+.ng2-chart {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.card-header {
+  padding: 15px;
+  background: none;
+  border-bottom: 0;
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+.card-body {
+  max-width: 400px;
+  max-height: 400px;
+  display: flex;
+  margin: auto;
+}
+.example-table-container {
+  position: relative;
+  max-height: 200px;
+  overflow: auto;
+}
+.example-table-market {
+  overflow-y: auto;
+  height: 250px;
+}
+.example-table-market_split {
+  height: 250px;
+  overflow-y: auto;
+}

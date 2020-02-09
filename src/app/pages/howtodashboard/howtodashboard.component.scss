@@ -1,0 +1,60 @@
+.grid-container {
+  margin: 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  height: 100%;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+.row img {
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.3s;
+}
+.row:hover img {
+  opacity: 0.6;
+}
+.card header h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  border: 1px solid #9b9b9b;
+  background: #0D9814;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #fff;
+  padding: 15px 15px;
+  transition: 0.5s;
+}
+.card header h2:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+.card .row p {
+  text-align: center;
+  padding: 15px;
+}
+
+.custom-mat-header {
+  margin:0 -16px!important;
+}
+
+.custom-card-img {
+  max-width: none;
+  cursor: pointer;
+  &:hover {
+
+  }
+}

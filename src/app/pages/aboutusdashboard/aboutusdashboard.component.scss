@@ -1,0 +1,133 @@
+section {
+  .col-md-12 {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 20px;
+    .example-ripple-container {
+      padding-top: 32px;
+      padding-bottom: 32px;
+      cursor: pointer;
+    }
+  }
+}
+.grid-container {
+  margin: 20px;
+}
+.dashboard-card {
+  width: 350px;
+  margin: auto;
+  background: #f4f6f8;
+}
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+.about-card {
+  border-radius: 5px;
+  box-shadow: 2px 0 17px 2px #500293;
+  cursor: pointer;
+  .about-card-text {
+    color: #000;
+    font-size: 18px;
+    margin: auto;
+    text-align: center;
+    .about-card-img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+.about-card:hover {
+  background: rgba(0, 0, 0, 0.3);
+  transition: 0.5s linear;
+}
+
+.form-group {
+  ::placeholder {
+    color: #6c757d;
+  }
+  input {
+    color: #343a40;
+  }
+}
+
+.user-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: transparent;
+  padding: 2px;
+  border: 2px solid white;
+}
+
+.image-cropper-container {
+  position: absolute;
+  width: 80%;
+  min-height: 300px;
+  left: 50%;
+  border: 1px solid #13132b;
+  border-radius: 8px;
+  background-color: #323259;
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  z-index: 10;
+}
+
+.image-cropper-container::before {
+  position: absolute;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  left: 50%;
+  border: 1px solid #13132b;
+  border-right: none !important;
+  border-bottom: none !important;
+  background-color: #323259;
+  transform: translate(-50%, calc(-50% - 1px)) rotate(45deg);
+  z-index: 99;
+}
+
+.header {
+  span {
+    margin-left: calc(50% - 120px - 5rem);
+    font-size: 3.6rem;
+    font-weight: 400;
+    letter-spacing: 20px;
+  }
+  img {
+   width: 120px;
+  }
+}
+
+.description {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.custom-mat-card{
+  min-height: 520px;
+  background: #f4f6f8;
+  .custom-card-img {
+    width: 100%;
+    box-shadow: #4a4a4a 0 0 1px 0;
+    margin-bottom: 16px;
+    display: flex;
+  }
+  p {
+    word-wrap: break-word;
+  }
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transition: 0.5s linear;
+    cursor: pointer;
+  }
+}
+

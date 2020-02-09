@@ -1,0 +1,52 @@
+.city {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 250px;
+    padding: 0px 20px 20px 20px;
+    margin: 10px;
+
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 2px 2px #888888;
+
+    h1 {
+        line-height: 1.2
+    }
+
+    .temp {
+        text-align: center;
+    }
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    &:hover {
+        cursor: pointer;
+        color: #666;
+      }
+
+    &.add {
+        &:hover {
+            color:green; 
+        }
+    }
+
+    &.remove {
+        &:hover {
+            color:red; 
+        }
+    }
+}
+
+.disabled {
+    color: rgb(192, 192, 192);
+}
+
+.controls {
+    font-size: 2em;
+    display: flex;
+    justify-content: space-around;
+}

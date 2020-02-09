@@ -1,0 +1,52 @@
+.grid-container {
+  margin: 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+.example-small-box, .example-large-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.example-small-box {
+  height: 100px;
+  width: 100px;
+}
+
+.example-large-box {
+  height: 300px;
+  width: 300px;
+}
+
+mat-tab-group.mat-tab-group.mat-primary .mat-tab-labels .mat-tab-label {
+  border-bottom: 2px solid #263238!important;
+}
+
+mat-tab-group.mat-tab-group.mat-primary .mat-tab-labels .mat-tab-label {
+  color: #263238!important;
+  background: transparent!important;
+  flex-basis: auto!important;
+}
+
+

@@ -1,0 +1,77 @@
+<div class="card" style="padding:0 40px 20px 40px;">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label class="form-label form-label-big" for="firstName">User Name</label>
+                    <input type="text" id="firstName" formControlName="u_name" class="form-control"
+                           [ngClass]="{ 'is-invalid': submitted && f.u_name.errors }"/>
+                    <div *ngIf="submitted && f.u_name.errors" class="invalid-feedback">
+                        <div *ngIf="f.u_name.errors.required">First Name is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="form-label form-label-big" for="email">Email</label>
+                    <input type="text" id="email" formControlName="u_email" class="form-control"
+                           [ngClass]="{ 'is-invalid': submitted && f.u_email.errors }"/>
+                    <div *ngIf="duplicate">
+                        <p style="color: #dc3545; font-size: 80%;">Email alreay exist</p>
+                    </div>
+                    <div *ngIf="submitted && f.u_email.errors" class="invalid-feedback">
+                        <div *ngIf="f.u_email.errors.required">User email is required</div>
+                        <div *ngIf="f.u_email.errors.email">Email must be a valid email address</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label class="form-label form-label-big" for="password">Password</label>
+                    <input type="password" id="password" formControlName="u_password" class="form-control"
+                           [ngClass]="{ 'is-invalid': submitted && f.u_password.errors }"/>
+                    <div *ngIf="submitted && f.u_password.errors" class="invalid-feedback">
+                        <div *ngIf="f.u_password.errors.required">Password is required</div>
+                        <div *ngIf="f.u_password.errors.minlength">Password must be at least 6 characters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="form-label form-label-big" for="password">Confirm Password</label>
+                    <input type="password" formControlName="u_confirmPassword" class="form-control"
+                           [ngClass]="{ 'is-invalid': submitted && f.u_confirmPassword.errors }"/>
+                    <div *ngIf="submitted && f.u_confirmPassword.errors" class="invalid-feedback">
+                        <div *ngIf="f.u_confirmPassword.errors.required">Password is required</div>
+                        <div *ngIf="f.u_confirmPassword.errors.mustMatch">Passwords must match</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label class="form-label form-label-big" for="u_password">Phone Number</label>
+                    <input type="text" id="u_password" formControlName="u_phonenum" class="form-control"
+                           [ngClass]="{ 'is-invalid': submitted && f.u_phonenum.errors }"/>
+                    <div *ngIf="submitted && f.u_phonenum.errors" class="invalid-feedback">
+                        <div *ngIf="f.u_phonenum.errors.required">Phone Number is required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-form btn-lg btn-block">Register</button>
+            <img *ngIf="loading"
+                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+            <mat-divider></mat-divider>
+            <div class="row text-right" style="margin-top: 15px; color: #000;display: flex;float: right;">
+                <p>Already have an account?</p>
+                <a routerLink="app-login" style="font-weight: bold; cursor: pointer;">Login</a>
+            </div>
+        </div>
+    </form>
+</div>

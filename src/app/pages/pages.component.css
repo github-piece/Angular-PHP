@@ -1,0 +1,38 @@
+h2, h5 {
+  margin: 0;
+}
+
+h2.font-opal, h5.font-opal {
+  padding-top: 5px;
+}
+
+h5.font-opal {
+  letter-spacing: 2px;
+  line-height: 1.2;
+}
+
+.sidebar-toggle nb-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  width: auto;
+}
+/*nb-layout-header {*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  width: 100%;*/
+/*}*/
+.nb-theme-cosmic nb-layout-header nav {
+  justify-content: space-between !important;
+}
+/*:host nb-layout-header ::ng-deep nav {*/
+/*  justify-content: flex-end;*/
+/*}*/
+
+.mat-drawer {
+  overflow-y: unset;
+}

@@ -1,0 +1,21 @@
+table.table_responsive {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin-top: 20px;
+  th, td {
+    text-align: left!important;
+    padding: 8px;
+    color: #000;
+  }
+  tr:nth-child(even){background-color: #f2f2f2}
+}
+.padding-top-20{
+  margin-top: 20px;
+}
+.payFast-modal{
+  .amount {
+    display: inline-block;
+  }
+}
+

@@ -1,0 +1,274 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+$card-title-bg-color: $aqua;
+$card-title-txt-color: $white;
+$card-subtitle-txt-color: $grey;
+$card-progress-bg-color: $grey2;
+$card-pbar-bg-color: $aqua;
+$card-pbar-inactive-bg-color: $inactive-bg-color;
+
+#forms-wizard {
+  .card {
+    min-height: 670px;
+    padding: 0 15px;
+    padding-bottom: 73px;
+    position: relative;
+
+    .title {
+      background-color: $card-title-bg-color;
+      color: $card-title-txt-color;
+      margin-bottom: 35px;
+      padding: 15px 0;
+
+      .main-title {
+        display: inline-block;
+        font-size: $font-size-lg;
+        font-weight: 300;
+        letter-spacing: $letter-spacing-lg;
+        line-height: $font-size-lg;
+        margin-bottom: 0;
+        margin-right: $separation;
+        margin-top: 0;
+      }
+
+      .sub-title {
+        font-size: $font-size-sm;
+        letter-spacing: $letter-spacing-sm;
+        line-height: $font-size-lg;
+        vertical-align: top;
+        color: $card-title-txt-color;
+        font-weight: 300;
+      }
+    }
+
+    .inner-title {
+      margin-bottom: 30px;
+
+      .main-title {
+        font-size: $font-size-lg;
+        font-weight: 700;
+        letter-spacing: $letter-spacing-lg;
+        margin-bottom: 8px;
+        margin-top: 0;
+      }
+
+      .sub-title {
+        color: $card-subtitle-txt-color;
+        font-size: $font-size-sm;
+        letter-spacing: $letter-spacing-sm;
+      }
+    }
+
+    // Image selection of step 3
+    .checkboxes {
+      margin-bottom: 50px;
+
+      &.checked{
+        .inspiration-image-wrapper::after{
+          content: '';
+          position: absolute;
+          top: 0px;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
+          background: rgba($card-txt-color, 0.2);
+        }
+
+        .select-btn {
+          background-color: $card-txt-color;
+          color: $white;
+        }
+      }
+
+      input {
+        display: none;
+      }
+
+      label {
+        cursor: pointer;
+        text-align: center;
+        width: 100%;
+
+        .inspiration-image-wrapper {
+          position: relative;
+          box-shadow: $shadow;
+          margin-bottom: 25px;
+          transition: box-shadow .7s;
+          border: 6px solid $white;
+
+          &:hover {
+            box-shadow: $shadow-hover;
+          }
+
+          .inspiration-image {
+            height: auto;
+            width: 100%;
+
+
+          }
+        }
+
+        .select-btn {
+          @include button-outline($purple, $white, $purple);
+          box-shadow: $shadow;
+          padding: 7px 40px;
+          transition: background-color .5s, color .5s;
+
+          &:hover {
+            background-color: $card-txt-color;
+            color: $white;
+          }
+        }
+      }
+    }
+
+    .submited-message {
+      display: table;
+      table-layout: fixed;
+      text-align: center;
+      width: 100%;
+
+      h2 {
+        font-size: $font-size-xlg;
+        font-weight: 900;
+        letter-spacing: $letter-spacing-md;
+        margin-bottom: 20px;
+      }
+
+      span {
+        font-size: $font-size-lg;
+        font-weight: 700;
+        letter-spacing: $letter-spacing-md;
+      }
+
+      .vertical-center {
+        display: table-cell;
+        height: 508px;
+        vertical-align: middle;
+      }
+    }
+
+    // Material progress bar
+    .wizard-progress {
+      background-color: $card-progress-bg-color;
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+
+      .wizard-progress-bar {
+        border-left: 20px;
+        border-left-color: transparent;
+        border-left-style: solid;
+        border-right: 20px;
+        border-right-color: transparent;
+        border-right-style: solid;
+        padding: 25px 0;
+        position: relative;
+
+        mat-progress-bar {
+          border-radius: 11px;
+          height: 23px;
+
+          .mat-progress-bar-buffer {
+            background-color: $card-pbar-inactive-bg-color;
+          }
+
+          .mat-progress-bar-fill {
+            &::after {
+              background-color: #69f0ae;
+            }
+          }
+        }
+
+        .progress-button {
+          background-color: $card-pbar-inactive-bg-color;
+          border-radius: 50%;
+          height: 40px;
+          left: 33%;
+          position: absolute;
+          top: 15px;
+          width: 40px;
+
+          .fa {
+            display: none;
+            font-size: 20px;
+          }
+
+          &.active {
+            background-color: $card-pbar-bg-color;
+
+            .fa {
+              display: inherit;
+            }
+          }
+
+          &.disabled {
+            cursor: inherit;
+            pointer-events: none;
+          }
+        }
+      }
+
+      .progress-bar-action-button-col {
+        padding-right: 0;
+      }
+
+      .progress-number {
+        font-weight: 900;
+        letter-spacing: $letter-spacing-md;
+        padding: 25px 0;
+      }
+
+      .progress-button {
+        background-color: $card-title-bg-color;
+        border: 0;
+        color: $white;
+        font-size: $font-size-xs;
+        font-weight: 700;
+        height: 74px;
+        letter-spacing: $letter-spacing-sm;
+        transition: opacity .5s;
+        width: 100%;
+
+        &[disabled] {
+          opacity: .5;
+        }
+      }
+
+    }
+
+    .last-row {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+mat-button-toggle-group {
+  &.mat-button-toggle-group {
+    // We have to go deeper in the hierarchy to override material styles
+    &.mat-button-toggle-vertical {
+      .mat-button-toggle + .mat-button-toggle {
+        border: solid 1px $form-label-color;
+      }
+    }
+  }
+}
+
+mat-button-toggle {
+  &.mat-button-toggle-checked {
+    background-color: $form-tag-color;
+    // We need to add !important to to override the deep hierarchy of material styles
+    border-color: $form-tag-color !important;
+
+    .mat-button-toggle-label-content {
+      color: $white;
+    }
+  }
+
+  .mat-button-toggle-label,
+  .mat-button-toggle-label-content {
+    color: $form-label-color;
+    letter-spacing: 1.8px;
+  }
+}

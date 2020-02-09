@@ -1,0 +1,52 @@
+<h2 class="grid-title">Newsfeed</h2>
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{headline}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-6">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-subtitle>First Newsfeed</mat-card-subtitle>
+            </mat-card-header>
+            <div class="text-center">
+              <img mat-card-image [src]="imgurl1">
+            </div>
+            <mat-card-content>
+              {{section1}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-md-6">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-subtitle>Second Newsfeed</mat-card-subtitle>
+            </mat-card-header>
+            <div class="text-center">
+              <img mat-card-image [src]="imgurl2">
+            </div>
+            <mat-card-content>
+              {{section2}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div *ngIf="showNextBtn && showPreviousBtn">
+        <button (click)="previousArticle()" class="btn btn-success m-5">Previous</button>
+        <button (click)="nextArticle();" class="btn-right btn btn-success m-5">Next</button>
+      </div>
+      <div *ngIf="showNextBtn && !showPreviousBtn">
+        <button (click)="previousArticle()" class="btn btn-success m-5" disabled>Previous</button>
+        <button (click)="nextArticle();" class="btn-right btn btn-success m-5">Next</button>
+      </div>
+      <div *ngIf="showPreviousBtn && !showNextBtn">
+        <button (click)="previousArticle()" class="btn btn-success m-5">Previous</button>
+        <button (click)="nextArticle();" class="btn-right btn btn-success m-5" disabled>Next</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+

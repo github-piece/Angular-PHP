@@ -1,0 +1,59 @@
+<app-menubar></app-menubar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="false"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'push' : 'side'"
+      [opened]="!(isHandset$ | async)">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/pages/maindashboard">Home</a>
+      <a mat-list-item routerLink="/pages/newsfeed">News Feed</a>
+      <a mat-list-item routerLink="/pages/howtopage">How To Invest</a>
+      <a mat-list-item routerLink="/pages/portfolio">Portfolio</a>
+      <a mat-list-item routerLink="/pages/catalogue">Catalogue</a>
+      <a mat-list-item routerLink="/pages/history">History</a>
+      <a mat-list-item routerLink="/pages/wishlist">Wishlist</a>
+      <a mat-list-item routerLink="/pages/userpage">Userpage</a>
+      <a mat-list-item routerLink="/pages/FAQs">FAQs</a>
+      <a mat-list-item routerLink="/pages/aboutus">About Us</a>
+      <a mat-list-item routerLink="/pages/termsandconditions">T's and C's</a>
+      <a mat-list-item routerLink="/pages/contactus">Contact Us</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" fixed="true">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>MSE</span>
+      <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer1.toggle()">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    </mat-toolbar>
+    <mat-menu>
+      <button>Vertebrates</button>
+      <button>Invertebrates</button>
+    </mat-menu>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+  <mat-sidenav #drawer1 class="sidenav" fixedInViewport="false"
+    position="end"
+    opened mode="side">
+  <mat-toolbar>Side Menu</mat-toolbar>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/pages/upcominglistings">Upcoming Listings</a>
+    <a mat-list-item routerLink="/pages/messaging">Write a Story</a>
+    <a mat-list-item routerLink="/pages/listingABusinessComponent">List a Business</a>
+
+  </mat-nav-list>
+  </mat-sidenav>
+</mat-sidenav-container>

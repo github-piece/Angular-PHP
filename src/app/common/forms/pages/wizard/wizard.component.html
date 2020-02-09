@@ -1,0 +1,197 @@
+<div id="forms-wizard">
+  <div class="card">
+
+    <header class="row title">
+      <div class="col-xs-12 text-center">
+        <h1 class="main-title">APP DESIGN QUOTE</h1>
+        <span class="sub-title">Get a quote for the development of your app</span>
+      </div>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="doSubmit()" *ngIf="!formSubmitted">
+
+      <div formGroupName="step0FormGroup" *ngIf="steps[0].current" class="step">
+
+        <header class="row text-center inner-title">
+          <div class="col-xs-12">
+            <h2 class="main-title">Please complete the following wizard</h2>
+            <span class="sub-title">&nbsp;</span>
+          </div>
+        </header>
+
+        <div class="row">
+          <div class="form-group form-group-vertical col-xs-12 col-sm-offset-1 col-sm-5" [ngClass]="{ 'has-error': ((steps[0].form.get('firstName').invalid) && (steps[0].form.get('firstName').touched)) }">
+            <label class="form-label">FIRST NAME<em>*</em></label>
+            <input class="form-control" type="text" formControlName="firstName" placeholder="Enter first name">
+            <ng-container *ngFor="let validation of validationMessages.firstName">
+              <span class="help-block" *ngIf="steps[0].form.get('firstName').hasError(validation.type) && (steps[0].form.get('firstName').dirty || steps[0].form.get('firstName').touched)">
+                {{ validation.message }}
+              </span>
+            </ng-container>
+          </div>
+
+          <div class="form-group form-group-vertical col-xs-12 col-sm-5">
+            <label class="form-label">LAST NAME</label>
+            <input class="form-control" type="text" formControlName="lastName" placeholder="Enter last name">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-group-vertical col-xs-12 col-sm-offset-1 col-sm-10" [ngClass]="{ 'has-error': ((steps[0].form.get('email').invalid) && (steps[0].form.get('email').touched)) }">
+            <label class="form-label">EMAIL<em>*</em></label>
+            <input class="form-control" type="email" formControlName="email" placeholder="Enter email">
+            <ng-container *ngFor="let validation of validationMessages.email">
+              <span class="help-block" *ngIf="steps[0].form.get('email').hasError(validation.type) && (steps[0].form.get('email').dirty || steps[0].form.get('email').touched)">
+                {{ validation.message }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+
+      </div>
+
+      <div formGroupName="step1FormGroup" *ngIf="steps[1].current" class="step">
+
+        <header class="row text-center inner-title">
+          <div class="col-xs-12">
+            <h2 class="main-title">Please give us more details about your app</h2>
+            <span class="sub-title">&nbsp;</span>
+          </div>
+        </header>
+
+        <div class="row">
+          <div class="form-group form-group-vertical col-xs-12 col-sm-offset-1 col-sm-10" [ngClass]="{ 'has-error': ((steps[1].form.get('description').invalid) && (steps[1].form.get('description').touched)) }">
+            <label class="form-label">A DESCRIPTION FOR YOUR APP<em>*</em></label>
+            <textarea rows="2" class="form-control" formControlName="description" placeholder="Tell us something about your app..."></textarea>
+            <ng-container *ngFor="let validation of validationMessages.description">
+              <span class="help-block" *ngIf="steps[1].form.get('description').hasError(validation.type) && (steps[1].form.get('description').dirty || steps[1].form.get('description').touched)">
+                {{ validation.message }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-group-vertical col-xs-12 col-sm-offset-1 col-sm-5">
+            <label class="form-label">WHAT TYPE OF APP ARE YOU BUILDING?</label>
+            <select class="form-control" formControlName="framework">
+              <option disabled selected hidden value="">Select one...</option>
+              <option value="android">Android</option>
+              <option value="ios">iOS</option>
+              <option value="hybrid">Hybrid</option>
+              <option value="android_ios">Android and iOS</option>
+            </select>
+          </div>
+          <div class="form-group form-group-vertical col-xs-12 col-sm-5" [ngClass]="{ 'has-error': ((steps[1].form.get('budget').invalid) && (steps[1].form.get('budget').touched)) }">
+            <label class="form-label">BUDGET (USD)</label>
+            <input class="form-control" type="text" min="0" formControlName="budget" placeholder="Select budget">
+            <ng-container *ngFor="let validation of validationMessages.budget">
+              <span class="help-block" *ngIf="steps[1].form.get('budget').hasError(validation.type) && (steps[1].form.get('budget').dirty || steps[1].form.get('budget').touched)">
+                {{ validation.message }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row last-row">
+          <div class="form-group form-group-vertical col-xs-12 col-sm-offset-1 col-sm-10">
+            <label class="form-label">APP FEATURES</label>
+            <div class="row">
+              <div class="col-xs-4">
+                <mat-button-toggle-group name="multipleSelect" vertical="true" multiple>
+                  <mat-button-toggle>Facebook Login</mat-button-toggle>
+                  <mat-button-toggle>Twitter Login</mat-button-toggle>
+                  <mat-button-toggle>Google+ Login</mat-button-toggle>
+                  <mat-button-toggle>Activity Feed</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div class="col-xs-4">
+                <mat-button-toggle-group name="multipleSelect" vertical="true" multiple>
+                  <mat-button-toggle>Google Maps</mat-button-toggle>
+                  <mat-button-toggle>Geolocation</mat-button-toggle>
+                  <mat-button-toggle>Videos</mat-button-toggle>
+                  <mat-button-toggle>Social Sharing</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div class="col-xs-4">
+                <mat-button-toggle-group name="multipleSelect" vertical="true" multiple>
+                  <mat-button-toggle>Camera/Photos</mat-button-toggle>
+                  <mat-button-toggle>User Profiles</mat-button-toggle>
+                  <mat-button-toggle>Email</mat-button-toggle>
+                  <mat-button-toggle>AdMob</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div formGroupName="step2FormGroup" *ngIf="steps[2].current" class="step">
+
+        <header class="row text-center inner-title">
+          <div class="col-xs-12">
+            <h2 class="main-title">Select the screenshots that most inspire you</h2>
+          </div>
+        </header>
+
+        <div class="row">
+          <ng-container *ngFor="let option of optionsImages">
+            <div [ngClass]="{checked : (steps[2].form.controls.images.value.indexOf(option.value) > -1)}" class="col-xs-6 col-sm-6 col-md-3 checkboxes">
+              <label>
+                <div class="inspiration-image-wrapper">
+                  <img class="inspiration-image" src="{{option.img}}" alt="{{option.value}}">
+                </div>
+                <input type="checkbox" name="images" (change)="multiOptionsChange(option.value, $event.target.checked)">
+                <span class="select-btn">SELECT</span>
+              </label>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 text-center form-group has-error">
+            <ng-container *ngFor="let validation of validationMessages.images">
+              <span class="help-block" *ngIf="steps[2].form.hasError(validation.type) && (steps[2].form.dirty || steps[2].form.touched)">
+                {{ validation.message }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+
+    <div *ngIf="formSubmitted" class="step">
+      <div class="row">
+        <div class="submited-message col-xs-12">
+          <div class="vertical-center">
+            <h2>Thanks for completing your quote request</h2>
+            <span>Click FINISH to submit it for review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row wizard-progress">
+      <div class="col-xs-1 progress-number text-center">
+        <label>{{progress}}%</label>
+      </div>
+      <div class="col-xs-9 wizard-progress-bar">
+        <mat-progress-bar [value]="progress"></mat-progress-bar>
+        <button *ngFor="let step of steps; let i = index"
+          class="progress-button" type="button" (click)="goToStep(i)"
+          [style.left]="'calc('+(((i)/(steps.length-1))*100)+'% - 20px)'"
+          [ngClass]="{active: (currentStep > i), disabled: (formSubmitted)}">
+          <i class="fa fa-check"></i>
+        </button>
+      </div>
+      <div class="col-xs-2 progress-bar-action-button-col">
+        <button class="progress-button" type="button" *ngIf="currentStep != steps.length - 1 && (!formSubmitted)" (click)="changeStep(1)">NEXT</button>
+        <button class="progress-button" type="button" *ngIf="((currentStep == steps.length - 1) && (!formSubmitted))" (click)="doSubmit()">SUBMIT</button>
+        <button class="progress-button" type="button" *ngIf="formSubmitted" (click)="finish()">FINISH</button>
+      </div>
+    </div>
+
+  </div>
+</div>

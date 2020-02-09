@@ -1,0 +1,51 @@
+<app-condense #condenseMenu [ngClass]="condenseMenu.menuState">
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/maindashboard']">
+    <i class="menu-item-icon fa fa-home"></i>
+    <span class="menu-item-title">Home</span>
+  </a>
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/newsfeed']">
+    <i class="menu-item-icon fa fa-newspaper-o"></i>
+    <span class="menu-item-title">News Feed</span>
+  </a>
+
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/howtopage']">
+    <i class="menu-item-icon fa fa-institution"></i>
+    <span class="menu-item-title">How To Invest</span>
+  </a>
+
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/portfolio']">
+    <i class="menu-item-icon fa fa-image"></i>
+    <span class="menu-item-title">Portfolio</span>
+  </a>
+
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/catalogue']">
+    <i class="menu-item-icon fa fa-address-book"></i>
+    <span class="menu-item-title">Catalogue</span>
+  </a>
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/wishlist']">
+    <i class="menu-item-icon fa fa-address-book"></i>
+    <span class="menu-item-title">Wishlist</span>
+  </a>
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/userpage']">
+    <i class="menu-item-icon fa fa-users"></i>
+    <span class="menu-item-title">Userpage</span>
+  </a>
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/FAQs']">
+    <i class="menu-item-icon fa fa-fax"></i>
+    <span class="menu-item-title">FAQs</span>
+  </a>
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/aboutus']">
+    <i class="menu-item-icon fa fa-users"></i>
+    <span class="menu-item-title">About Us</span>
+  </a>
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/termsandconditions']">
+    <i class="menu-item-icon fa fa-home"></i>
+    <span class="menu-item-title">T's and C's</span>
+  </a><a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/pages/contactus']">
+    <i class="menu-item-icon fa fa-phone-square"></i>
+    <span class="menu-item-title">Contact Us</span>
+  </a>
+</app-condense>
+<div class="condense-toggle-wrapper" [ngClass]="{'condensed': condenseMenu.menuState == 'condensed'}">
+  <span (click)="condenseMenu.toggleState()" class="condense-toogle"></span>
+</div>

@@ -1,0 +1,232 @@
+@import '../../../app/common/styles/_variables';
+body {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+.tabs-background {
+  &.mat-tab-group {
+    padding: 10px 40px;
+    .mat-tab-header {
+      margin-bottom: 15px;
+      .mat-tab-label {
+        border-bottom: 3px solid $purple;
+      }
+    }
+  }
+}
+
+.tabs-folder {
+  &.mat-tab-group {
+    .mat-tab-header {
+      margin-bottom: 15px;
+
+      .mat-tab-labels {
+        .mat-tab-label {
+
+          &:not(:first-child) {
+            border-top-left-radius: 6px;
+          }
+
+          &:not(:last-child) {
+            border-top-right-radius: 6px;
+          }
+
+          &.mat-tab-label-active {
+            background-color: $white;
+            box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.06);
+            color: $purple;
+          }
+        }
+      }
+    }
+
+    .mat-tab-body-content {
+      padding: 15px 60px;
+    }
+  }
+}
+
+.tabs-vertical {
+  &.mat-tab-group {
+    flex-direction: row;
+    height: auto;
+    .mat-tab-header {
+      .mat-tab-labels {
+        flex-direction: column;
+        height: 100%;
+        .mat-tab-label {
+          &:not(:last-child) {
+            border-bottom: 1px solid rgba(144, 19, 254, .1);
+          }
+
+          &.mat-tab-label-active {
+            background-color: $white;
+            border-bottom-color: $white;
+            border-top: 1px solid $white;
+            box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.06);
+            color: $purple;
+            margin-top: -1px;
+          }
+        }
+      }
+    }
+
+    .mat-tab-body-content {
+      display: inline-flex;
+      padding: 0 15px;
+    }
+  }
+}
+
+.tabs-simple {
+  &.mat-tab-group {
+    padding: 10px 40px;
+
+    .mat-tab-header {
+      margin-bottom: 15px;
+
+      .mat-tab-labels {
+        background-color: transparent;
+
+        .mat-tab-label {
+          &.mat-tab-label-active,
+          &.mat-tab-label-focus {
+            background-color: transparent;
+            border-bottom: 3px solid $purple;
+            color: #000;
+          }
+        }
+      }
+    }
+
+    .mat-tab-body-content {
+      align-items: flex-end;
+      display: flex;
+      padding: 0 15px;
+
+      .tab-content-wrapper {
+        &:nth-child(3) {
+          align-self: center;
+        }
+      }
+    }
+  }
+}
+
+.tab-content-wrapper {
+  padding: 30px 15px;
+  width: 100%;
+}
+
+.tab-content-title {
+  color: $purple;
+  font-size: $font-size-lg;
+  font-weight: 300;
+  letter-spacing: $letter-spacing-lg;
+}
+
+.tab-content-text {
+  color: $grey;
+  font-size: $font-size-xs;
+  font-weight: bold;
+  letter-spacing: $letter-spacing-xxs;
+}
+
+.grid-container {
+  margin: 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+.full{
+  width: 100%;
+  height: 100%;
+}
+.full-height{
+  height: 100%;
+}
+.full-width{
+  width: 100%;
+}
+.bg {
+  height: 100%;
+  min-height: 50px;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.item_business_information div,textarea{
+  padding: 10px;
+  color: #000;
+  text-align: left;
+}
+.padding-top-20{
+  padding-top: 20px;
+}
+.tab-scroll{
+  border-left: 1px solid black;
+  overflow: scroll;
+  height: 528px;
+}
+.btn_buy_sell_group{
+  clear: both;
+  text-align: center!important;
+  input{
+    width: 10vw;
+  }
+}
+table.table_financial_summary {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin-top: 20px;
+  th, td {
+    text-align: left!important;
+    padding: 8px;
+    color: #000;
+  }
+  tr:nth-child(even){background-color: #f2f2f2}
+}
+.btn_stake_group{
+  button{
+    margin-top: 20px;
+  }
+}
+#scoringChart {
+  width: 100%;
+  min-width: 400px;
+  height: 500px;
+}
+.fund_btn_1{
+  padding: 10px;
+  button{
+    margin-top: 10px;
+    width: 100%;
+    height: 30%;
+  }
+}
+.fund_btn_2{
+  padding: 10px;
+  button{
+    margin-top: 10px;
+    width: 100%;
+    height: 95%;
+  }
+}
+

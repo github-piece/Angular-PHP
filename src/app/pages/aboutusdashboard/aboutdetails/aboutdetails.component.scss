@@ -1,0 +1,38 @@
+.user-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #13132b;
+  padding: 2px;
+  border: 2px solid white;
+}
+
+.image-cropper-container {
+  position: absolute;
+  width: 80%;
+  min-height: 300px;
+  left: 50%;
+  border: 1px solid #13132b;
+  border-radius: 8px;
+  background-color: #323259;
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  z-index: 10;
+}
+
+.image-cropper-container::before {
+  position: absolute;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  left: 50%;
+  border: 1px solid #13132b;
+  border-right: none !important;
+  border-bottom: none !important;
+  background-color: #323259;
+  transform: translate(-50%, calc(-50% - 1px)) rotate(45deg);
+  z-index: 99;
+}

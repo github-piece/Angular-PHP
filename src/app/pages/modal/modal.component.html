@@ -1,0 +1,80 @@
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form [formGroup]="payFastForm" *ngIf="!submitted" style="padding-top: 1.25em">
+            <div class="modal-header">
+                <h5 class="modal-title">{{modal_content}}</h5>
+                <button type="button" class="close" (click)="onNoClick()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-subtitle">Business Name to Buy : {{item_name}}</div>
+                <mat-form-field style="padding-top: 1.25em">
+                    <mat-label>Amount to pay</mat-label>
+                    <input type="number" matInput formControlName="amount" placeholder="Please Insert Amount">
+                    <span matSuffix>{{curSymbol}}</span>
+                    <mat-error *ngIf="fail_sell">
+                        Buy amount have to less than Remaining amount!
+                    </mat-error>
+                </mat-form-field>
+                <div class="padding-top-20" style="text-align:center" *ngIf="loading">
+                    <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button mat-raised-button class="btn btn-success" (click)="getSignature()">OK</button>
+                <button mat-raised-button class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+        <form ngNoForm [action]="url" method="post" *ngIf="submitted" target="_blank">
+            <div class="modal-header">
+                <h5 class="modal-title">{{modal_content}}</h5>
+                <button type="button" class="close" (click)="onNoClick()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 16px;">
+                <table class="table_responsive" style="margin-top: 0">
+                    <tr>
+                        <th style="text-align: center">Amount</th>
+                        <th style="text-align: center">Balance</th>
+                        <th style="text-align: center">Current</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">{{amount_to_buy}}</td>
+                        <td style="text-align: center">{{balance_value}}</td>
+                        <td style="text-align: center">{{curSymbol}}</td>
+                    </tr>
+                </table>
+                <!--Merchant details.-->
+                <input type="hidden" name="merchant_id" value="{{commission['mse_merchant_id']}}">
+                <input type="hidden" name="merchant_key" value="{{commission['mse_merchant_key']}}">
+                <input type="hidden" name="return_url" value="{{commission['url_return']}}">
+                <input type="hidden" name="cancel_url" value="{{commission['url_cancel']}}">
+                <input type="hidden" name="notify_url" value="{{commission['url_notify']}}">
+                <input type="hidden" name="amount" [value]="amount_to_buy"/>
+                <input type="hidden" name="item_name" [value]="item_name">
+                <input type="hidden" name="payment_method" value="{{commission['payment_method']}}">
+                <input type="hidden" name="signature" [value]="signature">
+                <div *ngIf="fail_sell" style="font-size:10pt; color:red;">Buy amount have to less than Remaining amount!</div>
+                <div class="padding-top-20" style="text-align:center" *ngIf="loading">
+                    <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" mat-raised-button class="btn btn-success">Check out</button>
+                <button type="button" mat-raised-button class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

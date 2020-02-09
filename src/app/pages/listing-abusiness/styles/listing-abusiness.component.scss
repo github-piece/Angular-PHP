@@ -1,0 +1,174 @@
+@import '../../../common/styles/_variables.scss';
+@import '../../../common/styles/_mixins.scss';
+
+$card-title-bg-color: $aqua;
+$card-title-txt-color: $white;
+$card-subtitle-txt-color: $grey;
+$card-progress-bg-color: $grey2;
+$card-pbar-bg-color: $aqua;
+$card-pbar-inactive-bg-color: $inactive-bg-color;
+:host /deep/ #forms-wizard {
+  margin-top: 5%;
+  .card {
+    min-height: 670px;
+    padding: 0 16px;
+    padding-bottom: 73px;
+    position: relative;
+    padding-top: 2%;
+    .main-title {
+      padding-top: 20px;
+      font-size: $font-size-xxlg;
+      width: 100%;
+    }
+
+    .submited-message {
+      display: table;
+      table-layout: fixed;
+      text-align: center;
+      width: 100%;
+
+      h2 {
+        font-size: $font-size-xlg;
+        font-weight: 900;
+        letter-spacing: $letter-spacing-md;
+        margin-bottom: 20px;
+      }
+
+      span {
+        font-size: $font-size-lg;
+        font-weight: 700;
+        letter-spacing: $letter-spacing-md;
+      }
+
+      .vertical-center {
+        display: table-cell;
+        height: 508px;
+        vertical-align: middle;
+      }
+    }
+
+    // Material progress bar
+    .wizard-progress {
+      background-color: $card-progress-bg-color;
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+      display: flex;
+
+      .wizard-progress-bar {
+        border-left: 20px;
+        border-left-color: transparent;
+        border-left-style: solid;
+        border-right: 20px;
+        border-right-color: transparent;
+        border-right-style: solid;
+        padding: 25px 0;
+        position: relative;
+
+        mat-progress-bar {
+          border-radius: 11px;
+          height: 23px;
+
+          .mat-progress-bar-buffer {
+            background-color: $card-pbar-inactive-bg-color;
+          }
+
+          .mat-progress-bar-fill {
+            &::after {
+              background-color: $card-pbar-bg-color;
+            }
+          }
+        }
+
+        .progress-button {
+          background-color: $card-pbar-inactive-bg-color;
+          border-radius: 50%;
+          height: 30px;
+          left: 33%;
+          position: absolute;
+          top: 16px;
+          width: 40px;
+
+          .fa {
+            display: none;
+            font-size: 20px;
+          }
+
+          &.active {
+            background-color: $card-pbar-bg-color;
+
+            .fa {
+              display: inherit;
+            }
+          }
+
+          &.disabled {
+            cursor: inherit;
+            pointer-events: none;
+          }
+        }
+      }
+
+      .progress-bar-action-button-col {
+        padding-right: 0;
+      }
+
+      .progress-number {
+        font-weight: 900;
+        letter-spacing: $letter-spacing-md;
+        padding: 25px 0;
+      }
+
+      .progress-button {
+        background-color: $card-title-bg-color;
+        border: 1px solid #00ffc8;
+        color: $white;
+        font-size: 1.8vw;
+        font-weight: 700;
+        letter-spacing: $letter-spacing-sm;
+        transition: opacity .5s;
+
+        &[disabled] {
+          opacity: .5;
+        }
+      }
+
+      .item-center {
+        margin: auto;
+      }
+
+    }
+
+    .last-row {
+      margin-bottom: 20px;
+    }
+  }
+
+
+  .form-question-label {
+    font-size: 22px;
+    color: #9b9b9b;
+    padding:16px;
+  }
+  .form-label{
+    width: 100%;
+  }
+  .padding-top-60 {
+    padding-top: 60px;
+  }
+
+  .add-item {
+    width: 60%;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10%;
+  }
+}
+.mat-toolbar-row {
+  span {
+    text-align: center;
+    font-size: 3vw;
+    min-font-size: 20px;
+  }
+}
+

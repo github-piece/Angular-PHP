@@ -1,0 +1,157 @@
+<div *ngIf="showActions">
+    <div class="col-lg-12 col-md-12 map-container" *ngFor="let card of cards | async">
+        <div class="row">
+            <div *ngIf="card.showmap" style="margin-top:0;width: 100%;">
+                <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng" [mapTypeId]="mapId">
+                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    <agm-marker *ngFor="let data of rowData; let i = index" [latitude]="data.lat"
+                                [longitude]="data.lng">
+                    </agm-marker>
+                </agm-map>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 contact-form">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="col-sm-12 col-xs-12 col-12">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3>Contact Us</h3>
+                                <p>Feel free to drop us a line via this contact form, or visit out headquarter. The NDA Sport team
+                                    is always looking for feedbacks and comments from you to improve our service quality. Our
+                                    working hours is from 9:00AM to 5:00 from Monday to Friday (except holidays and weekends).</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-3 text-center">
+                                                <i class="fa fa-map-marker fa-2x"></i>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <h5>Address</h5>
+                                                <p>30 Beer Runnel, Avenue 15th, Randall District.</p>
+                                                <p>Washington.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 text-center">
+                                                <i class="fa fa-phone fa-2x"></i>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <h5>Phone</h5>
+                                                <p>Mobile: +61 3 9987 5654</p>
+                                                <p>Fax: +61 5 7855 7888</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-3 text-center">
+                                                <i class="fa fa-clock-o fa-2x"></i>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <h5>Opening Hours</h5>
+                                                <p>Monday to Friday: 8: AM - 8:00PM Saturday & Sunday: 10:00AM - 6:00PM</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 text-center">
+                                                <i class="fa fa-envelope fa-2x"></i>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <h5>Email</h5>
+                                                <p>hi@sellersmith.com</p>
+                                                <p>support@pagetly.io</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>Get in touch</h3>
+                                <div class="row col-md-12">
+                                    <form [formGroup]="contactForm" (ngSubmit)="submit()" class="full-width">
+                                       <div class="row">
+                                           <div class="col">
+                                               <div class="form-group">
+                                                   <label class="control-label">Name <span
+                                                           class="text-danger">*</span></label>
+                                                   <input class="form-control font-poppins full-width" type="text"
+                                                          formControlName="name"
+                                                          [ngClass]="{ 'is-invalid': submitted && f.name.errors}" placeholder="Name"/>
+                                                   <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                                       <label *ngIf="f.name.errors.name">Name is
+                                                           required</label>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="email">Email</label>
+                                                    <input type="email" id="email" formControlName="email" class="form-control"
+                                                           [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+                                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.email.errors.required">Email is required</div>
+                                                        <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="phone_number">Phone Number <span class="text-danger">*</span></label>
+                                                    <input class="form-control font-poppins" id="phone_number" type="number"
+                                                           formControlName="phone_number"
+                                                           [ngClass]="{ 'is-invalid': submitted && f.phone_number.errors }" placeholder="example@mail.com"/>
+                                                    <div *ngIf="submitted && f.phone_number.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.phone_number.errors.required">Phone Number is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label class="control-label">Your message <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea class="form-control font-poppins" formControlName="message"
+                                                              [ngClass]="{ 'is-invalid': submitted && f.message.errors }" placeholder="Your message..."></textarea>
+                                                    <div *ngIf="submitted && f.message.errors" class="invalid-feedback">
+                                                        <label *ngIf="f.message.errors.required">Message is
+                                                            required</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button [disabled]="loading" class="btn btn-form btn-lg btn-block" style="margin-top: 15px;">Contact Us
+                                        <img *ngIf="loading"
+                                             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                    </button>
+                                    </form>
+                                    <div class="contact-image"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!showActions">
+    <div style="text-align:center">
+        <h1>
+            Welcome to MSE site!
+        </h1>
+        <img width="300" alt="Angular Logo"
+             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+    <h2 style="text-align:center;">Now you cannot access to page. </h2>
+</div>
+
+
+

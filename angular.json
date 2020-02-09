@@ -1,0 +1,170 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "angular-admin-template": {
+      "root": "",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/browser",
+            "index": "src/index.html",
+            "main": "src/main/main.browser.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "showCircularDependencies": true,
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/slick-carousel/slick/slick.scss",
+              "./node_modules/slick-carousel/slick/slick-theme.scss",
+              "src/app/common/styles/main.scss",
+              "./node_modules/intl-tel-input/build/css/intlTelInput.css",
+              "./node_modules/@syncfusion/ej2-base/styles/material.css",
+              "./node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
+              "./node_modules/@syncfusion/ej2-inputs/styles/material.css",
+              "./node_modules/@syncfusion/ej2-buttons/styles/material.css",
+              "src/assets/front/css/animate.css",
+              "src/assets/front/css/all.css",
+              "src/assets/front/css/magnific-popup.css",
+              "src/assets/front/css/nice-select.css",
+              "src/assets/front/css/ion.rangeSlider.min.css",
+              "src/assets/front/css/slick.css",
+              "src/assets/front/css/default.css",
+              "src/assets/front/css/style.css"
+            ],
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./node_modules/popper.js/dist/umd/popper.min.js",
+              "./node_modules/slick-carousel/slick/slick.min.js",
+              "src/assets/front/js/vendor/modernizr-3.6.0.min.js",
+              "src/assets/front/js/vendor/jquery-1.12.4.min.js",
+              "src/assets/front/js/bootstrap.min.js",
+              "src/assets/front/js/popper.min.js",
+              "src/assets/front/js/slick.min.js",
+              "src/assets/front/js/jquery.counterup.min.js",
+              "src/assets/front/js/jquery.nice-select.min.js",
+              "src/assets/front/js/waypoints.min.js",
+              "src/assets/front/js/ion.rangeSlider.min.js",
+              "src/assets/front/js/wow.min.js",
+              "src/assets/front/js/jquery.magnific-popup.min.js",
+              "src/assets/front/js/ajax-contact.js",
+              "src/assets/front/js/front-main.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "angular-admin-template:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-admin-template:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "angular-admin-template:build"
+          }
+        },
+
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "src/main/main.server.ts",
+            "tsConfig": "src/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "angular-admin-template",
+  "schematics": {
+    "@schematics/angular:class": {
+      "spec": false
+    },
+    "@schematics/angular:component": {
+      "spec": false,
+      "inlineStyle": true,
+      "inlineTemplate": true,
+      "prefix": "app",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "spec": false,
+      "prefix": "app"
+    },
+    "@schematics/angular:guard": {
+      "spec": false
+    },
+    "@schematics/angular:module": {
+      "spec": false
+    },
+    "@schematics/angular:pipe": {
+      "spec": false
+    },
+    "@schematics/angular:service": {
+      "spec": false
+    }
+  }
+}

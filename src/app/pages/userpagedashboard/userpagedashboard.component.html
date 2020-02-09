@@ -1,0 +1,308 @@
+<div *ngIf="showActions">
+    <div class="grid-container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mat-h1">User in your organization</h1>
+            </div>
+            <!-- if selected user is activated..-->
+            <div class="col-md-2" *ngIf="btn_showActive">
+                <input type="button" class="btn btn-outline-disable btn-block" value="Activated" />
+            </div>
+            <div class="col-md-2" *ngIf="btn_showActive">
+                <input type="button" class="btn btn-outline-danger btn-block" (click)="freezeUser('inactive')" value="InActive" />
+            </div>
+            <!-- if selected user is inactivated..-->
+            <div class="col-md-2" *ngIf="btn_showInActive">
+                <input type="button" class="btn btn-outline-success btn-block" (click)="freezeUser('active')" value="Active" />
+            </div>
+            <div class="col-md-2" *ngIf="btn_showInActive">
+                <input type="button" class="btn btn-outline-disable btn-block" value="InActivated" />
+            </div>
+
+        </div>
+        <div class="card" style="margin: 0 14px;">
+            <div class="row">
+                <div class="col-xs-12 table-wrapper">
+                    <table mat-table [dataSource]="rowData" class="table table-stripes">
+                        <ng-container matColumnDef="no">
+                            <th mat-header-cell *matHeaderCellDef> NO</th>
+                            <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="u_name">
+                            <th mat-header-cell *matHeaderCellDef> Username</th>
+                            <td mat-cell *matCellDef="let element"> {{element.u_name}} </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="u_email">
+                            <th mat-header-cell *matHeaderCellDef> Email</th>
+                            <td mat-cell *matCellDef="let element"> {{element.u_email}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="u_createddate">
+                            <th mat-header-cell *matHeaderCellDef> Created</th>
+                            <td mat-cell *matCellDef="let element"> {{element.u_createddate}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="u_active">
+                            <th mat-header-cell *matHeaderCellDef> Active</th>
+                            <td mat-cell *matCellDef="let element"> {{element.u_active}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                            (click)="onSelectionChanged(row)"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+
+        <mat-grid-list cols="2" rowHeight="350px">
+            <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+                <mat-card class="dashboard-card">
+                    <mat-card-header>
+                        <mat-card-title>
+                            {{card.title}}
+                            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                    aria-label="Toggle menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" xPosition="before">
+                                <button mat-menu-item>Expand</button>
+                                <button mat-menu-item>Remove</button>
+                            </mat-menu>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="dashboard-card-content">
+                        <!-- add user organization starting -->
+                        <div *ngIf="card.showoption == 'adduser'">
+                            <div *ngIf="!showUpdateUser">    <!-- create user -->
+                                <form [formGroup]="addUserForm">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="textarea-input">User Name:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" formControlName="u_addname"
+                                                   placeholder="Please insert user name"
+                                                   [ngClass]="{ 'is-invalid': submitted_adduser && f_adduser.u_addname.errors }">
+                                            <div *ngIf="submitted_adduser && f_adduser.u_addname.errors"
+                                                 class="invalid-feedback">
+                                                <div *ngIf="f_adduser.u_addname.errors.required">User Name is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="textarea-input">User Email:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" formControlName="u_addemail"
+                                                   placeholder="Please insert user email"
+                                                   [ngClass]="{ 'is-invalid': submitted_adduser && f_adduser.u_addemail.errors }">
+                                            <div *ngIf="submitted_adduser && f_adduser.u_addemail.errors"
+                                                 class="invalid-feedback">
+                                                <div *ngIf="f_adduser.u_addemail.errors.required">User email is
+                                                    required
+                                                </div>
+                                                <div *ngIf="f_adduser.u_addemail.errors.email">Email must be a valid
+                                                    email address
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="textarea-input">Create
+                                            Password:</label>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" formControlName="u_addpassword"
+                                                   placeholder="Please insert user password"
+                                                   [ngClass]="{ 'is-invalid': submitted_adduser && f_adduser.u_addpassword.errors }">
+                                            <div *ngIf="submitted_adduser && f_adduser.u_addpassword.errors"
+                                                 class="invalid-feedback">
+                                                <div *ngIf="f_adduser.u_addpassword.errors.required">Password is
+                                                    required
+                                                </div>
+                                                <div *ngIf="f_adduser.u_addpassword.errors.minlength">Password must be
+                                                    at least 6 characters
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="textarea-input">Confirm
+                                            Password:</label>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control"
+                                                   formControlName="u_addconfirmpassword"
+                                                   placeholder="Please insert confirm password"
+                                                   [ngClass]="{ 'is-invalid': submitted_adduser && f_adduser.u_addconfirmpassword.errors }">
+                                            <div *ngIf="submitted_adduser && f_adduser.u_addconfirmpassword.errors"
+                                                 class="invalid-feedback">
+                                                <div *ngIf="f_adduser.u_addconfirmpassword.errors.required">Password is
+                                                    required
+                                                </div>
+                                                <div *ngIf="f_adduser.u_addconfirmpassword.errors.mustMatch">Passwords
+                                                    must match
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 0px 0px 0px 20px;">
+                                        <div class="col-md-4" style="text-align: left; margin-top: 5px;"><label
+                                                id="example-radio-group-label">User Account type:&nbsp;</label></div>
+                                        <div class="col-md-8" style="text-align: left;">
+                                            <mat-radio-button class="example-radio-button" [checked]="true"
+                                                              [value]="u_accountRadioVal">{{u_accountRadioVal}}</mat-radio-button>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 10px 30px 0px 30px;">
+                                        <img *ngIf="createUserloading"
+                                             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+
+                                        <input type="button" [disabled]="createUserloading"
+                                               class="btn btn-primary btn-block" (click)="createUser();"
+                                               value="Create User"/>
+                                    </div>
+                                </form>
+                            </div>
+                            <div *ngIf="showUpdateUser">    <!-- update user -->
+                                <div class="row" style="padding: 10px 0px 0px 30px;">
+                                    <div class="col-md-12" style="text-align: left;">
+                                        User Name : {{seleted_uname}}
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 10px 0px 0px 30px;">
+                                    <div class="col-md-12" style="text-align: left;">
+                                        User Email : {{seleted_uemail}}
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 10px 0px 0px 30px;">
+                                    <div class="col-md-12" style="text-align: left;">
+                                        Created password for them : {{seleted_udate}}
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 10px 0px 0px 30px;">
+                                    <div class="col-md-4" style="text-align: left;"><label
+                                            id="example-radio-group-label">User Account type:&nbsp;</label></div>
+                                    <div class="col-md-8" style="text-align: left;">
+                                        <mat-radio-button class="example-radio-button" [checked]="true"
+                                                          [value]="u_accountRadioVal">{{u_accountRadioVal}}</mat-radio-button>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 10px 0px 0px 30px;">
+                                    <div class="col-md-12" style="text-align: left;">
+                                        <img *ngIf="updateUserloading"
+                                             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                        <input type="button" [disabled]="updateUserloading"
+                                               class="btn btn-success btn-block" (click)="updateUser();"
+                                               value="Update User"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- add user organization ending -->
+
+                        <!-- userinfo organization starting -->
+                        <div *ngIf="card.showoption == 'userinfo'">
+                            <div class="row" style="padding: 10px 0px 0px 30px;">
+                                <div class="col-md-12" style="text-align: left;">
+                                    User Name : {{u_name}}
+                                </div>
+                            </div>
+                            <div class="row" style="padding: 10px 0px 0px 30px;">
+                                <div class="col-md-12" style="text-align: left;">
+                                    User Email : {{u_email}}
+                                </div>
+                            </div>
+                            <div class="row" style="padding: 10px 0px 0px 30px;">
+                                <div class="col-md-12" style="text-align: left;">
+                                    Date Created : {{u_createddate}}
+                                </div>
+                            </div>
+                            <div class="row" style="padding: 10px 0px 0px 30px;">
+                                <div class="col-md-12" style="text-align: left;">
+                                    User Account type : {{u_accounttype}}
+                                </div>
+                            </div>
+
+                            <hr>
+                            <form [formGroup]="registerForm">
+
+                                <div class="form-group row">
+                                    <label class="col-md-12 col-form-label" for="textarea-input"
+                                           style="font-size: 14pt;">Change Password</label>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="textarea-input">Old Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" formControlName="old_password"
+                                               placeholder="please insert old password"
+                                               [ngClass]="{ 'is-invalid': submitted && f.old_password.errors || noMatcheOldpwd }"
+                                               (change)="oldPwdChanged();">
+                                        <div *ngIf="submitted && f.old_password.errors" class="invalid-feedback">
+                                            <div *ngIf="f.old_password.errors.required">Password is required</div>
+
+                                            <div *ngIf="f.old_password.errors.minlength">Password must be at least 6
+                                                characters
+                                            </div>
+                                        </div>
+                                        <div *ngIf="noMatcheOldpwd" class="invalid-feedback">No match old password</div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="textarea-input">New Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" formControlName="new_password"
+                                               placeholder="please insert new password"
+                                               [ngClass]="{ 'is-invalid': submitted && f.new_password.errors }">
+                                        <div *ngIf="submitted && f.new_password.errors" class="invalid-feedback">
+                                            <div *ngIf="f.new_password.errors.required">Password is required</div>
+                                            <div *ngIf="f.new_password.errors.minlength">Password must be at least 6
+                                                characters
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="textarea-input">Confirm Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" formControlName="confirm_password"
+                                               placeholder="please insert confirm password"
+                                               [ngClass]="{ 'is-invalid': submitted && f.confirm_password.errors }">
+                                        <div *ngIf="submitted && f.confirm_password.errors" class="invalid-feedback">
+                                            <div *ngIf="f.confirm_password.errors.required">Password is required</div>
+                                            <div *ngIf="f.confirm_password.errors.mustMatch">Passwords must match</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 10px 0px 0px 30px;">
+                                    <div class="col-md-12" style="text-align: left;">
+                                        <img *ngIf="changePwdloading"
+                                             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                        <input type="button" [disabled]="changePwdloading"
+                                               class="btn btn-success btn-block" (click)="changePwd();"
+                                               value="Change Password"/>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <!-- userinfo organization ending -->
+
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>
+<div *ngIf="!showActions">
+    <div style="text-align:center">
+        <h1>
+            Welcome to MSE site!
+        </h1>
+        <img width="300" alt="Angular Logo"
+             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+    <h2 style="text-align:center;">Now you cannot access to page. </h2>
+</div>

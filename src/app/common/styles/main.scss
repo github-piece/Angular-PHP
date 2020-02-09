@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300i,400,500,500i,700,700i,900,900i');
+
+@import 'font-awesome';
+@import 'material';
+@import 'bootstrap';
+@font-face {
+  font-family: Poppins-Regular;
+  src: url("../../../assets/fonts/Poppins-Regular.ttf");
+}
+
+.tabs-vertical {
+  .mat-tab-labels {
+    display: grid;
+  }
+}
+mat-tab-group {
+  .mat-tab-body-wrapper {
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,133 @@
+<h1 class="mat-h1" style="margin-left: 20px">Home</h1>
+<div *ngIf="showActions">
+
+    <div class="grid-container">
+        <mat-grid-list cols="3" rowHeight="350px">
+            <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+                <mat-card class="dashboard-card">
+                    <mat-card-header>
+                        <mat-card-title>
+                            {{card.title}}
+                            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                    aria-label="Toggle menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" xPosition="before">
+                                <button mat-menu-item>Expand</button>
+                                <button mat-menu-item>Remove</button>
+                            </mat-menu>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="dashboard-card-content">
+                        <div *ngIf="card.showoption == 'admin_table'">
+                            <div class="col-xs-12 table-wrapper board board-small">
+                                <table mat-table [dataSource]="rowData_admin" class="table table-stripes">
+                                    <ng-container matColumnDef="no">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center"> NO</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="u_name">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center"> Username</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.u_name}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="headline">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center"> Headline</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.headline}} </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns_admin"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns_admin;"
+                                        (click)="onSelectionAdminChanged(row)"></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div *ngIf="card.showoption == 'user_table'">
+                            <div class="col-xs-12 table-wrapper board board-small">
+                                <table mat-table [dataSource]="rowData_admin" class="table table-stripes">
+                                    <ng-container matColumnDef="no">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center"> NO</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="u_name">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center"> Username</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.u_name}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="headline">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center"> Headline</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.headline}} </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns_admin"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns_admin;"
+                                        (click)="onSelectionAdminChanged(row)"></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div *ngIf="card.showmap" style="margin-top:20px;">
+                            <div class="row">
+                                <div class="float-right search-btn">
+                                    <mat-form-field class="float-right" style="width:400px;">
+                                        <input matInput placeholder="Please insert place address" [(ngModel)]="address">
+                                        <mat-icon matSuffix (click)="viewMap();">search</mat-icon>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+                                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                                <agm-marker *ngFor="let data of rowData; let i = index" [latitude]="data.lat"
+                                            [longitude]="data.lng">
+                                </agm-marker>
+                            </agm-map>
+                        </div>
+                        <div *ngIf="card.showchart">
+                            <div style="display: flex;margin: auto; width: 500px; height: 500px; padding: 20px 20px 20px 20px;">
+                                <canvas baseChart
+                                        [data]="doughnutChartData"
+                                        [labels]="doughnutChartLabels"
+                                        [chartType]="doughnutChartType">
+                                </canvas>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div class="p-4 my-4">
+            <div class="col-xs-12 table-wrapper card" style="margin-bottom: 32px;">
+                <table mat-table [dataSource]="rowData" class="table table-stripes">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> NO</th>
+                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="b_name">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Business Name</th>
+                        <td mat-cell *matCellDef="let element"> {{element.b_name}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="b_location">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Business Location</th>
+                        <td mat-cell *matCellDef="let element"> {{element.b_location}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="b_address">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Business Address</th>
+                        <td mat-cell *matCellDef="let element"> {{element.b_address}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columsDisplay"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columsDisplay;"></tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+<!--    <div style="width:100%;padding: 0 32px 64px 32px">-->
+<!--        -->
+<!--    </div>-->
+</div>
+
+<div *ngIf="!showActions">
+    <div style="text-align:center">
+        <h1>
+            Welcome to MSE site!
+        </h1>
+        <img width="300" alt="Angular Logo"
+             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+    <h2 style="text-align:center;">Now you cannot access to page. </h2>
+</div>

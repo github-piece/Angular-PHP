@@ -1,0 +1,54 @@
+<div *ngIf="!showSuperAdminHistory">
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="date_created">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.date_created}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="b_name" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Business Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.b_name }} </td>
+        </ng-container> 
+
+      <ng-container matColumnDef="state" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+        <td mat-cell *matCellDef="let element"> {{element.state }} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+</div>
+<div *ngIf="showSuperAdminHistory">
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="date_created">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.date_created}} </td>
+          </ng-container>
+          <ng-container matColumnDef="u_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.u_name}} </td>
+            </ng-container>
+      
+          <ng-container matColumnDef="b_name" >
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Business Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.b_name }} </td>
+            </ng-container> 
+    
+          <ng-container matColumnDef="state" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+            <td mat-cell *matCellDef="let element"> {{element.state }} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsAdmin"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsAdmin;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+    </div>

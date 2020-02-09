@@ -1,0 +1,116 @@
+@import '../../../../common/styles/_variables';
+
+.btn-notifications {
+  background-color: transparent;
+  border: 0;
+  color: $grey;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.messages {
+  width: 350px;
+  .message-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &.mat-menu-panel {
+    border-radius: 5px;
+    max-width: none;
+  }
+
+  .mat-menu-content:not(:empty) {
+    padding: 0;
+  }
+
+  header {
+    background-color: #1b5e20;
+    color: $white;
+    letter-spacing: $letter-spacing-xxxs;
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  .message {
+    cursor: pointer;
+    padding-top: 10px;
+
+    &:hover {
+      background-color: #f4f6f8;
+    }
+
+    .message-image {
+      border-radius: 50%;
+      height: 48px;
+      margin-right: 22px;
+      width: 48px;
+    }
+
+    .message-content {
+      flex-grow: 2;
+      margin-right: 20px;
+
+      .message-user {
+        color: #263238;
+        font-size: 14px;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        line-height: 21px;
+        letter-spacing: -0.05px;
+      }
+
+      .message-title {
+        color: #263238;
+        font-size: 14px;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        line-height: 21px;
+        letter-spacing: -0.05px;
+      }
+
+      .message-text {
+        color: #546e7a;
+        font-size: 12px;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: -0.04px;
+      }
+    }
+
+    .message-time {
+      color: $grey;
+      font-size: $font-size-xs;
+      letter-spacing: $letter-spacing-lg;
+
+      &.message-time-now {
+        color: $purple;
+      }
+    }
+  }
+
+  .messages-divider {
+    margin: 0 -15px;
+  }
+
+  footer {
+    padding: 10px 0;
+
+    a {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      line-height: 1.75;
+      border-radius: 4px;
+      letter-spacing: 0.02857em;
+      text-transform: uppercase;
+      color: #263238;
+    }
+  }
+
+  .arrow-icon {
+    color: #263238;
+    font-size: 30px;
+    margin-top: 2px;
+  }
+}

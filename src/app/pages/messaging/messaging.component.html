@@ -1,0 +1,128 @@
+<div *ngIf="showActions">
+    <div class="grid-container">
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="mat-h1">Write a Story</h1>
+            </div>
+            <div class="col-md-3" style="text-align: right;">
+                <div *ngIf="showUnselectBtn">
+                    <div *ngIf="showDeleteBtn">
+                        <div class="row">
+                            <div class="col-md-6" >
+                                <input type="button" class="btn btn-danger btn-block" (click)="deleteArticle();" value="Delete" />
+                            </div>
+                            <div class="col-md-6">
+                                <input type="button" class="btn btn-primary btn-block" (click)="unselectRow();" value="UnSelect" />
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!showDeleteBtn">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="button" class="btn btn-primary btn-small" (click)="unselectRow();" value="UnSelect" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form enctype="multipart/form-data" [formGroup]="articleForm">
+            <mat-card style="margin-bottom: 16px">
+                <mat-card-header>
+                    <mat-card-title>
+                        Article Submit
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item>Expand</button>
+                            <button mat-menu-item>Remove</button>
+                        </mat-menu>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-tab-group dynamicHeight class="flex-auto">
+                        <mat-tab label="Text">
+                            <mat-form-field style="margin-top:32px">
+                                <input matInput placeholder="Headline" value={{rowselect_headline}} formControlName="headline" [ngClass]="{ 'is-invalid': submitted && f.headline.errors }">
+                            </mat-form-field>
+                            <mat-form-field style="margin-top:20px">
+                                <textarea formControlName="section1" matInput value={{rowselect_section1}} placeholder="Section1" [ngClass]="{ 'is-invalid': submitted && f.section1.errors }"></textarea>
+                            </mat-form-field>
+                            <mat-form-field style="margin-top:20px">
+                                <textarea formControlName="section2" matInput value={{rowselect_section2}} placeholder="Section2" [ngClass]="{ 'is-invalid': submitted && f.section1.errors }"></textarea>
+                            </mat-form-field>
+                        </mat-tab>
+                        <mat-tab label="Image">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input #file1 formControlName="file1" id="file1" class="file-input-btn" type="file" accept='image/*' (change)="preview1($event.target.files)" style="margin-top: 30px;" [ngClass]="{ 'is-invalid': submitted && f.file1.errors }"/>
+                                    <label for="file1">Choose a file</label>
+                                    <div *ngIf="showImage">
+                                        <img [src]="imgURL1" height="200" *ngIf="imgURL1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input #file2 type="file" formControlName="file2" id="file2" class="file-input-btn" accept='image/*' (change)="preview2($event.target.files)" style="margin-top: 30px;" [ngClass]="{ 'is-invalid': submitted && f.file2.errors }"/>
+                                    <label for="file2">Choose a file</label>
+                                    <div *ngIf="showImage2">
+                                        <img [src]="imgURL2" height="200" *ngIf="imgURL2">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="button" [disabled]="articleloading" class="btn btn-primary float-right" (click)="submitArticle();" value="Submit Article" style="margin-top: 10px" />
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
+        </form>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    Last Story
+                    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                          aria-label="Toggle menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item>Expand</button>
+                      <button mat-menu-item>Remove</button>
+                    </mat-menu>
+                </mat-card-title>
+            </mat-card-header>
+            <div class="table-wrapper board">
+                <table mat-table [dataSource]="rowData" class="table table-stripes">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> NO </th>
+                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="headline">
+                        <th mat-header-cell *matHeaderCellDef> Headline </th>
+                        <td mat-cell *matCellDef="let element"> {{element.headline}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="article_createdate">
+                        <th mat-header-cell *matHeaderCellDef> Created </th>
+                        <td mat-cell *matCellDef="let element"> {{element.article_createdate}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="u_accounttype">
+                        <th mat-header-cell *matHeaderCellDef> Accounttype </th>
+                        <td mat-cell *matCellDef="let element"> {{element.u_accounttype}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </mat-card>
+    </div>
+</div>
+    <div *ngIf="!showActions">
+        <div style="text-align:center">
+            <h1>
+              Welcome to MSE site!
+            </h1>
+            <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+        </div>
+        <h2 style="text-align:center;">Now you cannot access to page. </h2>
+  </div>

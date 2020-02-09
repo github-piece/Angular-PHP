@@ -1,0 +1,48 @@
+{
+  "parents":
+  [
+    {
+      "slug": "sushi",
+      "name": "Sushi"
+    },
+    {
+      "slug": "vegan",
+      "name": "Vegan"
+    },
+    {
+      "slug": "burgers",
+      "name": "Burgers"
+    }
+  ],
+  "grandchilds":
+  [
+    {
+      "parentSlug":"sushi" ,
+      "slug": "sushi-go",
+      "name": "Sushi Go",
+      "image": "../../../../assets/imgs/navigation/sushi1.jpeg",
+      "address": "Sarmiento 2674"
+    },
+    {
+      "parentSlug":"sushi" ,
+      "slug": "pez-globo",
+      "name": "Pez Globo Sushi",
+      "image": "../../../../assets/imgs/navigation/sushi2.jpeg",
+      "address": "Sarmiento 2674"
+    },
+    {
+      "parentSlug":"vegan" ,
+      "slug": "namaste-veggie",
+      "name": "Namasté Veggie Restó",
+      "image": "../../../../assets/imgs/navigation/vegan1.jpeg",
+      "address": "Sarmiento 2674"
+    },
+    {
+      "parentSlug":"burgers" ,
+      "slug": "che-burger",
+      "name": "Che Burger IV",
+      "image": "../../../../assets/imgs/navigation/burger1.jpeg",
+      "address": "Sarmiento 2674"
+    }
+  ]
+}
