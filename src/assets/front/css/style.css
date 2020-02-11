@@ -9036,30 +9036,18 @@ tbody, td {
   background: white!important;
 }
 
- .carousel-indicators li.active {
+.carousel-indicators li.active {
   background: #f86e03!important;
- }
+}
 
- .notificaitons-sidenav.mat-drawer {
-   overflow-y: unset!important;
- }
+.notificaitons-sidenav.mat-drawer {
+  overflow-y: unset!important;
+}
 
- mat-card-header {
-   display: flex!important;
-   padding: 16px 24px!important;
-   align-items: center!important;
-   color: #263238;
-   font-size: 16px;
-   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-   font-weight: 500;
-   line-height: 20px;
-   letter-spacing: -0.05px;
- }
-
- .notifications-menu .mat-tab-label.mat-tab-label-active{
-   border-bottom: 2px outset #263238!important;
-   background: #eceff1!important;
- }
+.notifications-menu .mat-tab-label.mat-tab-label-active{
+  border-bottom: 2px outset #263238!important;
+  background: #eceff1!important;
+}
 .notifications-menu .mat-tab-label {
   color: #263238!important;
   background: white!important;
@@ -9073,4 +9061,37 @@ tbody, td {
 
 .notifications-menu .mat-tab-labels {
   border-bottom: 1px solid #eeeeee;
+}
+
+.p-header {
+  color: #546e7a;
+  font-size: 11px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 13px;
+  letter-spacing: 0.33px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.p-title {
+  color: #263238;
+  font-size: 24px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: -0.06px;
+  margin-bottom: 16px;
+}
+
+.mat-card-header {
+  color: #263238;
+  font-size: 16px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.05px;
+  display: flex;
+  padding-bottom: 16px;
+  align-items: center;
 }

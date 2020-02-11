@@ -1,23 +1,53 @@
-<h1 class="mat-h1" style="margin-left: 20px">Home</h1>
 <div *ngIf="showActions">
-
+    <div class="p-header">Home</div>
+    <div class="p-title">Hi, please see what happens!</div>
     <div class="grid-container">
+        <mat-card>
+            <div class="mat-card-header">
+                Your World, Today
+                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                        aria-label="Toggle menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item>Expand</button>
+                    <button mat-menu-item>Remove</button>
+                </mat-menu>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <div class="row">
+                    <div class="float-right search-btn">
+                        <mat-form-field class="float-right" style="width:400px;">
+                            <input matInput placeholder="Please insert place address" [(ngModel)]="address">
+                            <mat-icon matSuffix (click)="viewMap();">search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    <agm-marker *ngFor="let data of rowData; let i = index" [latitude]="data.lat"
+                                [longitude]="data.lng">
+                    </agm-marker>
+                </agm-map>
+            </mat-card-content>
+        </mat-card>
+
         <mat-grid-list cols="3" rowHeight="350px">
             <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-                <mat-card class="dashboard-card">
-                    <mat-card-header>
-                        <mat-card-title>
-                            {{card.title}}
-                            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
-                                    aria-label="Toggle menu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                            <mat-menu #menu="matMenu" xPosition="before">
-                                <button mat-menu-item>Expand</button>
-                                <button mat-menu-item>Remove</button>
-                            </mat-menu>
-                        </mat-card-title>
-                    </mat-card-header>
+                <mat-card>
+                    <div class="mat-card-header">
+                        {{card.title}}
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item>Expand</button>
+                            <button mat-menu-item>Remove</button>
+                        </mat-menu>
+                    </div>
+                    <mat-divider></mat-divider>
                     <mat-card-content class="dashboard-card-content">
                         <div *ngIf="card.showoption == 'admin_table'">
                             <div class="col-xs-12 table-wrapper board board-small">
@@ -109,16 +139,16 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center"> Business Address</th>
                         <td mat-cell *matCellDef="let element"> {{element.b_address}} </td>
                     </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="columsDisplay"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columsDisplay;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="columnsDisplay"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsDisplay;"></tr>
                 </table>
             </div>
         </div>
 
     </div>
-<!--    <div style="width:100%;padding: 0 32px 64px 32px">-->
-<!--        -->
-<!--    </div>-->
+    <!--    <div style="width:100%;padding: 0 32px 64px 32px">-->
+    <!--        -->
+    <!--    </div>-->
 </div>
 
 <div *ngIf="!showActions">

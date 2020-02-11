@@ -21,31 +21,33 @@ export class ModalComponent implements OnInit {
     loading = false;
     userid: any;
     fail_sell: boolean;
-    commission:any;
+    commission: any;
     platform_fee: any;
-    item_name:any;
+    item_name: any;
     url = URL_PAYFAST_BUY;
-    signature:any;
-    payFastForm:FormGroup;
-    formData:FormData;
-    submitted:boolean = false;
-    curSymbol:any;balance_value:any;amount_to_buy;any;
+    signature: any;
+    payFastForm: FormGroup;
+    formData: FormData;
+    submitted: boolean = false;
+    curSymbol: any;
+    balance_value: any;
+    amount_to_buy: any;
     constructor(public dialogRef: MatDialogRef<ModalComponent>,
                 private authenticationService: AuthenticationService,
                 private buysellService: BuysellService,
-                private fb:FormBuilder,
-                private payfast:PayfastService) {
+                private fb: FormBuilder,
+                private payfast: PayfastService) {
         this.formData = new FormData();
         this.payFastForm = this.fb.group({
-            merchant_id:[''],merchant_key:[''],return_url:[''],cancel_url:[''],notify_url:[''],
-            amount:[''], item_name:[''], payment_method:[''], signature:['']
-        })
+            merchant_id: [''], merchant_key: [''], return_url: [''], cancel_url: [''], notify_url: [''],
+            amount: [''], item_name: [''], payment_method: [''], signature: ['']
+        });
     }
     ngOnInit() {
         this.initModal();
     }
-    //Get all data for modal.
-    initModal(){
+    // Get all data for modal.
+    initModal() {
         this.userid = this.authenticationService.currentUserSubject.value.u_id;
         this.business_id = 0;
         this.modal_content = '';
@@ -58,37 +60,37 @@ export class ModalComponent implements OnInit {
         this.curSymbol = this.getCurrencySymbol(this.business_remain);
         this.getCommission();
     }
-    getCommission(){
+    getCommission() {
         this.commission = this.buysellService.commission;
     }
-    //When click the confirm button, then get signature.
-    getSignature(){
+    // When click the confirm button, then get signature.
+    getSignature() {
         this.formData.append('merchant_id', this.commission['mse_merchant_id']);
         this.formData.append('merchant_key', this.commission['mse_merchant_key']);
         this.formData.append('return_url', this.commission['url_return']);
         this.formData.append('cancel_url', this.commission['url_cancel']);
         this.formData.append('notify_url', this.commission['url_notify']);
-        this.platform_fee =  this.commission['mse_fee']*this.payFastForm.get('amount').value;
+        this.platform_fee =  this.commission['mse_fee'] * this.payFastForm.get('amount').value;
         this.amount_to_buy = this.payFastForm.get('amount').value;
         this.balance_value = parseFloat((parseFloat(this.business_remain) - parseFloat(this.amount_to_buy)).toPrecision(3));
-        this.formData.append('amount',this.amount_to_buy);
+        this.formData.append('amount', this.amount_to_buy);
         this.formData.append('item_name', this.item_name);
         this.formData.append('payment_method', this.commission['payment_method']);
         this.generateSignature(this.formData);
         this.submitted = true;
     }
-    //Generate signature.
-    generateSignature(formData){
+    // Generate signature.
+    generateSignature(formData) {
         return this.payfast.generateSignature(formData)
-            .pipe(first()).subscribe((res:any)=>{
-                this.signature =res;
+            .pipe(first()).subscribe((res: any) => {
+                this.signature = res;
             });
     }
     onNoClick(): void {
         this.dialogRef.close();
     }
-    //Get currency symbol.
-    getCurrencySymbol(str){
+    // Get currency symbol.
+    getCurrencySymbol(str) {
         return str.replace(/[\d\., ]/g, '');
     }
 
@@ -97,7 +99,7 @@ export class ModalComponent implements OnInit {
     changeAmount() {
         this.fail_sell = false;
     }
-    //Buy the business selected.
+    // Buy the business selected.
     // buyBusiness() {
     //     if (this.balance_value < 0) {    // if buy amount is more than reamining...
     //         this.fail_sell = true;
@@ -174,7 +176,7 @@ export class ModalComponent implements OnInit {
                 error => {
                 });
     }
-    //Submit order.
-    onCheckOut(){
+    // Submit order.
+    onCheckOut() {
     }
 }
