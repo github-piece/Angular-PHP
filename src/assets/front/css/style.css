@@ -1,4 +1,3 @@
-@import "https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,800,900&display=swap";
 body {
   font-family: poppins, sans-serif;
   font-weight: 400;
@@ -732,11 +731,6 @@ p {
     -ms-transform: translateX(0%);
     -o-transform: translateX(0%);
     transform: translateX(0%);
-    -webkit-transition: all none ease-out 0s;
-    -moz-transition: all none ease-out 0s;
-    -ms-transition: all none ease-out 0s;
-    -o-transition: all none ease-out 0s;
-    transition: all none ease-out 0s;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -760,11 +754,6 @@ p {
     -ms-transform: translateX(0%);
     -o-transform: translateX(0%);
     transform: translateX(0%);
-    -webkit-transition: all none ease-out 0s;
-    -moz-transition: all none ease-out 0s;
-    -ms-transition: all none ease-out 0s;
-    -o-transition: all none ease-out 0s;
-    transition: all none ease-out 0s;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -9095,3 +9084,53 @@ tbody, td {
   padding-bottom: 16px;
   align-items: center;
 }
+
+.table-devias {
+  width: 100%;
+  display: table;
+  border-spacing: 0;
+  border-collapse: collapse;
+  color: #263238;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+.table-devias thead {
+  display: table-header-group;
+  background-color: #fafafa;
+}
+.table-devias tr {
+  color: inherit;
+  display: table-row;
+  outline: 0;
+  vertical-align: middle;
+}
+.table-devias th {
+  font-weight: 500;
+  line-height: 1.5rem;
+  color: #263238;
+  display: table-cell;
+  padding: 16px;
+  font-size: 14px;
+  text-align: left;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  border-bottom: 1px solid #eeeeee;
+  letter-spacing: -0.05px;
+  vertical-align: inherit;
+}
+.table-devias td {
+  display: table-cell;
+  padding: 16px;
+  font-size: 14px;
+  text-align: left;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 21px;
+  border-bottom: 1px solid #eeeeee;
+  letter-spacing: -0.05px;
+  vertical-align: inherit;
+}
+
+.table-responsive {
+  width: calc(100% + 32px);
+  margin-left: -16px;
+}
+

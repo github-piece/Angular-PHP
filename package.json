@@ -43,6 +43,7 @@
     "@syncfusion/ej2-angular-navigations": "^17.4.39",
     "ag-grid-angular": "^20.2.0",
     "ag-grid-community": "^20.2.0",
+    "angular-google-charts": "^0.1.6",
     "angularx-social-login": "^2.2.1",
     "bootstrap": "^4.4.1",
     "bootstrap-sass": "3.3.7",

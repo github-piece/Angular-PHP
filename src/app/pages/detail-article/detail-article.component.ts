@@ -75,7 +75,6 @@ export class DetailArticleComponent implements OnInit {
     .subscribe(
         data => {
           this.rowData = data;
-          this.rowData = data;
           for (let i = 0; i < this.rowData.length; i++) {
             if (this.rowData[i].id === this.selected_id) {
               this.articleNum = this.rowData[i].no;

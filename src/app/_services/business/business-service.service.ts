@@ -15,17 +15,15 @@ export class BusinessServiceService {
     return this.http.post(url, formData);
   }
 
-  getBusinessList(userid: string) {
+  getBusinessList(userId: string) {
     const action = 'get';
-
-    return this.http.post<any>(`${URL_SERVICIOS}/business.php`, { userid,  action })
+    return this.http.post<any>(`${URL_SERVICIOS}/business.php`, { userId,  action })
         .pipe(map(business => {
             return business;
         }));
   }
 
   getGeometry(address) {
-
     return this.http.post<any>(`${URL_SERVICIOS}/businesslist.php`, { address})
         .pipe(map(result => {
             return result;

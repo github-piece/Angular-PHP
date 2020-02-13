@@ -17,9 +17,7 @@ export class HowtodashboardComponent implements OnInit {
     loading: boolean;
     imgList: any;
     userid: any;
-    imgUrl: any;
     @Input() user;
-    /** Based on the screen size, switch from standard to one column per row */
     cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
         map(({matches}) => {
             if (matches) {

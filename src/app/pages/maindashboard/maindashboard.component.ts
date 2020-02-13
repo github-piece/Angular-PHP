@@ -1,15 +1,8 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Breakpoints, BreakpointObserver} from '@angular/cdk/layout';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {first} from 'rxjs/operators';
-import {Router, ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
-import {CatalogueService} from '../../_services/catalogue/catalogue.service';
-import {NewsfeedService} from '../../_services/newsfeed/newsfeed.service';
-import {UserService} from '../../_services/user/user.service';
 import {BusinessServiceService} from '../../_services/business/business-service.service';
-import {AuthService} from 'angularx-social-login';
-
+import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
 
 @Component({
     selector: 'app-maindashboard',
@@ -17,225 +10,143 @@ import {AuthService} from 'angularx-social-login';
     styleUrls: ['./maindashboard.component.scss']
 })
 
-export class MaindashboardComponent implements OnInit, AfterViewInit {
+export class MaindashboardComponent implements OnInit {
 
-    public pieChartType = 'pie';
-    public pieChartLabels = ['Agriculture', 'Industrial', 'Resources'];
-    public pieChartData = [0, 0, 0];
-    public pieChartColors = ['#bd0fe1', '#f6a623', '#b8e986'];
+    // TreeMap options
+    type1 = 'TreeMap';
+    businessList = [['treeMap', null, 0, 0]];
+    options1 = {
+        minColor: '#f44336',
+        midColor: '#ffc107',
+        maxColor: '#00c853',
+        headerHeight: 0,
+        showScale: false
+    };
+    // BarCharts options
+    type2 = 'Histogram';
+    tenureList = [];
+    goalList = [];
+    options2 = {
+        legend: 'none',
+        colors: ['#607d8b']
+    };
 
     lat: any;
     lng: any;
-
-    zoom = 2;
     address = '';
-    /** Based on the screen size, switch from standard to one column per row */
     showActions = false;
-    userid: any;
-    rowData = [];
-    columnDefs = [
-        {headerName: 'No', field: 'id', width: 50},
-        {headerName: 'Business Name', field: 'b_name', width: 350},
-        {headerName: 'Business Location', field: 'b_location', width: 320},
-        {headerName: 'Business Address', field: 'b_address', width: 350}
-    ];
-    columnDefs_admin = [
-        {headerName: 'No', field: 'no', width: 50},
-        {headerName: 'User Name', field: 'u_name', width: 300},
-        {headerName: 'Headline', field: 'headline', width: 350},
-        {headerName: 'Created Date', field: 'article_createdate', width: 300}
-    ];
-    columnDefs_user = [
-        {headerName: 'No', field: 'no', width: 50},
-        {headerName: 'User Name', field: 'u_name', width: 100},
-        {headerName: 'Headline', field: 'headline', width: 250},
-        {headerName: 'Created Date', field: 'article_createdate', width: 150}
-    ];
-    public doughnutChartLabels = ['Users Q1', 'Sales Q2', 'Registers Q3', 'Sales Q4'];
-    public doughnutChartData = [120, 150, 180, 90];
-    public doughnutChartType = 'doughnut';
-    cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-        map(({matches}) => {
-            if (matches) {
-                return [
-                    {title: 'Your World, Today', cols: 3, rows: 2, showchart: false, showmap: true},
-                    {title: 'Newsfeed', cols: 1, rows: 1, showchart: false, showmap: false},
-                    {title: 'Website Audience', cols: 1, rows: 1, showchart: true, showmap: false},
-                    {title: 'Market Splite', cols: 1, rows: 1, showchart: true, showmap: false}
-                ];
-            }
+    zoom = 2;
 
-            return [
-                {title: 'Your World, Today', cols: 3, rows: 2, showchart: false, showmap: true, showoption: ''},
-                {title: 'Admin Users', cols: 1, rows: 1, showchart: false, showmap: false, showoption: 'admin_table'},
-                {title: 'Users', cols: 1, rows: 1, showchart: false, showmap: false, showoption: 'user_table'},
-                {title: 'Website Audience', cols: 1, rows: 1, showchart: true, showmap: false, showoption: ''}
-            ];
-        })
-    );
-
-    tableDisplayedColumns: string[] = ['name', 'status'];
-    tableDataSource = undefined;
-    columsDisplay: string[] = ['no', 'b_name', 'b_location', 'b_address'];
-    displayedColumns_admin: string[] = ['no', 'u_name', 'headline'];
-    displayedColumns_user: string[] = ['no', 'u_name', 'headline'];
-    rowData_admin = undefined;  // datas for userlist
-    rowData_user = [];  // datas for userlist
-    u_accounttype: any;
     u_id: any;
-    freezedflag: any;
-    private rowSelection;
+    businessData = [];
+
+    tableData = [];
+    dataSource: any;
+    tasks: any[];
+    pageSize = 5;
+    currentPage = 0;
+    totalSize = 0;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(
-        private breakpointObserver: BreakpointObserver,
         private authenticationService: AuthenticationService,
-        private catalogueService: CatalogueService,
-        private newsfeedService: NewsfeedService,
-        private userService: UserService,
-        private route: ActivatedRoute,
-        private router: Router,
         private businessService: BusinessServiceService,
-        private authService: AuthService
-    ) {
-
-
-    }
-
+    ) { }
     ngOnInit() {
-        // this.tableDataSource = [{
-        //     'picture': 'asdf', 'name': 'asdf', 'status': 'asdf', 'progress': 'asdf', 'comments': 'asdf', 'policy': 'asdf'
-        // }];
-
-        // this.rowData_admin = [{'id':'asdf','u_name':"asdf",'headline':"asdf"}];
-
         if (this.authenticationService.currentUserSubject.value == null) {
             this.showActions = false;
         } else {
             this.showActions = true;
-            this.userid = this.authenticationService.currentUserSubject.value.u_id;
-            this.viewMap();
             this.u_id = this.authenticationService.currentUserSubject.value.u_id;
-            this.u_accounttype = this.authenticationService.currentUserSubject.value.u_accounttype;
-            this.getFreezeFlag(this.u_id);
-            this.rowSelection = 'single';
-
-            this.getArticleList_Admin();
-            this.getArticleList_User();
-            this.catalogueService.getBusinessList(this.userid)
-                .pipe(first())
-                .subscribe(
-                    data => {
-                        this.rowData = data['users'];
-
-                        let agriculture_count = 0;
-                        let industrial_count = 0;
-                        let resources_count = 0;
-
-                        for (let i = 0; i < data.length; i++) {
-                            if (data[i].b_companysectorval === 1) {
-                                agriculture_count++;
-                            }
-                            if (data[i].b_companysectorval === 2) {
-                                industrial_count++;
-                            }
-                            if (data[i].b_companysectorval === 3) {
-                                resources_count++;
-                            }
-
-                        }
-                        this.pieChartData = [agriculture_count, industrial_count, resources_count];
-                    },
-                    error => {
-                    });
+            this.getBusinessList(this.u_id);
         }
     }
-
-    getFreezeFlag(u_id: any) {
-        this.userService.getFreezeFlag(u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.freezedflag = data.u_freezedflag;
-                    if (this.freezedflag === 1) {
-                        this.showActions = false;
-                    } else {
-                        this.showActions = true;
-                    }
-
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
-                });
-    }
-
-    getArticleList_Admin() {
-        this.newsfeedService.getArticleList_Admin(this.u_accounttype, this.u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.rowData_admin = data;
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
-                });
-    }
-
-    getArticleList_User() {
-        this.newsfeedService.getArticleList_User(this.u_accounttype, this.u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.rowData_user = data;
-                },
-                error => {
-                    console.log('error', error);
-                });
-    }
-
-    ngAfterViewInit() {
-        //  this.getPlaceAutocomplete();
-    }
-
     viewMap() {
         console.log('address', this.address);
         this.businessService.getGeometry(this.address)
             .pipe(first())
             .subscribe(
-                data => {
+                 data => {
                     this.lat = 37.0551565;
                     this.lng = -95.6726939;
                 },
                 error => {
                 });
     }
-
-
-    onSelectionAdminChanged(event: any) {
-        console.log(event.id);
-        this.router.navigate(['pages/detailArticle'], {
-            queryParams: {
-                selectArticleid: event.id,
-                articleUsertype: 'admin'
-            }
-        });
-        // this.router.navigate(['detailArticle'], {
-        //     queryParams: {
-        //         selectArticleid: event.api.getSelectedRows()[0].id,
-        //         articleUsertype: 'admin'
-        //     }
-        // });
+    getBusinessList(userId) {
+        this.businessService.getBusinessList(userId)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.businessData = data;
+                    let businessArray = [];
+                    for (let i = 0; i < this.businessData.length; i++) {
+                        const businessValue = this.businessData[i].business.split(',');
+                        businessArray = businessArray.concat(businessValue);
+                    }
+                    const businessArrayName = businessArray.filter((v, i, a) => a.indexOf(v) === i);
+                    for (let j = 0; j < businessArrayName.length; j++) {
+                        this.businessList[j + 1] = [businessArrayName[j], 'treeMap', 0, businessArrayName.length - j - 1];
+                        for (let i = 0; i < businessArray.length; i++) {
+                            if (businessArrayName[j] === businessArray[i]) {
+                                this.businessList[j + 1][2] = Number(this.businessList[j + 1][2]) + 1;
+                            }
+                        }
+                    }
+                    let tenureArray = [];
+                    let goalArray = [];
+                    for (let j = 0; j < this.businessData.length; j++) {
+                        tenureArray = tenureArray.concat(this.businessData[j].tenure);
+                        const goalValue = this.businessData[j].goal.split(',');
+                        goalArray = goalArray.concat(goalValue);
+                        this.tableData[j] = {
+                            'no': this.businessData[j].no, 'name': this.businessData[j].name, 'location': this.businessData[j].country, 'address': '12'
+                        };
+                    }
+                    const tenureName = tenureArray.filter((v, i, a) => a.indexOf(v) === i);
+                    for (let j = 0; j < tenureName.length; j++) {
+                        this.tenureList[j] = [tenureName[j], 0];
+                        for (let i = 0; i < this.businessData.length; i++) {
+                            if (tenureName[j] === this.businessData[i].tenure) {
+                                this.tenureList[j][1] = Number(this.tenureList[j][1]) + 1;
+                            }
+                        }
+                    }
+                    const goalArrayName = goalArray.filter((v, i, a) => a.indexOf(v) === i);
+                    for (let j = 0; j < goalArrayName.length; j++) {
+                        this.goalList[j] = [goalArrayName[j], 0];
+                        for (let i = 0; i < goalArray.length; i++) {
+                            if (goalArrayName[j] === goalArray[i]) {
+                                this.goalList[j][1] = Number(this.goalList[j][1]) + 1;
+                            }
+                        }
+                    }
+                    this.getTasks();
+                },
+                error => {
+                    console.log('error', error);
+                });
+    }
+    getTasks() {
+        const data = this.tableData;
+        this.dataSource = new MatTableDataSource<any>(data);
+        this.dataSource.paginator = this.paginator;
+        this.tasks = data;
+        this.totalSize = this.tasks.length;
+        this.iterator();
     }
 
-    onSelectionUserChanged(event: any) {
-        this.router.navigate(['pages/detailArticle'], {
-            queryParams: {
-                selectArticleid: event.api.getSelectedRows()[0].id,
-                articleUsertype: 'user'
-            }
-        });
+    handlePage(event?: PageEvent) {
+        this.currentPage = event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.iterator();
     }
 
+    private iterator() {
+        const end = (this.currentPage + 1) * this.pageSize;
+        const start = this.currentPage * this.pageSize;
+        const part = this.tasks.slice(start, end);
+        this.dataSource = part;
+    }
 }

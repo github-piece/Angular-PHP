@@ -1,13 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Breakpoints, BreakpointObserver} from '@angular/cdk/layout';
-import {first} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {NewsfeedService} from '../../_services/newsfeed/newsfeed.service';
-import {CatalogueService} from '../../_services/catalogue/catalogue.service';
-import {UserService} from '../../_services/user/user.service';
-
+import {first} from 'rxjs/operators';
+import {URL_SERVICIOS} from '../../../config/url.servicios';
+import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
 
 @Component({
     selector: 'app-newsfeeddashboard',
@@ -15,184 +11,77 @@ import {UserService} from '../../_services/user/user.service';
     styleUrls: ['./newsfeeddashboard.component.scss']
 })
 export class NewsfeeddashboardComponent implements OnInit {
-    /** Based on the screen size, switch from standard to one column per row */
-
-    public doughnutChartLabels = ['Agriculture', 'Industrial', 'Resources'];
-    public doughnutChartData = [0, 0, 0];
-    public doughnutChartType = 'doughnut';
-
-    cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-        map(({matches}) => {
-            if (matches) {
-                return [
-                    {title: 'Newsfeed', cols: 3, rows: 1, showchart: false},
-                    {title: 'Market News', cols: 2, rows: 1, showchart: false},
-                    {title: 'Website Audience', cols: 1, rows: 1, showchart: true},
-                    {title: 'Market Split', cols: 2, rows: 1, showchart: true},
-                    {title: 'Website Audience', cols: 1, rows: 1, showchart: true},
-                ];
-            }
-
-            return [
-                {title: 'Newsfeed', cols: 3, rows: 1, showchart: false, showoption: 'admin_table'},
-                {title: 'Market News', cols: 2, rows: 1, showchart: false, showoption: 'user_table'},
-                {title: 'Website Audience', cols: 1, rows: 1, showchart: true, showoption: 'chart1'},
-                {title: 'Market Split', cols: 2, rows: 1, showchart: false, showoption: ''},
-                {title: 'Website Audience', cols: 1, rows: 1, showchart: true, showoption: 'chart2'},
-            ];
-
-        })
-    );
-
-    displayedColumns: string[] = ['no', 'u_name', 'headline', 'article_createdate'];
-    rowData = [];
-    rowData_admin = []; // datas for userlist
-    rowData_user = [];  // datas for userlist
-
     showActions = false;
-    u_accounttype: any;
-    u_id: any;
-    freezedflag: any;
-    private rowSelection;
+    userId: any;
+    userType: any;
+    articles = [];
+    thisArticle: any;
 
-    constructor(private breakpointObserver: BreakpointObserver,
-                private authenticationService: AuthenticationService,
-                private newsfeedService: NewsfeedService,
-                private router: Router,
-                private catalogueService: CatalogueService,
-                private userService: UserService) {
+    dataSource: any;
+    tasks: any[];
+    pageSize = 6;
+    currentPage = 0;
+    totalSize = 0;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+    constructor(
+        private authenticationService: AuthenticationService,
+        private newsfeedService: NewsfeedService,
+    ) {
     }
 
-    ngOnInit() {
-        if (this.authenticationService.currentUserSubject.value == null) {   // if user didnt auth
+    ngOnInit(): void {
+        if (this.authenticationService.currentUserSubject.value == null) {
             this.showActions = false;
-            return;
         } else {
             this.showActions = true;
+            this.userId = this.authenticationService.currentUserSubject.value.u_id;
+            this.userType = this.authenticationService.currentUserSubject.value.u_accounttype;
+            this.getArticleList(this.userId, this.userType);
         }
+    }
 
-        this.u_id = this.authenticationService.currentUserSubject.value.u_id;
-        this.u_accounttype = this.authenticationService.currentUserSubject.value.u_accounttype;
-        this.getFreezeFlag(this.u_id);
-        this.rowSelection = 'single';
-
-        this.catalogueService.getBusinessList(this.u_id)
+    getArticleList(id, type) {
+        this.newsfeedService.getArticleList(type, id)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.rowData = data['users'];
-
-                    let agriculture_count = 0;
-                    let industrial_count = 0;
-                    let resources_count = 0;
-
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].b_companysectorval === 1) {
-                            agriculture_count++;
-                        }
-                        if (data[i].b_companysectorval === 2) {
-                            industrial_count++;
-                        }
-                        if (data[i].b_companysectorval === 3) {
-                            resources_count++;
-                        }
-
+                    this.articles = data;
+                    for (let i = 0; i < this.articles.length; i++) {
+                        this.articles[i].imgurl1 = `${URL_SERVICIOS}/uploaded/` + this.articles[i].imgurl1;
+                        this.articles[i].imgurl2 = `${URL_SERVICIOS}/uploaded/` + this.articles[i].imgurl2;
                     }
-                    this.doughnutChartData = [agriculture_count, industrial_count, resources_count];
+                    this.thisArticle = this.articles[0];
+                    this.getTasks();
                 },
                 error => {
                 });
-
-        this.u_accounttype = this.authenticationService.currentUserSubject.value.u_accounttype;
-        this.getArticleList();
-        this.getArticleList_Admin();
-        this.getArticleList_User();
-
+    }
+    viewArticle(id) {
+        const thisArticle = this.articles.filter(d => d.id === id);
+        this.thisArticle = thisArticle[0];
+    }
+    getTasks() {
+        // Replace with HTTP call
+        const data = this.articles;
+        this.dataSource = new MatTableDataSource<any>(data);
+        this.dataSource.paginator = this.paginator;
+        this.tasks = data;
+        this.totalSize = this.tasks.length;
+        this.iterator();
     }
 
-    getArticleList() {
-        this.newsfeedService.getArticleList(this.u_accounttype, this.u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.rowData = data;
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
-                });
+    handlePage(event?: PageEvent) {
+        this.currentPage = event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.iterator();
     }
 
-    getArticleList_Admin() {
-        this.newsfeedService.getArticleList_Admin(this.u_accounttype, this.u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.rowData_admin = data;
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
-                });
-    }
-
-    getArticleList_User() {
-        this.newsfeedService.getArticleList_User(this.u_accounttype, this.u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.rowData_user = data;
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
-                });
-    }
-
-    getFreezeFlag(u_id: any) {
-        this.userService.getFreezeFlag(u_id)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.freezedflag = data.u_freezedflag;
-                    if (this.freezedflag === 1) {
-                        this.showActions = false;
-                    } else {
-                        this.showActions = true;
-                    }
-
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
-                });
-    }
-
-    onSelectionChanged(event: any) {
-        this.router.navigate(['pages/detailArticle'], {
-            queryParams: {
-                selectArticleid: event.id,
-                articleUsertype: 'admin'
-            }
-        });
-    }
-
-    onSelectionAdminChanged(event: any) {
-        this.router.navigate(['pages/detailArticle'], {
-            queryParams: {
-                selectArticleid: event.id,
-                articleUsertype: 'admin'
-            }
-        });
-    }
-
-    onSelectionUserChanged(event: any) {
-        this.router.navigate(['pages/detailArticle'], {
-            queryParams: {
-                selectArticleid: event.id,
-                articleUsertype: 'user'
-            }
-        });
+    private iterator() {
+        const end = (this.currentPage + 1) * this.pageSize;
+        const start = this.currentPage * this.pageSize;
+        const part = this.tasks.slice(start, end);
+        this.dataSource = part;
     }
 }

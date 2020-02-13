@@ -35,14 +35,6 @@ export class UserpagedashboardComponent implements OnInit {
     );
     displayedColumns: string[] = ['no', 'u_name', 'u_email', 'u_createddate', 'u_active'];
     rowData = [];  // datas for userlist
-    columnDefs = [
-        {headerName: 'No', field: 'no', width: 50},
-        {headerName: 'User Name', field: 'u_name', width: 300},
-        {headerName: 'User Email', field: 'u_email', width: 300},
-        {headerName: 'Created Date', field: 'u_createddate', width: 250},
-        {headerName: 'Active / Inactive', field: 'u_active', width: 170}
-
-    ];
     private rowSelection;
     registerForm: FormGroup;
     addUserForm: FormGroup;

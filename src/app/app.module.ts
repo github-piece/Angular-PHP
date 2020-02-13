@@ -38,6 +38,7 @@ import { HeaderComponent } from './includes/header/header.component';
 import { FooterComponent } from './includes/footer/footer.component';
 import { ContactComponent } from './front/contact/contact.component';
 import { AboutComponent } from './front/about/about.component';
+import {GoogleChartsModule} from 'angular-google-charts';
 const config = new AuthServiceConfig([
     {
         id: GoogleLoginProvider.PROVIDER_ID,
@@ -91,6 +92,7 @@ export function provideConfig() {
         MatButtonModule,
         MatTooltipModule,
         MatListModule,
+        GoogleChartsModule.forRoot()
     ],
     bootstrap: [AppComponent],
     providers: [

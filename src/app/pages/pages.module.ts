@@ -51,6 +51,7 @@ import { TreeViewModule } from '@syncfusion/ej2-angular-navigations';
 import {SliderComponent} from './slider/slider.component';
 import {SliderItemDirective} from './slider/slider-item.directive';
 import { RadarChartComponent } from './radar-chart/radar-chart.component';
+import {GoogleChartsModule} from 'angular-google-charts';
 @NgModule({
         declarations: [
             PagesComponent,
@@ -110,7 +111,8 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component';
         AgGridModule.withComponents(null),
         BsDropdownModule.forRoot(),
         NgxIntlTelInputModule,
-        TreeViewModule
+        TreeViewModule,
+        GoogleChartsModule
     ],
         providers: [
             HowtoService,

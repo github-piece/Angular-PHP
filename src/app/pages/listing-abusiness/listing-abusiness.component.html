@@ -87,7 +87,7 @@
                 <div  class="col-sm-12">
                     <!--display normal items, for eg, required, or not.-->
                     <div  *ngFor="let i of rangeMain" class="col-sm-12">
-                    <!--common query -->
+                        <!--common query -->
                         <div *ngIf="rowData['col_'+i+'_header']" class="col-sm-12">
                             <div class="form-group form-group-vertical col-xs-12 col-sm-offset-1 col-sm-10 " [ngClass]="{ 'has-error': ((questionForm.get('col_'+i+'_header').invalid) && (questionForm.get('col_'+i+'_header').touched)) }">
                                 <!--question part-->
@@ -156,27 +156,27 @@
                                 </ng-template>
                                 <!--tag option-->
                                 <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('tag')" >
+                                    <div class="form-group">
                                         <div class="form-group">
-                                            <div class="form-group">
-                                                <div class="col-xs-12" >
-                                                    <mat-chip-list mdPrefix #chipListRegular>
-                                                        <mat-chip *ngFor="let chip of chips"
-                                                                  class="regular"
-                                                                  [selectable]="selectable"
-                                                                  [removable]="removable"
-                                                                  (removed)="removeTag(chip,'')" >
-                                                            {{ chip }}
-                                                            <i matChipRemove class="fa fa-times" *ngIf="removable"></i>
-                                                        </mat-chip>
-                                                        <input mdInput formControlName="col_{{i}}_header"
-                                                               [matChipInputFor]="chipListRegular"
-                                                               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                               [matChipInputAddOnBlur]="addOnBlur"
-                                                               (matChipInputTokenEnd)="addTag($event,'', '')" class='focus' />
-                                                    </mat-chip-list>
-                                                </div>
+                                            <div class="col-xs-12" >
+                                                <mat-chip-list mdPrefix #chipListRegular>
+                                                    <mat-chip *ngFor="let chip of chips"
+                                                              class="regular"
+                                                              [selectable]="selectable"
+                                                              [removable]="removable"
+                                                              (removed)="removeTag(chip,'')" >
+                                                        {{ chip }}
+                                                        <i matChipRemove class="fa fa-times" *ngIf="removable"></i>
+                                                    </mat-chip>
+                                                    <input mdInput formControlName="col_{{i}}_header"
+                                                           [matChipInputFor]="chipListRegular"
+                                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                           [matChipInputAddOnBlur]="addOnBlur"
+                                                           (matChipInputTokenEnd)="addTag($event,'', '')" class='focus' />
+                                                </mat-chip-list>
                                             </div>
                                         </div>
+                                    </div>
                                 </ng-template>
                                 <!--phone number option-->
                                 <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('phone')" >
@@ -267,11 +267,11 @@
                                             <mat-grid-list cols="3" rowHeight="40px">
                                                 <mat-grid-tile>{{x.stakeholder}}</mat-grid-tile>
                                                 <mat-grid-tile>
-                                                        <mat-select>
-                                                            <mat-option *ngFor="let ring of stakeholderRings"  (click)="getStakeholderRing(ring.ring,i+1)" value="{{ring.ring}}">
-                                                                {{ring.ring}}
-                                                            </mat-option>
-                                                        </mat-select>
+                                                    <mat-select>
+                                                        <mat-option *ngFor="let ring of stakeholderRings"  (click)="getStakeholderRing(ring.ring,i+1)" value="{{ring.ring}}">
+                                                            {{ring.ring}}
+                                                        </mat-option>
+                                                    </mat-select>
                                                 </mat-grid-tile>
                                             </mat-grid-list>
                                         </mat-list-option>
@@ -299,11 +299,11 @@
                                 </ng-template>
                                 <!--select goal from tbl_unsdg_database-->
                                 <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('tbl_unsdg_database')">
-                                        <mat-selection-list class="padding-top-60" [formControl]="questionForm.controls['col_'+i+'_header']">
-                                            <mat-list-option *ngFor="let x of goals;"  value="{{x.goal_name}}">
-                                                {{x.goal_name}}
-                                            </mat-list-option>
-                                        </mat-selection-list>
+                                    <mat-selection-list class="padding-top-60" [formControl]="questionForm.controls['col_'+i+'_header']">
+                                        <mat-list-option *ngFor="let x of goals;"  value="{{x.goal_name}}">
+                                            {{x.goal_name}}
+                                        </mat-list-option>
+                                    </mat-selection-list>
                                 </ng-template>
                                 <!--select asset from tbl_balance_sheet.-->
                                 <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('tbl_balance_sheet')">
@@ -373,22 +373,22 @@
                                 </ng-template>
                                 <!--select stakeholder scoring from tbl_stakeholder_scoring-->
                                 <!--<ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('stakeholderscoring_ring')">-->
-                                    <!--<label class="form-label">Please select one of these items.-->
-                                        <!--<mat-select formControlName="col_{{i}}_header" class="form-control">-->
-                                            <!--<mat-option *ngFor="let x of stakeholderRings; let i = index; " value="{{x.ring}}" (click)="explain_content(i,'')">-->
-                                                <!--{{x.ring}}-->
-                                            <!--</mat-option>-->
-                                        <!--</mat-select>-->
-                                    <!--</label>-->
-                                    <!--<mat-list >-->
-                                        <!--<ng-container *ngFor="let x of stakeholderRings; let i = index;">-->
-                                            <!--<ng-container *ngIf="(explain_index == i)&&(this.click_flag == undefined)">-->
-                                                <!--<hr>-->
-                                                 <!-- - Ring Description.-->
-                                                <!--<p>{{x.ring_description}}</p>-->
-                                            <!--</ng-container>-->
-                                        <!--</ng-container>-->
-                                    <!--</mat-list>-->
+                                <!--<label class="form-label">Please select one of these items.-->
+                                <!--<mat-select formControlName="col_{{i}}_header" class="form-control">-->
+                                <!--<mat-option *ngFor="let x of stakeholderRings; let i = index; " value="{{x.ring}}" (click)="explain_content(i,'')">-->
+                                <!--{{x.ring}}-->
+                                <!--</mat-option>-->
+                                <!--</mat-select>-->
+                                <!--</label>-->
+                                <!--<mat-list >-->
+                                <!--<ng-container *ngFor="let x of stakeholderRings; let i = index;">-->
+                                <!--<ng-container *ngIf="(explain_index == i)&&(this.click_flag == undefined)">-->
+                                <!--<hr>-->
+                                <!-- - Ring Description.-->
+                                <!--<p>{{x.ring_description}}</p>-->
+                                <!--</ng-container>-->
+                                <!--</ng-container>-->
+                                <!--</mat-list>-->
                                 <!--</ng-template>-->
                                 <!--when rowData['col_'+i] includes selectionanddetails, not display, but only hr tag-->
                                 <ng-template [ngIf]="rowData['col_'+i].toLowerCase().includes('selectionanddetails')">
@@ -409,11 +409,15 @@
                                         </mat-select>
                                     </label>
                                 </ng-template>
+                                <!--google auto complete option-->
+                                <ng-template [ngIf]="rowData['col_'+i].toLowerCase().includes('google')">
+                                    <input ngx-google-places-autocomplete  placeholder="Enter Address" formControlName="col_{{i}}_header" #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event, i)" class="form-control"/>
+                                </ng-template>
                                 <!--input default option-->
                                 <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the province'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
                                     <input class="form-control" type="text" formControlName="col_{{i}}_header" placeholder="Enter your answer">
                                 </ng-template>
-                            <!--start from tbl_bee_quiz    -->
+                                <!--start from tbl_bee_quiz    -->
                                 <!--my business option-->
                                 <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('my business'))" >
                                     <label class="form-label">Please select one of these items.
@@ -655,14 +659,14 @@
                                             </label>
                                             <mat-list >
                                                 <ng-container *ngFor="let x of balances; let i = index;">
-                                                        <ng-container *ngIf="(explain_index == i)&&(click_flag == undefined)">
-                                                            <hr>
-                                                            - Balance Sheet Example.
-                                                            <p>{{x.balance_sheet_example}}</p>
-                                                            <hr>
-                                                            - Balance Type.
-                                                            <p>{{x.item_type}}</p>
-                                                        </ng-container>
+                                                    <ng-container *ngIf="(explain_index == i)&&(click_flag == undefined)">
+                                                        <hr>
+                                                        - Balance Sheet Example.
+                                                        <p>{{x.balance_sheet_example}}</p>
+                                                        <hr>
+                                                        - Balance Type.
+                                                        <p>{{x.item_type}}</p>
+                                                    </ng-container>
                                                 </ng-container>
                                             </mat-list>
                                         </ng-template>

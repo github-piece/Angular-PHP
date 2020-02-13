@@ -12,8 +12,8 @@ export class CatalogueService {
     }
 
     getBusinessList(userid: string) {
-        let action = 'read';
-        return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`, {userid,action})
+        const action = 'read';
+        return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`, {userid, action})
             .pipe(map(business_info => {
                 return business_info;
             }));
@@ -25,11 +25,11 @@ export class CatalogueService {
                 return catalogue;
             }));
     }
-    //Call when the current user click finish button.
-    setBusinessList(userid:string,questionTypeID:string){
-        let action = 'create';
-        return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`,{userid,questionTypeID,action})
-            .pipe(map(result=>{
+    // Call when the current user click finish button.
+    setBusinessList(userid: string, questionTypeID: string) {
+        const action = 'create';
+        return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`, {userid, questionTypeID, action})
+            .pipe(map(result => {
                 return result;
             }));
     }
