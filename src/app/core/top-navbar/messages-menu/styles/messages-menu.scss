@@ -52,12 +52,20 @@
       margin-right: 20px;
 
       .message-user {
-        color: #263238;
+        color: #1b5e20;
         font-size: 14px;
         font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 21px;
         letter-spacing: -0.05px;
+        span {
+          color: #263238;
+          font-size: 14px;
+          font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+          font-weight: 400;
+          line-height: 21px;
+          letter-spacing: -0.05px;
+        }
       }
 
       .message-title {

@@ -1,13 +1,13 @@
 <button type="button" class="btn-notifications" mat-icon-button [matMenuTriggerFor]="menu" (click)="closeNotificationsMenu()">
-  <i *ngIf="!messages.length" class="fa fa-envelope-o" style="color: white"></i>
-  <i *ngIf="messages.length" class="fa fa-envelope" style="color: white"></i>
-  <span *ngIf="messages.length" class="notifications-count">{{ messages.length }}</span>
+  <i *ngIf="!messages[0]?.count" class="fa fa-envelope" style="color: white"></i>
+  <i *ngIf="messages[0]?.count" class="fa fa-envelope" style="color: white"></i>
+  <span *ngIf="messages[0]?.count" class="notifications-count">{{ messages[0]?.count }}</span>
 </button>
 <!-- <mat-menu #menu="matMenu" class="messages"> -->
 <mat-menu #menu="matMenu" class="messages">
-  <mat-card-header>
+  <div class="mat-card-header" style="padding: 16px">
     {{ messages.length }} Messages
-  </mat-card-header>
+  </div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-xs-12">
@@ -15,19 +15,18 @@
       </div>
     </div>
     <ng-container *ngFor="let message of messages">
-      <div class="row message" [ngClass]="{'message-new': message.time === 'JUST NOW'}">
+      <div class="row message" (click)="check(message.id)" routerLink="/pages/catalogue">
         <div class="col-xs-12 message-wrapper">
-          <img class="message-image" [src]="message.image" alt="PIC">
+          <img class="message-image" [src]="message.avatar" alt="PIC">
           <div class="message-content">
-            <p class="message-user">{{ message.username }}</p>
+            <p class="message-user">
+              {{ message.businessName }} <span style="color: #263238">created by</span> {{ message.businessUser }}
+            </p>
             <p class="message-text">{{ message.time }}</p>
-<!--            <p class="message-title">{{ message.title }}</p>-->
-<!--            <p class="message-text">{{ message.text }}</p>-->
           </div>
           <span class="arrow-icon">
             <i class="far fa-long-arrow-right" style="font-weight: 300"></i>
           </span>
-<!--          <span class="message-time" [ngClass]="{'message-time-now': message.time === 'JUST NOW'}">{{ message.time }}</span>-->
         </div>
       </div>
       <div class="row">

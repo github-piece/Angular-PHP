@@ -15,8 +15,8 @@ export class NewsfeeddashboardComponent implements OnInit {
     userId: any;
     userType: any;
     articles = [];
-    thisArticle: any;
-
+    thisArticle = [];
+    avatar = 'mse/uploaded/avatar/default.png';
     dataSource: any;
     tasks: any[];
     pageSize = 6;

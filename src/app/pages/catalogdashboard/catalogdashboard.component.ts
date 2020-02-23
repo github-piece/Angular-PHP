@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
-import {first, map} from 'rxjs/operators';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {first} from 'rxjs/operators';
+import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatDialog} from '@angular/material';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {CatalogueService} from '../../_services/catalogue/catalogue.service';
@@ -10,35 +8,6 @@ import {BuysellService} from '../../_services/buysell/buysell.service';
 import {ModalComponent} from '../modal/modal.component';
 import {ChartType, RadialChartOptions} from 'chart.js';
 import {Label} from 'ng2-charts';
-
-interface BusinessNode {
-    name: string;
-    children?: BusinessNode[];
-}
-
-const TREE_DATA: BusinessNode[] = [
-    {
-        name: 'Fruit',
-        children: [
-            {name: 'Business Summary'},
-            {name: 'Financial Summary'},
-            {name: 'Sustainability Measures'},
-            {name: 'Scoring Summary'},
-            {name: 'Funding Channels'},
-            {name: 'Badges'}
-        ]
-    }, {
-        name: 'Vegetables',
-        children: [
-            {name: 'Business Summary'},
-            {name: 'Financial Summary'},
-            {name: 'Sustainability Measures'},
-            {name: 'Scoring Summary'},
-            {name: 'Funding Channels'},
-            {name: 'Badges'}
-        ]
-    },
-];
 
 interface ExampleFlatNode {
     expandable: boolean;
@@ -53,37 +22,21 @@ interface ExampleFlatNode {
 })
 export class CatalogdashboardComponent {
 
-
     showActions = false;
     userid: any;
     businessInfo: any;
-    /** Based on the screen size, switch from standard to one column per row */
-    cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-        map(({matches}) => {
-            if (matches) {
-                return [
-                    {title: 'Card 1', cols: 1, rows: 1},
-                    {title: 'Card 2', cols: 1, rows: 1},
-                    {title: 'Card 3', cols: 1, rows: 1},
-                    {title: 'Card 4', cols: 1, rows: 1}
-                ];
-            }
-
-            return [
-                {title: 'Card 1', cols: 2, rows: 1},
-                {title: 'Card 2', cols: 1, rows: 1},
-                {title: 'Card 3', cols: 1, rows: 2},
-                {title: 'Card 4', cols: 1, rows: 1}
-            ];
-        })
-    );
-
+    amount = [];
     // Business information
     businessUser: any = [];
     profile: any;
     explain_index: any = 0;
     click_flag: any = 0;
     mainBusiness = [];
+    showBusiness = [];
+    nameSearch = '';
+    countrySearch = '';
+    goalSearch = '';
+    businessMatch = true;
     unSdg = [];
     interactions = [];
     stakeholders = [];
@@ -92,6 +45,7 @@ export class CatalogdashboardComponent {
     stakeholdersButton4 = [];
     stakeholdersConsideration = [];
     stakeholdersMap = [];
+    type = [];
     radarChartData: any = [{
         data: []
     }];
@@ -101,22 +55,9 @@ export class CatalogdashboardComponent {
     radarChartLabels: Label[] = [];
     radarChartType: ChartType = 'radar';
     scoring = [];
-
-    private _transformer = (node: BusinessNode, level: number) => {
-        return {
-            expandable: !!node.children && node.children.length > 0,
-            name: node.name,
-            level: level,
-        };
-    }
-
-    treeControl = new FlatTreeControl<ExampleFlatNode>(
-        node => node.level, node => node.expandable);
-
-    treeFlattener = new MatTreeFlattener(
-        this._transformer, node => node.level, node => node.expandable, node => node.children);
-
-    dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    countryList = [];
+    goalList = [];
+    historyList: any;
 
     constructor(private breakpointObserver: BreakpointObserver,
                 private authenticationService: AuthenticationService,
@@ -124,7 +65,6 @@ export class CatalogdashboardComponent {
                 private buysellService: BuysellService,
                 public dialog: MatDialog,
     ) {
-        this.dataSource.data = TREE_DATA;
         if (this.authenticationService.currentUserSubject.value == null) {
             // if user didnt login
             this.showActions = false;
@@ -143,9 +83,19 @@ export class CatalogdashboardComponent {
             .pipe(first())
             .subscribe(
                 business_info => {
-                    // All info including answers and users.
                     this.businessInfo = business_info;
                     this.mainBusiness = this.businessInfo['mainBusiness'];
+                    for (let i = 0; i < this.mainBusiness.length; i++) {
+                        for (let j = 0; j < this.businessInfo.businessUser.length; j++) {
+                            if (this.mainBusiness[i].u_id === this.businessInfo.businessUser[j].u_id) {
+                                this.mainBusiness[i].businessUser = this.businessInfo.businessUser[j].u_name;
+                            }
+                        }
+                    }
+                    this.getHistory();
+                    this.countryList = this.businessInfo.countryList;
+                    this.goalList = this.businessInfo.goalList;
+                    this.buysellService.fundTypes = this.businessInfo.instruments;
                     this.unSdg = this.businessInfo['unSdg'];
                     this.interactions = this.businessInfo['interactions'];
                     this.stakeholders = this.businessInfo['stakeholders'];
@@ -178,6 +128,41 @@ export class CatalogdashboardComponent {
                 error => {
                 });
     }
+    getHistory() {
+        this.historyList = [];
+        this.buysellService.getBuyHistory(this.userid)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.historyList = data;
+                    let k = 0;
+                    for (let j = 0; j < this.mainBusiness.length; j++) {
+                        const value = this.mainBusiness[j]['how much they\'re raising'];
+                        for (let i = 0; i < this.historyList.length; i++) {
+                            // console.log(this.historyList[i].business_id);
+                            if (this.mainBusiness[j].business_id === this.historyList[i].business_id) {
+                                const length = this.mainBusiness[j]['how much they\'re raising'].length;
+                                const symbol = this.mainBusiness[j]['how much they\'re raising'].slice(length - 3, length);
+                                // tslint:disable-next-line:max-line-length radix
+                                this.mainBusiness[j]['how much they\'re raising'] = parseFloat(this.mainBusiness[j]['how much they\'re raising']) - this.historyList[i].amount;
+                                // tslint:disable-next-line:max-line-length
+                                this.mainBusiness[j]['how much they\'re raising'] = this.mainBusiness[j]['how much they\'re raising'] + symbol;
+                            }
+                        }
+                        const remain = this.mainBusiness[j]['how much they\'re raising'].slice(0, this.mainBusiness[j]['how much they\'re raising'].length - 3);
+                        if (remain !== '0') {
+                            this.showBusiness[k] = this.mainBusiness[j];
+                            this.amount[k] = value;
+                            k++;
+                        }
+                    }
+                    this.mainBusiness = [];
+                    this.mainBusiness = this.showBusiness;
+                },
+                error => {
+                }
+            );
+    }
     buy(business_id, business) {
         this.buysellService.business_id = business_id;
         this.buysellService.business_remain = business['how much they\'re raising'];
@@ -185,8 +170,8 @@ export class CatalogdashboardComponent {
         this.buysellService.action = 'buy';
         this.buysellService.business_name = business['business name'];
         this.buysellService.commission = this.businessInfo['commission'][0];
+        this.buysellService.business_id = business['business_id'];
         this.openDialog();
-
     }
 
     sell(business_id) {
@@ -194,16 +179,16 @@ export class CatalogdashboardComponent {
         this.buysellService.modal_content = 'ARE you sure want to sell more?';
         this.buysellService.action = 'sell';
         this.openDialog();
-
     }
 
     openDialog(): void {
         const dialogRef = this.dialog.open(ModalComponent, {
-            width: '300px'
-
+            width: '600px',
+            data: {fundTypes: this.type}
         });
 
         dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
             this.getBusinessList();
         });
     }
@@ -219,6 +204,34 @@ export class CatalogdashboardComponent {
                 this.click_flag = undefined;
             }
         }
+    }
+    businessSearch(businessName, countryName, goalName) {
+        this.nameSearch = businessName;
+        this.countrySearch = countryName;
+        this.goalSearch = goalName;
+        const searchBusiness = [];
+        let j = 0;
+        for (let i = 0; i < this.mainBusiness.length; i++) {
+            if (this.nameSearch === '' || this.mainBusiness[i]['business name'] === this.nameSearch) {
+                if (this.countrySearch === '' || this.mainBusiness[i]['country'].includes(this.countrySearch)) {
+                    if (this.goalSearch === '' || this.mainBusiness[i]['goal name'].includes(this.countrySearch)) {
+                        searchBusiness[j] = this.mainBusiness[i];
+                        j++;
+                    }
+                }
+            }
+        }
+        if ( j === 0) {
+            this.businessMatch = false;
+        }
+        this.showBusiness = searchBusiness;
+    }
+    showAllBusiness() {
+        this.nameSearch = '';
+        this.countrySearch = '';
+        this.goalSearch = '';
+        this.showBusiness = this.mainBusiness;
+        this.businessMatch = true;
     }
 }
 

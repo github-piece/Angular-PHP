@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {URL_SERVICIOS} from '../../../../config/url.servicios';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class NotificationsMenuService {
+  constructor(private http: HttpClient) {
+  }
   sidenav: any;
 
   notifications = [
@@ -48,4 +53,5 @@ export class NotificationsMenuService {
       setTimeout(() => resolve (this.notifications), 1000);
     });
   }
+
 }

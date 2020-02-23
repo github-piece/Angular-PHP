@@ -1,40 +1,92 @@
 
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <form [formGroup]="payFastForm" *ngIf="!submitted" style="padding-top: 1.25em">
-            <div class="modal-header">
-                <h5 class="modal-title">{{modal_content}}</h5>
-                <button type="button" class="close" (click)="onNoClick()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <form [formGroup]="payFastForm" (ngSubmit)="getSignature()" *ngIf="formShow">
+        <mat-card>
+            <div class="mat-card-header">
+                {{modal_content}}
             </div>
-            <div class="modal-body">
-                <div class="modal-subtitle">Business Name to Buy : {{item_name}}</div>
-                <mat-form-field style="padding-top: 1.25em">
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <div class="mat-card-header" style="margin-top: 1.25em">Business Name to Buy : {{item_name}}</div>
+                <mat-form-field style="margin-bottom: 16px">
                     <mat-label>Amount to pay</mat-label>
                     <input type="number" matInput formControlName="amount" placeholder="Please Insert Amount">
                     <span matSuffix>{{curSymbol}}</span>
-                    <mat-error *ngIf="fail_sell">
-                        Buy amount have to less than Remaining amount!
+                    <mat-error *ngIf="hasError('amount', 'required')">
+                        Please insert this field.
+                    </mat-error>
+                    <mat-error *ngIf="hasError('amount', 'max') || hasError('amount', 'min')">
+                        Buy amount have to be between 1{{curSymbol}}~{{max_amount}}{{curSymbol}}!
                     </mat-error>
                 </mat-form-field>
+                <mat-form-field style="margin-bottom: 16px">
+                    <mat-label>Choose the method</mat-label>
+                    <mat-select multiple formControlName="fundType">
+                        <mat-option *ngFor="let type of fundTypes" [value]="type['instrument']">
+                            {{type['instrument']}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="hasError('fundType', 'required')">
+                        Please choose your method.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-bottom: 16px">
+                    <mat-label>Interest Rate</mat-label>
+                    <mat-select formControlName="rate">
+                        <mat-option value="0%~2%">0%~2%</mat-option>
+                        <mat-option value="2%~5%">2%~5%</mat-option>
+                        <mat-option value="5%~10%">5%~10%</mat-option>
+                        <mat-option value="10%~15%">10%~15%</mat-option>
+                        <mat-option value="15%~20%">15%~20%</mat-option>
+                        <mat-option value="20%~30%">20%~30%</mat-option>
+                        <mat-option value="30%~">30%~</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="hasError('rate', 'required')">
+                        Please insert your rate
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-bottom: 16px">
+                    <mat-label>Reporting Frequency</mat-label>
+                    <mat-select formControlName="frequency">
+                        <mat-option value="Weekly">Weekly</mat-option>
+                        <mat-option value="Bi-Weekly">Bi-Weekly</mat-option>
+                        <mat-option value="Monthly">Monthly</mat-option>
+                        <mat-option value="Quarterly">Quarterly</mat-option>
+                        <mat-option value="Bi-Annually">Bi-Annually</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="hasError('frequency', 'required')">
+                        Please Choose your Frequency
+                    </mat-error>
+                </mat-form-field>
+                <div class="checkbox">
+                    <mat-checkbox></mat-checkbox>
+                    <div class="p-checkbox">I agree<span (click)="showPart()">&nbsp;Terms&nbsp;</span>and<span (click)="showPart()">&nbsp;Policy&nbsp;</span></div>
+                </div>
+                <div *ngIf="onShow" class="checkbox">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nos
+                    trud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Dui
+                    s aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu f
+                    ugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum.
+                </div>
                 <div class="padding-top-20" style="text-align:center" *ngIf="loading">
                     <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                 </div>
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions style="padding-bottom: 36px">
+                <button type="submit" mat-raised-button class="theme-btn float-right mr-3">OK</button>
+                <button type="button" mat-flat-button class="float-right" (click)="onNoClick()">Cancel</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+    <form ngNoForm [action]="url" method="post" *ngIf="!formShow" target="_blank">
+        <mat-card>
+            <div class="mat-card-header">
+                {{modal_content}}
             </div>
-            <div class="modal-footer">
-                <button mat-raised-button class="btn btn-success" (click)="getSignature()">OK</button>
-                <button mat-raised-button class="btn btn-danger" (click)="onNoClick()">Cancel</button>
-            </div>
-        </form>
-        <form ngNoForm [action]="url" method="post" *ngIf="submitted" target="_blank">
-            <div class="modal-header">
-                <h5 class="modal-title">{{modal_content}}</h5>
-                <button type="button" class="close" (click)="onNoClick()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding: 16px;">
+            <mat-divider></mat-divider>
+            <mat-card-content>
                 <table class="table_responsive" style="margin-top: 0">
                     <tr>
                         <th style="text-align: center">Amount</th>
@@ -57,24 +109,14 @@
                 <input type="hidden" name="item_name" [value]="item_name">
                 <input type="hidden" name="payment_method" value="{{commission['payment_method']}}">
                 <input type="hidden" name="signature" [value]="signature">
-                <div *ngIf="fail_sell" style="font-size:10pt; color:red;">Buy amount have to less than Remaining amount!</div>
                 <div class="padding-top-20" style="text-align:center" *ngIf="loading">
                     <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" mat-raised-button class="btn btn-success">Check out</button>
-                <button type="button" mat-raised-button class="btn btn-danger" (click)="onNoClick()">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions style="padding-bottom: 36px">
+                <button type="submit" mat-raised-button class="theme-btn float-right mr-3" (click)="onCheckOut()">Check out</button>
+                <button type="button" mat-raised-button class="float-right" (click)="onNoClick()">Cancel</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>

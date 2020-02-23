@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {URL_SERVICIOS} from '../../../config/url.servicios';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,17 @@ export class BuysellService {
   public modal_content: any;
   public action: any;
   public commission: any;
+  public fundTypes = [];
   constructor(private http: HttpClient) { }
 
-  getHistory(userid, action) {
+  getBuyHistory(userid) {
+    const action = 'get';
+    const url = `${URL_SERVICIOS}/buysell.php`;
+    return this.http.post(url, {userid, action});
+  }
+
+  getSellHistory(userid) {
+    const action = 'get_all';
     const url = `${URL_SERVICIOS}/buysell.php`;
     return this.http.post(url, {userid, action});
   }
@@ -26,10 +35,16 @@ export class BuysellService {
     return this.http.post(url, {userid, action});
   }
 
-  buy(business_id, amount, userid) {
+  setHistory(userId, businessId, balance, amount, fund, rate, frequency, merchant_id, merchant_key) {
+    const url = `${URL_SERVICIOS}/buysell.php`;
+    const action = 'set';
+    return this.http.post(url, {userId, businessId, balance, amount, fund, rate, frequency, merchant_id, merchant_key, action});
+  }
+
+  buy(userId, businessId, balance, amount, fund, rate, frequency) {
     const action = 'buy';
     const url = `${URL_SERVICIOS}/buysell.php`;
-    return this.http.post(url, {business_id, amount, userid, action});
+    return this.http.post(url, {userId, businessId, balance, amount, fund, rate, frequency, action});
   }
 
   sell(business_id, amount, userid) {

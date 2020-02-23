@@ -57,14 +57,14 @@
                         <mat-tab label="Image">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input #file1 formControlName="file1" id="file1" class="file-input-btn" type="file" accept='image/*' (change)="preview1($event.target.files)" style="margin-top: 30px;" [ngClass]="{ 'is-invalid': submitted && f.file1.errors }"/>
+                                    <input formControlName="file1" id="file1" class="file-input-btn" type="file" accept='image/*' (change)="preview1($event.target.files)" style="margin-top: 30px;" [ngClass]="{ 'is-invalid': submitted && f.file1.errors }"/>
                                     <label for="file1">Choose a file</label>
                                     <div *ngIf="showImage">
                                         <img [src]="imgURL1" height="200" *ngIf="imgURL1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <input #file2 type="file" formControlName="file2" id="file2" class="file-input-btn" accept='image/*' (change)="preview2($event.target.files)" style="margin-top: 30px;" [ngClass]="{ 'is-invalid': submitted && f.file2.errors }"/>
+                                    <input type="file" formControlName="file2" id="file2" class="file-input-btn" accept='image/*' (change)="preview2($event.target.files)" style="margin-top: 30px;" [ngClass]="{ 'is-invalid': submitted && f.file2.errors }"/>
                                     <label for="file2">Choose a file</label>
                                     <div *ngIf="showImage2">
                                         <img [src]="imgURL2" height="200" *ngIf="imgURL2">

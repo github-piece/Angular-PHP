@@ -66,7 +66,6 @@ export class HowtodashboardComponent implements OnInit {
         this.dataService.getBanners().then(snapshot => {
             this.imgList = [];
             this.imgList = snapshot;
-            console.log(this.imgList);
             this.imgList.push();
         });
     }

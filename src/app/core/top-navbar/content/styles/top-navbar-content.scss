@@ -60,11 +60,13 @@ app-top-navbar-content {
 
     .brand-wrapper {
       margin-left: 32px;
+      background: white;
+      border-radius: 50%;
     }
 
     .brand-logo {
-      height: 50px;
-      border-radius: 50%;
+      height: 48px;
+      padding: 8px;
     }
 
     .brand-name {

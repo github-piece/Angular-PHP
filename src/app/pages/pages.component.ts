@@ -1,6 +1,8 @@
 import {AfterContentInit, Component, Inject, OnInit, PLATFORM_ID, ViewChild} from '@angular/core';
 import {MessagesMenuService, NotificationsMenuService, SideMenuService} from '../core';
 import {isPlatformBrowser} from '@angular/common';
+import {AuthenticationService} from '../_services/authentication/authentication.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-pages',
@@ -22,16 +24,30 @@ export class PagesComponent implements OnInit, AfterContentInit {
         private sideMenuService: SideMenuService,
         private notificationsMenuService: NotificationsMenuService,
         private messagesMenuService: MessagesMenuService,
+        private authenticationService: AuthenticationService,
         @Inject(PLATFORM_ID) private platformId: Object
     ) {
         notificationsMenuService.getNotifications().then((notifications: any) => {
             this.notifications = notifications;
         });
-        messagesMenuService.getMessages().then((messages: any) => {
-            this.messages = messages;
-        });
+        // messagesMenuService.getMessages().then((messages: any) => {
+        //     this.messages = messages;
+        // });
     }
     ngOnInit() {
+        const userId = this.authenticationService.currentUserSubject.value.u_id;
+        this.messagesMenuService.getData(userId)
+            .pipe(first())
+            .subscribe(data => {
+                this.messages = data;
+                let count = 0;
+                for (let i = 0; i < this.messages.length; i++) {
+                    if (this.messages[i].status === '0') {
+                        count++;
+                    }
+                }
+                this.messages[0]['count'] = count;
+            });
         this.loading = false;
     }
 

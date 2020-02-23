@@ -15,7 +15,7 @@ import {AgGridModule} from 'ag-grid-angular/dist/aggrid.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
 import {
-    MatButtonModule,
+    MatButtonModule, MatCardModule,
     MatDividerModule,
     MatIconModule,
     MatListModule,
@@ -92,7 +92,8 @@ export function provideConfig() {
         MatButtonModule,
         MatTooltipModule,
         MatListModule,
-        GoogleChartsModule.forRoot()
+        GoogleChartsModule.forRoot(),
+        MatCardModule
     ],
     bootstrap: [AppComponent],
     providers: [

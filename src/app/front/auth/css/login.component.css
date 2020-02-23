@@ -112,15 +112,19 @@ a {
   margin: 1em 0 0;
 }
 .header-main {
-  max-width: 420px;
+  width: 420px;
   margin: 0 auto;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 999;
   padding: 3em 2em;
   background: rgba(255, 255, 255, 0.04);
   -webkit-box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
   box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
+
 }
 
 .sign-up {
@@ -332,21 +336,21 @@ h3 a {
 /*-- copyright --*/
 .copyright {
   padding: 2em 0;
-  text-align: center;
+  color: white;
+  padding-top: 84vh;
 }
-.copyright p {
-  font-size: 15px;
-  letter-spacing: 1px;
-  color: #ccc;
-  line-height: 1.8em;
+.copyright div {
+  color: white;
+  text-align: left;
+  margin-left: calc(50% - 180px);
 }
-.copyright p a{
-  color: #fff;
-  -webkit-transition: 0.5s all;
-  -moz-transition: 0.5s all;
-  -o-transition: 0.5s all;
-  -ms-transition: 0.5s all;
-  transition: 0.5s all;
+.copyright .header {
+  color: white;
+  text-align: left;
+  margin-left: calc(50% - 210px);
+}
+.copyright span {
+  color: #fbbc05;
 }
 /*-- //copyright --*/
 /*-- //main --*/

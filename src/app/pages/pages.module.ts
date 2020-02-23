@@ -52,6 +52,9 @@ import {SliderComponent} from './slider/slider.component';
 import {SliderItemDirective} from './slider/slider-item.directive';
 import { RadarChartComponent } from './radar-chart/radar-chart.component';
 import {GoogleChartsModule} from 'angular-google-charts';
+import { EditModalComponent } from './userModal/edit-modal/edit-modal.component';
+import { CreateModalComponent } from './userModal/create-modal/create-modal.component';
+
 @NgModule({
         declarations: [
             PagesComponent,
@@ -87,6 +90,8 @@ import {GoogleChartsModule} from 'angular-google-charts';
             SliderComponent,
             SliderItemDirective,
             RadarChartComponent,
+            EditModalComponent,
+            CreateModalComponent,
         ],
     imports: [
         PagesRoutingModule,
@@ -120,6 +125,8 @@ import {GoogleChartsModule} from 'angular-google-charts';
         entryComponents: [
             HowtodetailsComponent,
             AboutDetailsComponent,
+            EditModalComponent,
+            CreateModalComponent
         ]
     },
 )

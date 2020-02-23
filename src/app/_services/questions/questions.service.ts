@@ -15,7 +15,7 @@ export class QuestionsService {
         return true;
     }
 
-    read(userid, profile,action) {
+    read(userid, profile, action) {
         return this.http.post<any>(`${URL_SERVICIOS}/question.php`, {userid, profile, action})
             .pipe(map(questions => {
                 return questions;

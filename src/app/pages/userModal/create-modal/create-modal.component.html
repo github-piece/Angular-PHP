@@ -1,0 +1,72 @@
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+    <mat-card>
+        <div class="mat-card-header">
+            Add User to your Organization
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="profile-picture item-vertical-center">
+                    <img [src]="avatar" alt="photo" *ngIf="!uploadImageShow">
+                    <img [src]="userPhoto" alt="photo" *ngIf="uploadImageShow">
+                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)"/>
+                    <label for="file" class="mt-5">Upload Image</label>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <mat-form-field style="margin-bottom: 16px; margin-top: 16px">
+                    <mat-label>User Name</mat-label>
+                    <input matInput type="text" formControlName="userName">
+                    <mat-error *ngIf="submitted && f.userName.errors">
+                        <div *ngIf="f.userName.errors.required">
+                            User Name is required
+                        </div>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-bottom: 16px">
+                    <mat-label>User Email</mat-label>
+                    <input matInput type="email" formControlName="userEmail">
+                    <mat-error *ngIf="submitted && f.userEmail.errors">
+                        <div *ngIf="f.userEmail.errors.required">
+                            User Email is required
+                        </div>
+                        <div *ngIf="f.userEmail.errors.email">
+                            Email type is not correct!
+                        </div>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-bottom: 16px">
+                    <mat-label>User Password</mat-label>
+                    <input matInput type="password" formControlName="password">
+                    <mat-hint>Password must be at least 6 characters</mat-hint>
+                    <mat-error *ngIf="submitted && f.password.errors">
+                        <div *ngIf="f.password.errors.required">
+                            Password is required
+                        </div>
+                        <div *ngIf="f.password.errors.minlength">
+                            Password must be at least 6 characters
+                        </div>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-bottom: 16px">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput type="password" formControlName="confirmPassword">
+                    <mat-hint>Please type your password again!</mat-hint>
+                    <mat-error *ngIf="submitted && f.confirmPassword.errors">
+                        <div *ngIf="f.confirmPassword.errors.required">
+                            Confirm Password is required
+                        </div>
+                        <div *ngIf="f.confirmPassword.errors.mustMatch">
+                            Passwords must match
+                        </div>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-card-actions style="padding-bottom: 36px">
+            <button type="submit" mat-raised-button class="theme-btn float-right mr-2">Save</button>
+            <button type="button" mat-button class="float-right mr-4" (click)="close()">Cancel</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

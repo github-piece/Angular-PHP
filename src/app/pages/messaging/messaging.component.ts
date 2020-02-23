@@ -1,4 +1,4 @@
-import {Component, OnInit,ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
@@ -180,7 +180,6 @@ export class MessagingComponent implements OnInit {
     .pipe(first())
     .subscribe(
         data => {
-          console.log(data);
           this.freezedflag = data.u_freezedflag;
           if (this.freezedflag === 1) {
             this.showActions = false;
@@ -276,9 +275,6 @@ export class MessagingComponent implements OnInit {
     this.rowselect_headline = event.api.getSelectedRows()[0].headline;
     this.imgURL1 = 'http://localhost/mse/uploaded/' + event.api.getSelectedRows()[0].imgurl1;
     this.imgURL2 = 'http://localhost/mse/uploaded/' + event.api.getSelectedRows()[0].imgurl2;
-
-
-
   }
 }
 

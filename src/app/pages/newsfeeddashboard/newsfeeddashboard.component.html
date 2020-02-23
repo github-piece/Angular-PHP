@@ -5,6 +5,9 @@
     <div class="row">
         <div class="col-lg-4">
             <mat-card class="feed" *ngFor="let task of dataSource">
+                <td style="width: 100px">
+                    <img src="{{task.u_avatar}}" alt="userPhoto" style="border-radius: 50%">
+                </td>
                 <td style="width: 40%">
                     {{task.headline}}<br/>
                     <span>by</span> {{task.u_name}}

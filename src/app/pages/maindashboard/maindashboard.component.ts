@@ -101,15 +101,17 @@ export class MaindashboardComponent implements OnInit {
                         const goalValue = this.businessData[j].goal.split(',');
                         goalArray = goalArray.concat(goalValue);
                         this.tableData[j] = {
-                            'no': this.businessData[j].no, 'name': this.businessData[j].name, 'location': this.businessData[j].country, 'address': '12'
+                            'no': this.businessData[j].no, 'name': this.businessData[j].name, 'location': this.businessData[j].country, 'address': this.businessData[j].address
                         };
                     }
                     const tenureName = tenureArray.filter((v, i, a) => a.indexOf(v) === i);
                     for (let j = 0; j < tenureName.length; j++) {
-                        this.tenureList[j] = [tenureName[j], 0];
-                        for (let i = 0; i < this.businessData.length; i++) {
-                            if (tenureName[j] === this.businessData[i].tenure) {
-                                this.tenureList[j][1] = Number(this.tenureList[j][1]) + 1;
+                        if (tenureName[j] !== '') {
+                            this.tenureList[j] = [tenureName[j], 0];
+                            for (let i = 0; i < this.businessData.length; i++) {
+                                if (tenureName[j] === this.businessData[i].tenure) {
+                                    this.tenureList[j][1] = Number(this.tenureList[j][1]) + 1;
+                                }
                             }
                         }
                     }

@@ -3,9 +3,9 @@
     <i class="fa fa-bars"></i>
   </button>
   <div class="brand-wrapper">
-    <img class="brand-logo" [src]="baseUrl + '/assets/imgs/logo.png'" alt="Angular">
-    <span class="brand-name">M S E</span>
+    <img class="brand-logo" [src]="baseUrl + '/assets/imgs/auth_logo.png'" alt="Angular">
   </div>
+  <span class="brand-name">M S E</span>
 </div>
 
 <app-search-bar class="hidden-xs"></app-search-bar>
@@ -13,9 +13,9 @@
 <div class="actions-wrapper">
   <div class="logged-user">
     <div class="user-image-wrapper">
-      <app-preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="baseUrl + '/assets/imgs/profiles/profile9.jpeg'" alt="profile image" title="profile image"></app-preload-image>
+      <app-preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="photo" alt="profile image" title="profile image"></app-preload-image>
     </div>
-    <button mat-button [matMenuTriggerFor]="menu" style="color: white;padding: 0">Henry Ford</button>
+    <button mat-button [matMenuTriggerFor]="menu" style="color: white;padding: 0">{{name}}</button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">Log out</button>
     </mat-menu>

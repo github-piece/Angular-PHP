@@ -48,7 +48,7 @@ export class NewlistingtableComponent implements OnInit, AfterViewInit {
   }
   getHistory() {
 
-    this.buysellService.getHistory(this.userid, this.action)
+    this.buysellService.getBuyHistory(this.userid)
         .pipe(first())
         .subscribe(
             data => {

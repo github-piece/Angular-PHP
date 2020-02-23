@@ -28,8 +28,6 @@ export class ArticleService {
     getArticleList(formData) {
         return this.http.post<any>(`${URL_SERVICIOS}/article.php`, formData)
             .pipe(map(articlelist => {
-                console.log('articleList');
-                console.log(articlelist);
                 return articlelist;
             }));
 

@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, Inject } from '@angular/core';
+import {Component, Input, ViewEncapsulation, Inject, OnInit} from '@angular/core';
 import { SideMenuService } from '../../side-menu/side-menu.service';
 import { ResponsiveBreakpointsService } from '../../responsive-breakpoints/responsive-breakpoints.service';
 import { APP_BASE_HREF } from '@angular/common';
@@ -12,12 +12,15 @@ import {Router} from '@angular/router';
   templateUrl: './top-navbar-content.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class TopNavbarContentComponent {
+export class TopNavbarContentComponent implements OnInit {
   @Input() messages = [];
   @Input() notifications = [];
 
   sideMenuVisible = true;
   baseUrl = '';
+  myData: any;
+  photo: string;
+  name: string;
 
   constructor(
     private sideMenuService: SideMenuService,
@@ -27,7 +30,6 @@ export class TopNavbarContentComponent {
     private router: Router,
   ) {
     this.baseUrl = baseHref;
-
     responsiveService.responsiveSubject
       .pipe(
         filter(breakpoint => breakpoint.screen === 'xs-or-sm')
@@ -51,6 +53,11 @@ export class TopNavbarContentComponent {
           this.sideMenuService.sidenav.mode = 'side';
         }
       });
+  }
+  ngOnInit() {
+    this.myData = this.authService.currentUserSubject.value;
+    this.photo = this.myData.u_avatar;
+    this.name = this.myData.u_name;
   }
 
   toggleSideMenu(): void {

@@ -6,7 +6,7 @@ import {AuthenticationService} from '../../_services/authentication/authenticati
 
 @Component({
     selector: 'app-howtodetails',
-    template: '<div *ngIf="showActions"><img [src]="this.item.image" style="width: 100%" alt="Image">' +
+    template: '<div *ngIf="showActions" style="padding: 24px"><img [src]="this.item.image" style="width: 100%" alt="Image">' +
         '<p>{{this.item.text}}</p><p>{{this.item.subtext}}</p><p>{{this.item.product}}</p></div>',
     styleUrls: ['./howtodashboard.component.scss']
 })

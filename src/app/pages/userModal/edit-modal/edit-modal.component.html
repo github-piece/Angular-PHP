@@ -1,0 +1,83 @@
+<mat-card>
+    <div class="mat-card-header">
+        User Account Information
+    </div>
+    <mat-divider></mat-divider>
+    <div class="table-responsive" style="margin-bottom: 16px">
+        <table class="table-devias">
+            <tbody>
+                <tr>
+                    <td>User Name</td>
+                    <td>{{userData.u_name}}</td>
+                </tr>
+                <tr>
+                    <td>User Email</td>
+                    <td>{{userData.u_email}}</td>
+                </tr>
+                <tr>
+                    <td>Created Date</td>
+                    <td>{{userData.u_createddate}}</td>
+                </tr>
+                <tr>
+                    <td>Account Type</td>
+                    <td>{{userData.accountType}}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        <mat-slide-toggle *ngIf="userData.u_active == 'InActive'" (click)="freezeUser(userData.u_id, 'active')">InActive</mat-slide-toggle>
+                        <mat-slide-toggle *ngIf="userData.u_active == 'Active'" (click)="freezeUser(userData.u_id, 'inactive')" checked>Activated</mat-slide-toggle>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button mat-button (click)="close()" class="float-right" *ngIf="!onShow">Close</button>
+    <mat-slide-toggle (click)="onChange()" style="margin-bottom: 16px"><div class="mat-title" style="margin: 0">Change Password</div></mat-slide-toggle>
+    <form [formGroup]="changeForm" *ngIf="onShow" (ngSubmit)="onSubmit(userData.u_id)">
+        <mat-form-field style="margin-bottom: 16px">
+            <mat-label>Old Password</mat-label>
+            <input matInput type="password" placeholder="Insert old password" formControlName="oldPassword">
+            <mat-hint>Please Insert your old password</mat-hint>
+            <mat-error *ngIf="submitted && f.oldPassword.errors">
+                <div *ngIf="f.oldPassword.errors.required">
+                    Password is required
+                </div>
+                <div *ngIf="f.oldPassword.errors.notMatch">
+                    Passwords doesn't match
+                </div>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field style="margin-bottom: 16px">
+            <mat-label>New Password</mat-label>
+            <input matInput type="password" placeholder="Insert new password" formControlName="newPassword">
+            <mat-hint>Password has to be more than 6 letters</mat-hint>
+            <mat-error *ngIf="submitted && f.newPassword.errors">
+                <div *ngIf="f.newPassword.errors.required">
+                    Old Password is required
+                </div>
+                <div *ngIf="f.newPassword.errors.minlength">
+                    New Password must be at least 6 characters
+                </div>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field style="margin-bottom: 16px">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput type="password" placeholder="Insert password again" formControlName="confirmPassword">
+            <mat-hint>Please type your password again!</mat-hint>
+            <mat-error *ngIf="submitted && f.confirmPassword.errors">
+                <div *ngIf="f.confirmPassword.errors.required">
+                    Confirm Password is required
+                </div>
+                <div *ngIf="f.confirmPassword.errors.mustMatch">
+                    Passwords must match
+                </div>
+            </mat-error>
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <mat-card-actions style="padding-bottom: 36px">
+            <button type="submit" mat-raised-button class="theme-btn float-right mr-2">Save</button>
+            <button type="button" mat-button class="float-right mr-4" (click)="close()">Cancel</button>
+        </mat-card-actions>
+    </form>
+</mat-card>

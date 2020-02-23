@@ -19,7 +19,8 @@
                 <div class="row">
                     <div class="float-right search-btn">
                         <mat-form-field class="float-right" style="width:400px;">
-                            <input matInput placeholder="Please insert place address" [(ngModel)]="address">
+                            <mat-label>Please insert place address</mat-label>
+                            <input matInput [(ngModel)]="address">
                             <mat-icon matSuffix (click)="viewMap();">search</mat-icon>
                         </mat-form-field>
                     </div>
@@ -97,7 +98,7 @@
         </mat-card>
         <mat-card style="margin-bottom: 32px">
             <div class="mat-card-header">
-                Business Goals
+                Business List
                 <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
                         aria-label="Toggle menu">
                     <mat-icon>more_vert</mat-icon>
@@ -123,7 +124,7 @@
                             <td>{{task.no}}</td>
                             <td>{{task.name}}</td>
                             <td>{{task.location}}</td>
-                            <td>{{task.address}} Street Name, Suburb, Code</td>
+                            <td>{{task.address}}</td>
                         </tr>
                     </tbody>
                 </table>

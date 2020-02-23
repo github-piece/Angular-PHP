@@ -59,30 +59,28 @@ export class UserService {
     }));
   }
 
-  createUser(username, u_email, u_pwd, u_accounttype,  radio_accounttype, u_id) {
-    const action = 'aboutus_create.php';
-    return this.http.post<any>(`${URL_SERVICIOS}/user.php`, { username, u_email, u_pwd, u_accounttype, action, radio_accounttype, u_id })
+  createUser(formData) {
+    // const action = 'aboutus_create.php';
+    return this.http.post<any>(`${URL_SERVICIOS}/user.php`, formData)
         .pipe(map(userlist => {
+          console.log(userlist);
             return userlist;
     }));
   }
 
   updateUser(u_accounttype, seleted_uid, radio_accounttype) {
-    const action = 'aboutus_update.php';
+    // const action = 'aboutus_update.php';
+    const action = 'update';
     return this.http.post<any>(`${URL_SERVICIOS}/user.php`, { u_accounttype, seleted_uid, action, radio_accounttype })
         .pipe(map(userlist => {
             return userlist;
     }));
-
   }
 
-
-/*
-  update(user: User) {
-      return this.http.put(`/users/` + user.id, user);
+  uploadPhoto(formData) {
+    return this.http.post<any>(`${URL_SERVICIOS}/user.php`, formData)
+        .pipe(map(userlist => {
+          return userlist;
+        }));
   }
-
-  delete(id: number) {
-      return this.http.delete(`/users/` + id);
-  }*/
 }

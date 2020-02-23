@@ -1,87 +1,300 @@
-<div class="grid-container">
-    <h1 class="mat-h1" style="margin-left: 20px;margin-bottom: 48px">Portfolio</h1>
-    <div style="width:100%; padding: 0 32px;">
-        <div class="row">
-            <div class="col-md-2" *ngIf="showbutton">
-                <input type="button" class="btn btn-outline-success btn-block" (click)="buy()" value="Buy"/>
-            </div>
-            <div class="col-md-2" *ngIf="showbutton">
-                <input type="button" class="btn btn-outline-danger btn-block" (click)="sell()" value="Sell"/>
-            </div>
-        </div>
-
-        <div class="row card">
-            <div class="col-xs-12 table-wrapper">
-                <table mat-table [dataSource]="rowData" class="table table-stripes">
-                    <ng-container matColumnDef="no">
-                        <th mat-header-cell *matHeaderCellDef> NO</th>
-                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="b_name">
-                        <th mat-header-cell *matHeaderCellDef> Business Name</th>
-                        <td mat-cell *matCellDef="let element"> {{element.b_name}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="b_location">
-                        <th mat-header-cell *matHeaderCellDef> Business Location</th>
-                        <td mat-cell *matCellDef="let element"> {{element.b_location}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="b_address">
-                        <th mat-header-cell *matHeaderCellDef> Business Address</th>
-                        <td mat-cell *matCellDef="let element"> {{element.b_address}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="amount">
-                        <th mat-header-cell *matHeaderCellDef> Amount</th>
-                        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelectionChanged(row)"></tr>
-                </table>
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-            </div>
-        </div>
-
-    </div>
-    <mat-grid-list cols="2" rowHeight="350px">
-        <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-            <mat-card class="dashboard-card">
-                <mat-card-header>
-                    <mat-card-title>
-                        {{card.title}}
-                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+<div class="p-header">Portfolio</div>
+<div class="p-title">Here are contractions between users</div>
+<div class="initial-tab">
+    <mat-tab-group>
+        <mat-tab label="Portfolio">
+            <div *ngIf="historyList.length" style="margin-bottom: 32px">
+                <mat-card>
+                    <div class="mat-card-header">
+                        Businesses listed by Industry
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu" xPosition="before">
                             <button mat-menu-item>Expand</button>
                             <button mat-menu-item>Remove</button>
                         </mat-menu>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content class="dashboard-card-content">
-                    <mat-card-content class="dashboard-card-content">
-                        <div *ngIf="card.showchart">
-                            <canvas baseChart
-                                    [data]="doughnutChartData"
-                                    [labels]="doughnutChartLabels"
-                                    [chartType]="doughnutChartType"  style="max-height: 250px;max-width: 250px;display: flex;margin: auto;">
-                            </canvas>
-                        </div>
-                        <div *ngIf="card.showchart1">
-                            <div style="display:flex; width:400px; height:400px; margin: auto;margin-top: 15%;">
-                                <canvas baseChart
-                                        [data]="doughnutChartData"
-                                        [labels]="doughnutChartLabels"
-                                        [chartType]="doughnutChartType" style="display: flex;margin: auto;">
-                                </canvas>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card-content>
-            </mat-card>
-        </mat-grid-tile>
-    </mat-grid-list>
-</div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <google-chart
+                            [type]="type1"
+                            [data]="businessList"
+                            [options]="options1"
+                            style="width: 100%; height: 350px; padding-top: 16px"
+                    >
+                    </google-chart>
+                </mat-card>
+                <mat-card>
+                    <div class="mat-card-header">
+                        Tenure List
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item>Expand</button>
+                            <button mat-menu-item>Remove</button>
+                        </mat-menu>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <google-chart
+                            [type]="type2"
+                            [data]="tenureList"
+                            [options]="options2"
+                            style="width: 100%; height: 350px; padding-top: 16px"
+                    >
+                    </google-chart>
+                </mat-card>
+                <mat-card>
+                    <div class="mat-card-header">
+                        Business Goals
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item>Expand</button>
+                            <button mat-menu-item>Remove</button>
+                        </mat-menu>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <google-chart
+                            [type]="type2"
+                            [data]="goalList"
+                            [options]="options2"
+                            style="width: 100%; height: 350px; padding-top: 16px"
+                    >
+                    </google-chart>
+                </mat-card>
+                <mat-card>
+                    <div class="mat-card-header">
+                        Business List
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item>Expand</button>
+                            <button mat-menu-item>Remove</button>
+                        </mat-menu>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="table-responsive">
+                        <table class="table-devias">
+                            <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Business Name</th>
+                                <th>Business Location</th>
+                                <th>Business Address</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let task of dataSource">
+                                <td>{{task.no}}</td>
+                                <td>{{task.name}}</td>
+                                <td>{{task.location}}</td>
+                                <td>{{task.address}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-<app-portanalysistree></app-portanalysistree>
+                    <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
+                                   [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+                    </mat-paginator>
+                </mat-card>
+            </div>
+            <div *ngIf="!historyList.length" class="text-center" style="margin-top: 35vh">
+                <div class="p-title">There is no data!</div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Funders">
+            <div *ngIf="myBusiness.length || historyBuyList.length">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6" *ngIf="myBusiness.length">
+                        <div class="p-title pt-5 mb-0" style="font-size: 1.2em">My Business</div>
+                        <div>
+                            <mat-card *ngFor="let business of myBusiness">
+                                <div class="mat-card-header" style="font-size: 14px">Business Info</div>
+                                <mat-divider></mat-divider>
+                                <div class="table-responsive">
+                                    <table class="table-devias table-custom">
+                                        <tr>
+                                            <td>Business Name</td>
+                                            <td>{{business.name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Business Amount</td>
+                                            <td>{{business.amount}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Business Address</td>
+                                            <td>{{business.address}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Business Country</td>
+                                            <td>{{business.country}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div *ngIf="!myBusiness.length" class="col-12">
+                        <div class="p-title pt-5 mb-0" style="font-size: 1.2em">Contractions</div>
+                        <mat-card *ngIf="contractBuySource.length">
+                            <div class="mat-card-header">
+                                Business List
+                                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                        aria-label="Toggle menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" xPosition="before">
+                                    <button mat-menu-item>Expand</button>
+                                    <button mat-menu-item>Remove</button>
+                                </mat-menu>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="table-responsive">
+                                <table class="table-devias">
+                                    <thead>
+                                    <tr>
+                                        <th>Number</th>
+                                        <th>Date</th>
+                                        <th>Business Name | Contract User Name</th>
+                                        <th>Amount</th>
+                                        <th>Instrument Type</th>
+                                        <th>Rate</th>
+                                        <th>Next Payment</th>
+                                        <th>Frequency of Reporting</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let detail of contractBuySource; index as index">
+                                        <td>{{index+1}}</td>
+                                        <td>{{detail.date_created | date:'medium'}}</td>
+                                        <td>{{detail.businessName}}</td>
+                                        <td>{{detail.amount}}</td>
+                                        <td>{{detail.fundtype}}</td>
+                                        <td>{{detail.rate}}</td>
+                                        <td>{{detail.nextDate | date:'medium'}}</td>
+                                        <td>{{detail.frequency}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="detailsSize"
+                                           [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+                            </mat-paginator>
+                        </mat-card>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-6" *ngIf="myBusiness.length">
+                        <div class="p-title pt-5 mb-0" style="font-size: 1.2em">Contractions</div>
+                        <mat-card style="margin-bottom: 32px" *ngIf="contractSellSource.length">
+                            <div class="mat-card-header">
+                                Contract Sell List
+                                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                        aria-label="Toggle menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" xPosition="before">
+                                    <button mat-menu-item>Expand</button>
+                                    <button mat-menu-item>Remove</button>
+                                </mat-menu>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="table-responsive">
+                                <table class="table-devias">
+                                    <thead>
+                                    <tr>
+                                        <th>Number</th>
+                                        <th>Date</th>
+                                        <th>Business Name</th>
+                                        <th>User Name</th>
+                                        <th>Amount</th>
+                                        <th>Instrument Type</th>
+                                        <th>Rate</th>
+                                        <th>Next Payment</th>
+                                        <th>Frequency of Reporting</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let sell of contractSellSource; index as index">
+                                        <td>{{index+1}}</td>
+                                        <td>{{sell.date_created | date:'medium'}}</td>
+                                        <td>{{sell.businessName}}</td>
+                                        <td>{{sell.userName}}</td>
+                                        <td>{{sell.amount}}</td>
+                                        <td>{{sell.fundtype}}</td>
+                                        <td>{{sell.rate}}</td>
+                                        <td>{{sell.nextDate | date:'medium'}}</td>
+                                        <td>{{sell.frequency}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="sellSize"
+                                           [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+                            </mat-paginator>
+                        </mat-card>
+                        <mat-card style="margin-bottom: 32px" *ngIf="contractBuySource.length">
+                            <div class="mat-card-header">
+                                Contract Buy List
+                                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                        aria-label="Toggle menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" xPosition="before">
+                                    <button mat-menu-item>Expand</button>
+                                    <button mat-menu-item>Remove</button>
+                                </mat-menu>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="table-responsive">
+                                <table class="table-devias">
+                                    <thead>
+                                    <tr>
+                                        <th>Number</th>
+                                        <th>Date</th>
+                                        <th>Business Name</th>
+                                        <th>Amount</th>
+                                        <th>Instrument Type</th>
+                                        <th>Rate</th>
+                                        <th>Next Payment</th>
+                                        <th>Frequency of Reporting</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let detail of contractBuySource; index as index">
+                                        <td>{{index+1}}</td>
+                                        <td>{{detail.date_created | date:'medium'}}</td>
+                                        <td *ngIf="detail.ownerId == u_id">{{detail.userName}}</td>
+                                        <td *ngIf="detail.ownerId != u_id">{{detail.businessName}}</td>
+                                        <td>{{detail.amount}}</td>
+                                        <td>{{detail.fundtype}}</td>
+                                        <td>{{detail.rate}}</td>
+                                        <td>{{detail.nextDate | date:'medium'}}</td>
+                                        <td>{{detail.frequency}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="detailsSize"
+                                           [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+                            </mat-paginator>
+                        </mat-card>
+                        <div *ngIf="myBusiness.length && !historyBuyList.length && !historySellList.length" class="text-center" style="margin-top: 30vh">
+                            <div class="p-title">There is no data!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!myBusiness.length && !historyBuyList.length && !historySellList.length" class="text-center" style="margin-top: 35vh">
+                <div class="p-title">There is no data!</div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

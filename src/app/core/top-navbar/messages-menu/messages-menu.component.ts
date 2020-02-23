@@ -1,5 +1,7 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import { NotificationsMenuService } from '../notifications-menu/notifications-menu.service';
+import {MessagesMenuService} from './messages-menu.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-messages-menu',
@@ -8,11 +10,22 @@ import { NotificationsMenuService } from '../notifications-menu/notifications-me
   encapsulation: ViewEncapsulation.None
 })
 export class MessagesMenuComponent {
-  @Input() messages = [];
+  @Input() messages: any;
+  constructor(
+      private notificationsMenuService: NotificationsMenuService,
+      private messagesMenuService: MessagesMenuService
+  ) {
 
-  constructor(private notificationsMenuService: NotificationsMenuService) {}
+  }
 
   closeNotificationsMenu(): void {
     this.notificationsMenuService.sidenav.close();
+  }
+
+  check(id: any) {
+    this.messagesMenuService.setData(id)
+        .pipe(first())
+        .subscribe();
+    this.messages[0].count = this.messages[0].count - 1;
   }
 }

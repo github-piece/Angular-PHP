@@ -8,10 +8,12 @@ import {map} from 'rxjs/operators';
 })
 export class PayfastService {
 
-  constructor(private http:HttpClient) { }
-  generateSignature(formData:FormData){
+  constructor(private http: HttpClient) { }
+  generateSignature(formData: FormData) {
     const url = `${URL_SERVICIOS}/paymentGateway/signature.php`;
-    return this.http.post<any>(url, formData, {responseType:'json'})
-        .pipe(map(res=>{return res;}))
+    return this.http.post<any>(url, formData, {responseType: 'json'})
+        .pipe(map(res => {
+          return res;
+        }));
   }
 }
