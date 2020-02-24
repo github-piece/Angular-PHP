@@ -34,7 +34,8 @@ export class PortfoliodashboardComponent implements OnInit {
     showActions = false;
     zoom = 2;
 
-    u_id: any;
+    u_email: any;
+    userData: any = [];
     businessData = [];
 
     tableData = [];
@@ -69,14 +70,19 @@ export class PortfoliodashboardComponent implements OnInit {
             this.showActions = false;
         } else {
             this.showActions = true;
-            this.u_id = this.authenticationService.currentUserSubject.value.u_id;
-            this.getBusinessList(this.u_id);
+            this.userData = this.authenticationService.currentUserSubject.value;
+            if (this.userData.provider) {
+                this.u_email = this.userData.email;
+            } else {
+                this.u_email = this.userData.u_email;
+            }
+            this.getBusinessList(this.u_email);
             this.getSellHistory();
             this.getBuyHistory();
         }
     }
-    getBusinessList(userId) {
-        this.businessService.getBusinessList(userId)
+    getBusinessList(userEmail) {
+        this.businessService.getBusinessList(userEmail)
             .pipe(first())
             .subscribe(
                 data => {
@@ -86,7 +92,7 @@ export class PortfoliodashboardComponent implements OnInit {
                 });
     }
     getSellHistory() {
-        this.buysellService.getSellHistory(this.u_id)
+        this.buysellService.getSellHistory(this.u_email)
             .pipe(first())
             .subscribe(
                 data => {
@@ -99,7 +105,7 @@ export class PortfoliodashboardComponent implements OnInit {
             );
     }
     getBuyHistory() {
-        this.buysellService.getBuyHistory(this.u_id)
+        this.buysellService.getBuyHistory(this.u_email)
             .pipe(first())
             .subscribe(
                 data => {
@@ -121,7 +127,7 @@ export class PortfoliodashboardComponent implements OnInit {
                     this.businessIds = businessId.filter((v, i, a) => a.indexOf(v) === i);
                     let count = 0; let index = 0;
                     for (let i = 0; i < this.businessData.length; i++) {
-                        if (this.businessData[i].u_id === this.u_id) {
+                        if (this.businessData[i].u_email === this.u_email) {
                             this.myBusiness[index] = this.businessData[i];
                             index++;
                         }

@@ -23,17 +23,12 @@ export class AuthenticationService {
 
   login(u_email: string, u_password: string) {
     const action = 'login';
-    console.log(u_email, u_password);
     return this.http.post<any>(`${URL_SERVICIOS}/user.php`, { u_email, u_password, action })
         .pipe(map(user => {
-            // login successful if there's a jwt token in the response
             if (user) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
-
             }
-
             return user;
         }));
   }

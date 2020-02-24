@@ -1,7 +1,6 @@
 import {AfterContentInit, Component, ViewChild, ViewEncapsulation, PLATFORM_ID, Inject, OnInit} from '@angular/core';
 import { MessagesMenuService, NotificationsMenuService, SideMenuService } from './core';
 import { isPlatformBrowser } from '@angular/common';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

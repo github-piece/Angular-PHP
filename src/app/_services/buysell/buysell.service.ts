@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {URL_SERVICIOS} from '../../../config/url.servicios';
-import {map} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +17,16 @@ export class BuysellService {
   public fundTypes = [];
   constructor(private http: HttpClient) { }
 
-  getBuyHistory(userid) {
+  getBuyHistory(userEmail) {
     const action = 'get';
     const url = `${URL_SERVICIOS}/buysell.php`;
-    return this.http.post(url, {userid, action});
+    return this.http.post(url, {userEmail, action});
   }
 
-  getSellHistory(userid) {
+  getSellHistory(userEmail) {
     const action = 'get_all';
     const url = `${URL_SERVICIOS}/buysell.php`;
-    return this.http.post(url, {userid, action});
+    return this.http.post(url, {userEmail, action});
   }
 
   getPortfolio(userid) {

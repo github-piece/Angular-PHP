@@ -19,6 +19,7 @@ export class PagesComponent implements OnInit, AfterContentInit {
     notifications = [];
     messages = [];
     open_menu = false;
+    userData: any = [];
 
     constructor(
         private sideMenuService: SideMenuService,
@@ -35,8 +36,14 @@ export class PagesComponent implements OnInit, AfterContentInit {
         // });
     }
     ngOnInit() {
-        const userId = this.authenticationService.currentUserSubject.value.u_id;
-        this.messagesMenuService.getData(userId)
+        this.userData = this.authenticationService.currentUserSubject.value;
+        let userEmail;
+        if (this.userData.provider) {
+            userEmail = this.userData.email;
+        } else {
+            userEmail = this.userData.u_email;
+        }
+        this.messagesMenuService.getData(userEmail)
             .pipe(first())
             .subscribe(data => {
                 this.messages = data;
@@ -46,7 +53,9 @@ export class PagesComponent implements OnInit, AfterContentInit {
                         count++;
                     }
                 }
-                this.messages[0]['count'] = count;
+                if (this.messages.length) {
+                    this.messages[0]['count'] = count;
+                }
             });
         this.loading = false;
     }

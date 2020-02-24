@@ -12,12 +12,13 @@
                                     <img [src]="myPhoto" alt="photo" *ngIf="!uploadImageShow">
                                     <img [src]="myPhoto" alt="photo" *ngIf="uploadImageShow">
                                     <div class="profile-name">
-                                        {{myData.u_name}}
+                                        {{name}}
                                     </div>
                                     <div class="profile-detail">
-                                        {{myData.u_email}}
+                                        {{email}}
                                     </div>
-                                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)"/>
+                                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)" *ngIf="!myData.provider"/>
+                                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)" *ngIf="myData.provider" disabled/>
                                     <label for="file" class="mt-5">Upload Image</label>
                                 </div>
                             </mat-card>
@@ -31,11 +32,11 @@
                                         <tbody>
                                         <tr>
                                             <td>Name</td>
-                                            <td>{{myData.u_name}}</td>
+                                            <td>{{name}}</td>
                                         </tr>
                                         <tr>
                                             <td>Email</td>
-                                            <td>{{myData.u_email}}</td>
+                                            <td>{{email}}</td>
                                         </tr>
                                         <tr>
                                             <td>Phone Number</td>
@@ -47,15 +48,18 @@
                                         </tr>
                                         <tr>
                                             <td>Role</td>
-                                            <td>{{myData.u_accounttype}}</td>
+                                            <td>{{accounttype}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <mat-slide-toggle (click)="onChange()" style="margin-bottom: 16px" checked *ngIf="onShow">
+                                <mat-slide-toggle (click)="onChange()" style="margin-bottom: 16px" checked *ngIf="onShow && !myData.provider">
                                     <div class="mat-title" style="margin: 0">Change Password</div>
                                 </mat-slide-toggle>
-                                <mat-slide-toggle (click)="onChange()" style="margin-bottom: 16px" *ngIf="!onShow">
+                                <mat-slide-toggle (click)="onChange()" style="margin-bottom: 16px" *ngIf="!onShow && !myData.provider">
+                                    <div class="mat-title" style="margin: 0">Change Password</div>
+                                </mat-slide-toggle>
+                                <mat-slide-toggle (click)="onChange()" style="margin-bottom: 16px" *ngIf="myData.provider" disabled>
                                     <div class="mat-title" style="margin: 0">Change Password</div>
                                 </mat-slide-toggle>
                                 <form [formGroup]="registerForm" *ngIf="onShow" (ngSubmit)="onSubmit()">

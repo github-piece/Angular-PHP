@@ -56,8 +56,13 @@ export class TopNavbarContentComponent implements OnInit {
   }
   ngOnInit() {
     this.myData = this.authService.currentUserSubject.value;
-    this.photo = this.myData.u_avatar;
-    this.name = this.myData.u_name;
+    if (this.myData.provider) {
+      this.photo = this.myData.photoUrl;
+      this.name = this.myData.name;
+    } else {
+      this.photo = this.myData.u_avatar;
+      this.name = this.myData.u_name;
+    }
   }
 
   toggleSideMenu(): void {

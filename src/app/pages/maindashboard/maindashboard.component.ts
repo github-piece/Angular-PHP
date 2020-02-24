@@ -37,8 +37,9 @@ export class MaindashboardComponent implements OnInit {
     showActions = false;
     zoom = 2;
 
-    u_id: any;
+    u_email: any;
     businessData = [];
+    userData: any = [];
 
     tableData = [];
     dataSource: any;
@@ -54,12 +55,17 @@ export class MaindashboardComponent implements OnInit {
         private businessService: BusinessServiceService,
     ) { }
     ngOnInit() {
-        if (this.authenticationService.currentUserSubject.value == null) {
+        if (this.authenticationService.currentUser == null) {
             this.showActions = false;
         } else {
             this.showActions = true;
-            this.u_id = this.authenticationService.currentUserSubject.value.u_id;
-            this.getBusinessList(this.u_id);
+            this.userData = this.authenticationService.currentUserSubject.value;
+            if (this.userData.provider) {
+                this.u_email = this.userData.email;
+            } else {
+                this.u_email = this.userData.u_email;
+            }
+            this.getBusinessList(this.u_email);
         }
     }
     viewMap() {
@@ -74,8 +80,8 @@ export class MaindashboardComponent implements OnInit {
                 error => {
                 });
     }
-    getBusinessList(userId) {
-        this.businessService.getBusinessList(userId)
+    getBusinessList(userEmail) {
+        this.businessService.getBusinessList(userEmail)
             .pipe(first())
             .subscribe(
                 data => {

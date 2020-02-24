@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {first} from 'rxjs/operators';
+import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {UserService} from '../../_services/user/user.service';
@@ -16,6 +17,9 @@ export class UserpagedashboardComponent implements OnInit {
     rowData: any;
     showActions = false;
     myData: any;
+    name: any;
+    email: any;
+    accounttype: any;
     onShow = false;
     registerForm: FormGroup;
     submitted = false;
@@ -37,7 +41,8 @@ export class UserpagedashboardComponent implements OnInit {
         private userService: UserService,
         private formBuilder: FormBuilder,
         private fb: FormBuilder,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private router: Router
     ) {}
     get f() {
         return this.registerForm.controls;
@@ -49,8 +54,18 @@ export class UserpagedashboardComponent implements OnInit {
         }
         this.showActions = true;
         this.myData = this.authenticationService.currentUserSubject.value;
-        this.myPhoto = this.myData.u_avatar;
-        this.getFreezeFlag(this.myData.u_id);
+        if (this.myData.provider) {
+            this.myPhoto = this.myData.photoUrl;
+            this.name = this.myData.name;
+            this.email = this.myData.email;
+            this.accounttype = 'Moderator';
+        } else {
+            this.myPhoto = this.myData.u_avatar;
+            this.name = this.myData.u_name;
+            this.email = this.myData.u_email;
+            this.accounttype = this.myData.u_accounttype;
+        }
+        this.getFreezeFlag(this.email);
         this.registerForm = this.formBuilder.group({
             oldPassword: ['', Validators.required],
             newPassword: ['', [Validators.required, Validators.minLength(6)]],
@@ -58,7 +73,7 @@ export class UserpagedashboardComponent implements OnInit {
         }, {
             validator: MustMatch('newPassword', 'confirmPassword')
         });
-        switch (this.myData.u_accounttype) {
+        switch (this.accounttype) {
             case 'Super Admin':
                 this.u_accountRadioVal = 'Senior Admin';
                 break;
@@ -75,7 +90,10 @@ export class UserpagedashboardComponent implements OnInit {
         this.getUserList();
     }
     onChange() {
-        this.onShow = !this.onShow;
+        if (this.myData.provider) {
+        } else {
+            this.onShow = !this.onShow;
+        }
     }
     onSubmit() {
         if (this.registerForm.get('oldPassword').value !== this.myData.u_password) {
@@ -87,7 +105,7 @@ export class UserpagedashboardComponent implements OnInit {
         if (this.registerForm.invalid) {
             return;
         }
-        this.userService.changePwd(this.f.confirmPassword.value, this.myData.u_id, this.myData.u_accounttype)
+        this.userService.changePwd(this.f.confirmPassword.value, this.email, this.accounttype)
             .pipe(first())
             .subscribe(
                 data => {
@@ -98,7 +116,7 @@ export class UserpagedashboardComponent implements OnInit {
                 });
     }
     freezeUser(userId, param: any) {
-        this.userService.freezeUser(this.myData.u_id, this.myData.u_accounttype, userId, param)
+        this.userService.freezeUser(this.email, this.myData.u_accounttype, userId, param)
             .pipe(first())
             .subscribe(
                 data => {
@@ -130,8 +148,8 @@ export class UserpagedashboardComponent implements OnInit {
             this.getUserList();
         });
     }
-    getFreezeFlag(u_id: any) {
-        this.userService.getFreezeFlag(u_id)
+    getFreezeFlag(u_email: any) {
+        this.userService.getFreezeFlag(u_email)
             .pipe(first())
             .subscribe(
                 data => {
@@ -140,7 +158,7 @@ export class UserpagedashboardComponent implements OnInit {
                 });
     }
     getUserList() {
-        this.userService.getUserList(this.myData.u_accounttype, this.myData.u_id)
+        this.userService.getUserList(this.accounttype, this.email)
             .pipe(first())
             .subscribe(
                 data => {
@@ -199,7 +217,7 @@ export class UserpagedashboardComponent implements OnInit {
         this.uploadImageShow = true;
 
         const formData = new FormData();
-        formData.append('userId', this.myData.u_id);
+        formData.append('userEmail', this.email);
         formData.append('file', this.file);
         formData.append('action', 'upload');
         this.userService.uploadPhoto(formData)

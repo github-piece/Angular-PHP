@@ -2,34 +2,36 @@
 	include_once("connection.php");
 	$postdata = file_get_contents("php://input");
 	if(isset($postdata) && !empty($postdata)){
-		$request = json_decode($postdata);
-		$action = $request->action;
-		switch($action){
-			case "get_portfolio":
-				get_portfolio($conn, $request);
-				break;
-			case "buy":
-				buy_history($conn, $request);
-				buy_portfolio($conn, $request);
-				break;
-			case "sell":
-				sell_history($conn, $request);
-				break;
-			case "set";
-				set_history($conn, $request);
-				break;
-			case "get";
-				get_history($conn, $request);
-				break;
-			default:
-				get_history($conn, $request);
-				break;
+			$request = json_decode($postdata);
+			$action = $request->action;
+			$sql = "SELECT u_id FROM tbl_user WHERE u_email = '".$request->userEmail."'";
+			$result = $conn->query($sql);
+			while($row = $result->fetch_assoc()) {
+				$user_id = $row['u_id'];
+			}
+			switch($action){
+				case "get_portfolio":
+					get_portfolio($conn, $request, $user_id);
+					break;
+				case "buy":
+					buy_history($conn, $request, $user_id);
+					buy_portfolio($conn, $request, $user_id);
+					break;
+				case "sell":
+					sell_history($conn, $request, $user_id);
+					break;
+				case "set";
+					set_history($conn, $request, $user_id);
+					break;
+				default:
+					get_history($conn, $request, $user_id);
+					break;
+			}
 		}
-	}
-	function get_portfolio($conn, $request){
+		
+	function get_portfolio($conn, $request, $user_id){
 		$return_arr = array();
 
-		$user_id = $request->userid;
 		$sql = "SELECT tbl_portfolio.*, tbl_business.* FROM tbl_portfolio left join tbl_business on tbl_portfolio.business_id = tbl_business.id WHERE tbl_portfolio.u_id ='".$user_id."'";
 		$result = mysqli_query($conn, $sql);
 		$i = 1;
@@ -51,12 +53,11 @@
 		echo json_encode($return_arr);	
 	}
 	
-	function get_history($conn, $request){
+	function get_history($conn, $request, $user_id){
 		$return_arr = array();
-		$user_id = $request->userid;
 		$action = $request->action;
 		if($action == "get")
-			$sql = " SELECT tbl_history.*, tbl_user.u_name FROM tbl_history LEFT JOIN tbl_user ON tbl_history.u_id = tbl_user.u_id WHERE tbl_history.u_id = '".$user_id."'";
+			$sql = " SELECT tbl_history.*, tbl_user.u_name, tbl_user.u_email  FROM tbl_history LEFT JOIN tbl_user ON tbl_history.u_id = tbl_user.u_id WHERE tbl_history.u_id = '".$user_id."'";
 		if($action == "get_all")
 			// $sql = "SELECT tbl_history.*, tbl_business.b_name, tbl_user.u_name, tbl_business.b_companysector FROM tbl_history left join tbl_business on tbl_history.business_id = tbl_business.id left join tbl_user on tbl_history.u_id = tbl_user.u_id";
 			$sql = "SELECT tbl_business.*, tbl_history.*, tbl_user.u_name FROM tbl_history LEFT JOIN tbl_business ON tbl_history.business_id = tbl_business.business_id LEFT JOIN tbl_user ON tbl_history.u_id = tbl_user.u_id WHERE tbl_business.u_id = '".$user_id."'";
@@ -67,6 +68,7 @@
 				// 	$row_array['u_name'] = $row['u_name'];
 					
 				$row_array['u_id'] = $row['u_id'];
+				$row_array['u_email'] = $row['u_email'];
 				$row_array['business_id'] = $row['business_id'];
 				$row_array['amount'] = $row['amount'];
 				$row_array['fundtype'] = $row['fundtype'];
@@ -111,10 +113,9 @@
 		echo json_encode($return_arr);	
 	}
 
-	function buy_portfolio($conn, $request){
+	function buy_portfolio($conn, $request, $user_id){
 		$amount = $request->amount;
 		$business_id = $request->business_id;
-		$user_id = $request->userid;
 		date_default_timezone_set('Africa/Johannesburg');
 		$date = date('Y-m-d h:i:s a', time());
 		
@@ -144,8 +145,7 @@
 		echo mysqli_query($conn, $sql) or die("error to insert employee data");
 	}
 	
-	function buy_history($conn, $request){
-		$u_id = $request->userId;
+	function buy_history($conn, $request, $u_id){
 		$business_id = $request->businessId;
 		$amount = $request->amount;
 		$fundType = $request->fund;
@@ -168,11 +168,10 @@
 		echo mysqli_query($conn, $sql) or die("error to insert employee data");
 	}
 	
-	function sell_history($conn, $request){
+	function sell_history($conn, $request, $user_id){
 		$amount = $request->amount;
 		$amount_history = $request->amount;
 		$business_id = $request->business_id;
-		$user_id = $request->userid;
 		date_default_timezone_set('Africa/Johannesburg');
 		$date = date('Y-m-d h:i:s a', time());
 
@@ -203,10 +202,9 @@
 		
 	}
 	
-	function checkExistForSell($conn, $request){
+	function checkExistForSell($conn, $reques, $user_id){
 		$amount = $request->amount;
 		$business_id = $request->business_id;
-		$user_id = $request->userid;
 
 		$sql = "SELECT * FROM `tbl_portfolio` WHERE id = '".$business_id."' AND u_id = '".$user_id."' AND amount > '".$amount."' LIMIT 1";
 		$result = mysqli_query($conn, $sql);
@@ -214,8 +212,7 @@
 		return $row;
 	}
 
-	function set_history($conn, $request) {
-		$u_id = $request->userId;
+	function set_history($conn, $request, $u_id) {
 		$business_id = $request->businessId;
 		$balance = $request->balance;
 		$amount_to_buy = $request->amount;

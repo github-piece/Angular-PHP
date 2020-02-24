@@ -5,9 +5,14 @@
     $action = $request->action;
     $return_arr = array();
     if ($action == 'get') {
-        $userId = $request->id;
+        $userEmail = $request->email;
+        $sql = "SELECT u_id FROM tbl_user WHERE tbl_user.u_email = '".$userEmail."' LIMIT 1";
+        $result = mysqli_query($conn, $sql);
+        while ($row = $result->fetch_assoc()) {
+            $userId = $row['u_id'];
+        }
         $sql = 
-        "SELECT tbl_user.u_name, tbl_user.u_avatar, tbl_business.*, tbl_notification.*
+        "SELECT tbl_user.u_name, tbl_user.u_avatar, tbl_user.socialUser, tbl_business.*, tbl_notification.*
         FROM tbl_notification
         INNER JOIN tbl_user ON tbl_notification.userId = tbl_user.u_id 
         INNER JOIN tbl_business ON tbl_notification.businessId = tbl_business.business_id 
@@ -21,7 +26,11 @@
             }
             $row_array['id'] = $row['id'];
             $row_array['name'] = $row['u_name'];
-            $row_array['avatar'] = 'mse/uploaded/avatar/'.$row['u_avatar'];
+            if ($row['socialUser'] == 1) {
+                $row_array['avatar'] = $row['u_avatar'];
+            } else {
+                $row_array['avatar'] = 'mse/uploaded/avatar/'.$row['u_avatar'];
+            }
             $row_array['businessName'] = $row['business name'];
             $row_array['status'] = $row['status'];
             $date = strtotime(date($row['sended_at']));

@@ -51,10 +51,10 @@ export class MessagesMenuService {
       setTimeout(() => resolve (this.messages), 1000);
     });
   }
-  getData(userId) {
+  getData(userEmail) {
     const action = 'get';
-    const id = userId;
-    return this.http.post<any>(`${URL_SERVICIOS}/notification.php`, { id, action })
+    const email = userEmail;
+    return this.http.post<any>(`${URL_SERVICIOS}/notification.php`, { email, action })
         .pipe(map(messages => {
           return messages;
         }));

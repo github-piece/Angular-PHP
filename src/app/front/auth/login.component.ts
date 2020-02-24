@@ -7,6 +7,7 @@ import {first} from 'rxjs/operators';
 import {AuthService} from 'angularx-social-login';
 import {SocialUser} from 'angularx-social-login';
 import {GoogleLoginProvider, FacebookLoginProvider} from 'angularx-social-login';
+import {UserService} from '../../_services/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,6 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   user: SocialUser;
-
   constructor(
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
       private authenticationService: AuthenticationService,
       private alertService: AlertService,
       private authService: AuthService,
+      private userService: UserService
   ) {
   }
 
@@ -43,14 +44,17 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.authService.authState.subscribe((user) => {
       this.user = user;
-      console.log(user);
     });
   }
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(x => {
-      console.log(x);
-      this.router.navigate(['pages/maindashboard']);
+      localStorage.setItem('currentUser', JSON.stringify(x));
+      this.userService.socialLogin(x)
+          .pipe(first())
+          .subscribe(data => {
+          });
+      window.location.replace('/pages/maindashboard');
     });
   }
 
@@ -70,13 +74,11 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-
     this.loading = true;
     this.authenticationService.login(this.f.u_email.value, this.f.u_password.value)
         .pipe(first())
         .subscribe(
             data => {
-              console.log(data);
               if (data.status === 1) {
                 this.router.navigate(['/pages/maindashboard']);
               } else {
@@ -84,13 +86,8 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
                 this.alertService.error('login failed');
               }
-            },
-            error => {
-              console.log(error);
             });
   }
-
   signInWithLinkedIn() {
-
   }
 }

@@ -10,16 +10,16 @@
 	if(isset($postdata) && !empty($postdata)){
 		
 		$request = json_decode($postdata);
-		$userid = $request->userId;
+		$userEmail = $request->userEmail;
 		$action = $request->action;
 		$return_arr = array();
 
-		if($userid === '')
+		if($userEmail === '')
 		{
 			return http_response_code(400);
 		}
 		//$sql = "SELECT * FROM tbl_business WHERE u_id ='".$userid."'";
-		$sql = "SELECT * FROM tbl_business";
+		$sql = "SELECT tbl_business.*, tbl_user.u_email FROM tbl_business LEFT JOIN tbl_user ON tbl_business.u_id = tbl_user.u_id";
 		$result = mysqli_query($conn, $sql);
 		$i = 1;
 
@@ -28,6 +28,7 @@
 			$row_array['no'] = $i;
 
 			$row_array['u_id'] = $row['u_id'];
+			$row_array['u_email'] = $row['u_email'];
 			$row_array['business'] = $row['sector'];
 			$row_array['tenure'] = $row['tenure to see return'];
 			$row_array['goal'] = $row['goal name'];

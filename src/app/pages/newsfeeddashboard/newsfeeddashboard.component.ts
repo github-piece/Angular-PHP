@@ -12,7 +12,8 @@ import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
 })
 export class NewsfeeddashboardComponent implements OnInit {
     showActions = false;
-    userId: any;
+    userEmail: any;
+    userData: any = [];
     userType: any;
     articles = [];
     thisArticle = [];
@@ -36,14 +37,20 @@ export class NewsfeeddashboardComponent implements OnInit {
             this.showActions = false;
         } else {
             this.showActions = true;
-            this.userId = this.authenticationService.currentUserSubject.value.u_id;
-            this.userType = this.authenticationService.currentUserSubject.value.u_accounttype;
-            this.getArticleList(this.userId, this.userType);
+            this.userData = this.authenticationService.currentUserSubject.value;
+            if (this.userData.provider) {
+                this.userEmail = this.userData.email;
+                this.userType = 'Moderator';
+            } else {
+                this.userEmail = this.userData.u_id;
+                this.userType = this.userData.u_accounttype;
+            }
+            this.getArticleList(this.userEmail, this.userType);
         }
     }
 
-    getArticleList(id, type) {
-        this.newsfeedService.getArticleList(type, id)
+    getArticleList(email, type) {
+        this.newsfeedService.getArticleList(type, email)
             .pipe(first())
             .subscribe(
                 data => {
