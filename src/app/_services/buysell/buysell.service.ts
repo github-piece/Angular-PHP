@@ -17,16 +17,16 @@ export class BuysellService {
   public fundTypes = [];
   constructor(private http: HttpClient) { }
 
-  getBuyHistory(userEmail) {
+  getBuyHistory(userId) {
     const action = 'get';
     const url = `${URL_SERVICIOS}/buysell.php`;
-    return this.http.post(url, {userEmail, action});
+    return this.http.post(url, {userId, action});
   }
 
-  getSellHistory(userEmail) {
+  getSellHistory(userId) {
     const action = 'get_all';
     const url = `${URL_SERVICIOS}/buysell.php`;
-    return this.http.post(url, {userEmail, action});
+    return this.http.post(url, {userId, action});
   }
 
   getPortfolio(userid) {

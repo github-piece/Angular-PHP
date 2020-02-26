@@ -15,11 +15,8 @@
 		if(isset($postdata) && !empty($postdata)){
 			$request = @json_decode($postdata);
 			$action = $request->action;
-			$u_email = $request->u_email;
-			$sql = "SELECT u_id FROM tbl_user WHERE u_email = '".$u_email."'";
-			$result = $conn->query($sql);
-			while($row = $result->fetch_assoc()) {
-				$u_id = $row['u_id'];
+			if (isset($request->u_id)) {
+				$u_id = $request->u_id;
 			}
 			switch($action){
 				case "get":
@@ -192,21 +189,19 @@
 
 	}
 	function socialLogin($request, $conn){
-		$u_name = $request->name;
-		$u_email = $request->email;
-		$u_avatar = $request->photoUrl;
-		$authToken = $request->authToken;
-		$idToken = $request->idToken;
-		$provider = $request->provider;
+		$u_name = $request["name"];
+		$u_email = $request["email"];
+		$u_avatar = $request["avatar"];
+		$token = $request["token"];
+		$provider = $request["provider"];
 		$today = date("Y-m-d");
 
-		$sql = "SELECT authToken FROM tbl_user WHERE u_email = '".$u_email."'";
+		$sql = "SELECT token FROM tbl_user WHERE u_email = '".$u_email."'";
 		$result = mysqli_query($conn, $sql);
-		$row = mysqli_fetch_assoc($result);
 		$return_arr = array();
-		if (count($row) == 0) {
-			$sql = "INSERT INTO tbl_user (u_name, u_email, u_avatar, u_createddate, u_accounttype, authToken, idToken, provider, socialUser) 
-			VALUES('".$u_name."', '".$u_email."', '".$u_avatar."', '".$today."', 'Moderator', '".$authToken."', '".$idToken."', '".$provider."', 1)";
+		if ($result->num_rows == 0) {
+			$sql = "INSERT INTO tbl_user (u_name, u_email, u_avatar, u_createddate, u_accounttype, token, provider, socialUser) 
+			VALUES('".$u_name."', '".$u_email."', '".$u_avatar."', '".$today."', 'Moderator', '".$token."', '".$provider."', 1)";
 			$result = $conn->query($sql);
 		}
 		$sql = "SELECT * FROM tbl_user WHERE u_email = '".$u_email."'";
@@ -219,7 +214,13 @@
 			$row_array['u_freezedflag'] = $row['u_freezedflag'];
 			$row_array['u_accounttype'] = $row['u_accounttype'];
 			$row_array['password'] = $row['u_password'];
-			$row_array['u_avatar'] = $row['u_avatar'];
+			if (substr($row['u_avatar'], 0, 6) == 'https:') {
+				$row_array['u_avatar'] = $row['u_avatar'];
+			} else {
+				$row_array['u_avatar'] = 'mse/uploaded/avatar/'.$row['u_avatar'];
+			}
+
+			$row_array['provider'] = $row['provider'];
 
 			if($row['u_freezedflag'] == 0)
 				$row_array['u_active'] = "Active";
@@ -335,9 +336,9 @@
 
 			}
 		}
-		$sql = "UPDATE tbl_user SET u_avatar = '".$generatedName."' WHERE u_email = '".$param['userEmail']."'";
+		$sql = "UPDATE tbl_user SET u_avatar = '".$generatedName."' WHERE u_id = '".$param['userId']."'";
 		$result = $conn->query($sql);
-		$sql = "SELECT * From tbl_user WHERE u_email = '".$param['userEmail']."'";
+		$sql = "SELECT * From tbl_user WHERE u_id = '".$param['userId']."'";
 		$result = mysqli_query($conn, $sql);
 		$row = mysqli_fetch_assoc($result);
 		$json_data = array(

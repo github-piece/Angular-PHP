@@ -13,9 +13,9 @@
 <div class="actions-wrapper">
   <div class="logged-user">
     <div class="user-image-wrapper">
-      <app-preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="photo" alt="profile image" title="profile image"></app-preload-image>
+      <app-preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="myData.u_avatar" alt="profile image" title="profile image"></app-preload-image>
     </div>
-    <button mat-button [matMenuTriggerFor]="menu" style="color: white;padding: 0">{{name}}</button>
+    <button mat-button [matMenuTriggerFor]="menu" style="color: white;padding: 0">{{myData.u_name}}</button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">Log out</button>
     </mat-menu>

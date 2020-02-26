@@ -54,7 +54,6 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component';
 import {GoogleChartsModule} from 'angular-google-charts';
 import { EditModalComponent } from './userModal/edit-modal/edit-modal.component';
 import { CreateModalComponent } from './userModal/create-modal/create-modal.component';
-
 @NgModule({
         declarations: [
             PagesComponent,

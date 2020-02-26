@@ -78,13 +78,11 @@ export class ModalComponent implements OnInit {
     }
     getCommission() {
         this.commission = this.buysellService.commission;
-        // this.commission['url_return'] = '';
-        // this.commission['url_cancel'] = '';
-        // this.commission['url_notify'] = '';
+        this.commission['url_return'] = 'http://localhost:4200/pages/catalogue';
+        this.commission['url_cancel'] = 'http://localhost:4200/pages/wishlist';
+        this.commission['url_notify'] = '';
     }
-    hasError = (controlName: string, errorName: string) => {
-        return this.payFastForm.controls[controlName].hasError(errorName);
-    }
+
     getSignature() {
         if (this.payFastForm.invalid) {
             return;
@@ -140,7 +138,8 @@ export class ModalComponent implements OnInit {
     // Submit order.
     onCheckOut() {
         this.dialogRef.close();
-        this.setHistory();
+        localStorage.setItem('payData', JSON.stringify(this.formData));
+        // this.setHistory();
     }
     setHistory() {
         const userId = this.formData.get('userId');
@@ -161,5 +160,8 @@ export class ModalComponent implements OnInit {
     }
     showPart() {
         this.onShow = true;
+    }
+    hasError = (controlName: string, errorName: string) => {
+        return this.payFastForm.controls[controlName].hasError(errorName);
     }
 }

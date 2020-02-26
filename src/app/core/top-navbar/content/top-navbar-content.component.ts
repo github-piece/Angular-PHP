@@ -19,8 +19,6 @@ export class TopNavbarContentComponent implements OnInit {
   sideMenuVisible = true;
   baseUrl = '';
   myData: any;
-  photo: string;
-  name: string;
 
   constructor(
     private sideMenuService: SideMenuService,
@@ -56,13 +54,6 @@ export class TopNavbarContentComponent implements OnInit {
   }
   ngOnInit() {
     this.myData = this.authService.currentUserSubject.value;
-    if (this.myData.provider) {
-      this.photo = this.myData.photoUrl;
-      this.name = this.myData.name;
-    } else {
-      this.photo = this.myData.u_avatar;
-      this.name = this.myData.u_name;
-    }
   }
 
   toggleSideMenu(): void {

@@ -10,11 +10,11 @@
 	if(isset($postdata) && !empty($postdata)){
 		
 		$request = json_decode($postdata);
-		$userEmail = $request->userEmail;
+		$userId = $request->userId;
 		$action = $request->action;
 		$return_arr = array();
 
-		if($userEmail === '')
+		if($userId === '')
 		{
 			return http_response_code(400);
 		}

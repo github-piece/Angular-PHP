@@ -9,6 +9,7 @@ import {ContactComponent} from './front/contact/contact.component';
 import {AboutComponent} from './front/about/about.component';
 import {LoginComponent} from './front/auth/login.component';
 import {RegisterComponent} from './front/auth/register.component';
+import {SuccessComponent} from './payment/success/success.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,7 @@ const routes: Routes = [
     {path: 'about', component: AboutComponent},
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
+    {path: 'success', component: SuccessComponent},
     {
         path: 'pages',
         loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)

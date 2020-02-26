@@ -37,7 +37,7 @@ export class MaindashboardComponent implements OnInit {
     showActions = false;
     zoom = 2;
 
-    u_email: any;
+    u_id: any;
     businessData = [];
     userData: any = [];
 
@@ -60,12 +60,7 @@ export class MaindashboardComponent implements OnInit {
         } else {
             this.showActions = true;
             this.userData = this.authenticationService.currentUserSubject.value;
-            if (this.userData.provider) {
-                this.u_email = this.userData.email;
-            } else {
-                this.u_email = this.userData.u_email;
-            }
-            this.getBusinessList(this.u_email);
+            this.getBusinessList(this.userData.u_id);
         }
     }
     viewMap() {
@@ -80,8 +75,8 @@ export class MaindashboardComponent implements OnInit {
                 error => {
                 });
     }
-    getBusinessList(userEmail) {
-        this.businessService.getBusinessList(userEmail)
+    getBusinessList(userId) {
+        this.businessService.getBusinessList(userId)
             .pipe(first())
             .subscribe(
                 data => {

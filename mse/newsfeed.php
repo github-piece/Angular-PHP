@@ -31,11 +31,6 @@ header('Access-Control-Allow-Origin');
 			return http_response_code(400);
 		}
 		$u_accounttype = mysqli_real_escape_string($conn, trim($request->u_accounttype));
-		$sql = "SELECT u_id FROM tbl_user WHERE u_email = '".$request->u_email."'";
-		$result = $conn->query($sql);
-		while($row = $result->fetch_assoc()) {
-			$u_id = $row['u_id'];
-		}
 
 		$return_arr = array();
 		

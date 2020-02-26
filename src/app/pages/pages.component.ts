@@ -37,13 +37,7 @@ export class PagesComponent implements OnInit, AfterContentInit {
     }
     ngOnInit() {
         this.userData = this.authenticationService.currentUserSubject.value;
-        let userEmail;
-        if (this.userData.provider) {
-            userEmail = this.userData.email;
-        } else {
-            userEmail = this.userData.u_email;
-        }
-        this.messagesMenuService.getData(userEmail)
+        this.messagesMenuService.getData(this.userData.u_id)
             .pipe(first())
             .subscribe(data => {
                 this.messages = data;

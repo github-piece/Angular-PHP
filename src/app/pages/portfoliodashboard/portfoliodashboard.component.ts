@@ -34,7 +34,6 @@ export class PortfoliodashboardComponent implements OnInit {
     showActions = false;
     zoom = 2;
 
-    u_email: any;
     userData: any = [];
     businessData = [];
 
@@ -71,18 +70,13 @@ export class PortfoliodashboardComponent implements OnInit {
         } else {
             this.showActions = true;
             this.userData = this.authenticationService.currentUserSubject.value;
-            if (this.userData.provider) {
-                this.u_email = this.userData.email;
-            } else {
-                this.u_email = this.userData.u_email;
-            }
-            this.getBusinessList(this.u_email);
+            this.getBusinessList(this.userData.u_id);
             this.getSellHistory();
             this.getBuyHistory();
         }
     }
-    getBusinessList(userEmail) {
-        this.businessService.getBusinessList(userEmail)
+    getBusinessList(userId) {
+        this.businessService.getBusinessList(userId)
             .pipe(first())
             .subscribe(
                 data => {
@@ -92,7 +86,7 @@ export class PortfoliodashboardComponent implements OnInit {
                 });
     }
     getSellHistory() {
-        this.buysellService.getSellHistory(this.u_email)
+        this.buysellService.getSellHistory(this.userData.u_id)
             .pipe(first())
             .subscribe(
                 data => {
@@ -105,7 +99,7 @@ export class PortfoliodashboardComponent implements OnInit {
             );
     }
     getBuyHistory() {
-        this.buysellService.getBuyHistory(this.u_email)
+        this.buysellService.getBuyHistory(this.userData.u_id)
             .pipe(first())
             .subscribe(
                 data => {
@@ -127,7 +121,7 @@ export class PortfoliodashboardComponent implements OnInit {
                     this.businessIds = businessId.filter((v, i, a) => a.indexOf(v) === i);
                     let count = 0; let index = 0;
                     for (let i = 0; i < this.businessData.length; i++) {
-                        if (this.businessData[i].u_email === this.u_email) {
+                        if (this.businessData[i].u_id === this.userData.u_id) {
                             this.myBusiness[index] = this.businessData[i];
                             index++;
                         }

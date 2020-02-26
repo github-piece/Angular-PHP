@@ -5,12 +5,7 @@
     $action = $request->action;
     $return_arr = array();
     if ($action == 'get') {
-        $userEmail = $request->email;
-        $sql = "SELECT u_id FROM tbl_user WHERE tbl_user.u_email = '".$userEmail."' LIMIT 1";
-        $result = mysqli_query($conn, $sql);
-        while ($row = $result->fetch_assoc()) {
-            $userId = $row['u_id'];
-        }
+        $userId = $request->u_id;
         $sql = 
         "SELECT tbl_user.u_name, tbl_user.u_avatar, tbl_user.socialUser, tbl_business.*, tbl_notification.*
         FROM tbl_notification

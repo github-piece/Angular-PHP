@@ -4,9 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {AlertService} from '../../_services/common/alert.service';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {first} from 'rxjs/operators';
-import {AuthService} from 'angularx-social-login';
-import {SocialUser} from 'angularx-social-login';
-import {GoogleLoginProvider, FacebookLoginProvider} from 'angularx-social-login';
+import {AuthService, SocialUser, GoogleLoginProvider, FacebookLoginProvider, LinkedinLoginProvider} from 'ng-social-login';
 import {UserService} from '../../_services/user/user.service';
 
 @Component({
@@ -31,7 +29,7 @@ export class LoginComponent implements OnInit {
       private authenticationService: AuthenticationService,
       private alertService: AlertService,
       private authService: AuthService,
-      private userService: UserService
+      private userService: UserService,
   ) {
   }
 
@@ -47,8 +45,26 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  signInWithGoogle(): void {
+  signInWithGoogle() {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(x => {
+      const formData = new FormData();
+      formData.append('name', x.name);
+      formData.append('email', x.email);
+      formData.append('avatar', x.photoUrl);
+      formData.append('token', x.token);
+      formData.append('provider', x.provider);
+      formData.append('action', 'social');
+      this.userService.socialLogin(formData)
+          .pipe(first())
+          .subscribe(data => {
+            localStorage.setItem('currentUser', JSON.stringify(data[0]));
+            window.location.replace('/pages/maindashboard');
+          });
+    });
+  }
+
+  signInWithFB() {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(x => {
       localStorage.setItem('currentUser', JSON.stringify(x));
       this.userService.socialLogin(x)
           .pipe(first())
@@ -58,10 +74,14 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  signInWithFB(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(x => {
-      console.log(x);
-      this.router.navigate(['pages/maindashboard']);
+  signInWithLinkedIn() {
+    this.authService.signIn(LinkedinLoginProvider.PROVIDER_ID).then(x => {
+      localStorage.setItem('currentUser', JSON.stringify(x));
+      this.userService.socialLogin(x)
+          .pipe(first())
+          .subscribe(data => {
+          });
+      window.location.replace('/pages/maindashboard');
     });
   }
 
@@ -88,6 +108,7 @@ export class LoginComponent implements OnInit {
               }
             });
   }
-  signInWithLinkedIn() {
+
+  signInWithTwitter() {
   }
 }

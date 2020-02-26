@@ -19,6 +19,7 @@ import {UpcominglistingsdashboardComponent} from './upcominglistingsdashboard/up
 import {ListingABusinessComponent} from './listing-abusiness/listing-abusiness.component';
 import {UserpagedashboardComponent} from './userpagedashboard/userpagedashboard.component';
 import {DetailArticleComponent} from './detail-article/detail-article.component';
+import {SuccessComponent} from '../payment/success/success.component';
 
 const routes: Routes = [
     {

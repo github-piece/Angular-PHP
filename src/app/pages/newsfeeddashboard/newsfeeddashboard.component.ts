@@ -38,19 +38,12 @@ export class NewsfeeddashboardComponent implements OnInit {
         } else {
             this.showActions = true;
             this.userData = this.authenticationService.currentUserSubject.value;
-            if (this.userData.provider) {
-                this.userEmail = this.userData.email;
-                this.userType = 'Moderator';
-            } else {
-                this.userEmail = this.userData.u_id;
-                this.userType = this.userData.u_accounttype;
-            }
-            this.getArticleList(this.userEmail, this.userType);
+            this.getArticleList(this.userData.u_id, this.userData.u_accounttype);
         }
     }
 
-    getArticleList(email, type) {
-        this.newsfeedService.getArticleList(type, email)
+    getArticleList(id, type) {
+        this.newsfeedService.getArticleList(type, id)
             .pipe(first())
             .subscribe(
                 data => {

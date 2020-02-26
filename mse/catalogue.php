@@ -6,12 +6,7 @@
         $return_arr = Array();
         $answer_list = Array();
         $request = json_decode($postdata);
-        $userEmail = $request->userEmail;
-        $sql = "SELECT u_id FROM tbl_user WHERE u_email = '".$userEmail."'";
-        $result = $conn->query($sql);
-        while($row = $result->fetch_assoc()) {
-            $userid = $row['u_id'];
-        }
+        $userid = $request->userId;
         if($userid === '')
         {
             return http_response_code(400);

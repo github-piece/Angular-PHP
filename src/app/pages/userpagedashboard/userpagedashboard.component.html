@@ -9,16 +9,14 @@
                         <div class="col-lg-3">
                             <mat-card>
                                 <div class="profile-picture">
-                                    <img [src]="myPhoto" alt="photo" *ngIf="!uploadImageShow">
-                                    <img [src]="myPhoto" alt="photo" *ngIf="uploadImageShow">
+                                    <img [src]="myData.u_avatar" alt="photo">
                                     <div class="profile-name">
-                                        {{name}}
+                                        {{myData.u_name}}
                                     </div>
                                     <div class="profile-detail">
-                                        {{email}}
+                                        {{myData.u_email}}
                                     </div>
-                                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)" *ngIf="!myData.provider"/>
-                                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)" *ngIf="myData.provider" disabled/>
+                                    <input id="file" class="file-upload-btn" type="file" accept='image/*' (change)="preview($event.target)"/>
                                     <label for="file" class="mt-5">Upload Image</label>
                                 </div>
                             </mat-card>
@@ -32,11 +30,11 @@
                                         <tbody>
                                         <tr>
                                             <td>Name</td>
-                                            <td>{{name}}</td>
+                                            <td>{{myData.u_name}}</td>
                                         </tr>
                                         <tr>
                                             <td>Email</td>
-                                            <td>{{email}}</td>
+                                            <td>{{myData.u_email}}</td>
                                         </tr>
                                         <tr>
                                             <td>Phone Number</td>
@@ -48,7 +46,7 @@
                                         </tr>
                                         <tr>
                                             <td>Role</td>
-                                            <td>{{accounttype}}</td>
+                                            <td>{{myData.u_acconuttype}}</td>
                                         </tr>
                                         </tbody>
                                     </table>

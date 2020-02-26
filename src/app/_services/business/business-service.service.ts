@@ -15,9 +15,9 @@ export class BusinessServiceService {
     return this.http.post(url, formData);
   }
 
-  getBusinessList(userEmail: string) {
+  getBusinessList(userId) {
     const action = 'get';
-    return this.http.post<any>(`${URL_SERVICIOS}/business.php`, { userEmail,  action })
+    return this.http.post<any>(`${URL_SERVICIOS}/business.php`, { userId,  action })
         .pipe(map(business => {
             return business;
         }));

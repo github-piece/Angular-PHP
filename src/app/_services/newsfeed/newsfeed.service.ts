@@ -26,9 +26,9 @@ export class NewsfeedService {
             return articlelist;
     }));
   }
-  getArticleList(u_accounttype, u_email) {
+  getArticleList(u_accounttype, u_id) {
     const action = 'get_all';
-    return this.http.post<any>(`${URL_SERVICIOS}/newsfeed.php`, { u_accounttype, u_email, action})
+    return this.http.post<any>(`${URL_SERVICIOS}/newsfeed.php`, { u_accounttype, u_id, action})
         .pipe(map(articlelist => {
             return articlelist;
     }));

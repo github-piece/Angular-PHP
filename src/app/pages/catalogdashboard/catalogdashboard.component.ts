@@ -23,7 +23,6 @@ interface ExampleFlatNode {
 export class CatalogdashboardComponent {
 
     showActions = false;
-    userEmail: any;
     userData: any = [];
     businessInfo: any;
     amount = [];
@@ -72,11 +71,6 @@ export class CatalogdashboardComponent {
         } else {
             this.showActions = true;
             this.userData = this.authenticationService.currentUserSubject.value;
-            if (this.userData.provider) {
-                this.userEmail = this.userData.email;
-            } else {
-                this.userEmail = this.userData.u_email;
-            }
             this.getBusinessList();
         }
     }
@@ -85,7 +79,7 @@ export class CatalogdashboardComponent {
     // Get business answers and users information.
     getBusinessList() {
         this.businessInfo = [];
-        this.catalogueService.getBusinessList(this.userEmail)
+        this.catalogueService.getBusinessList(this.userData.u_id)
             .pipe(first())
             .subscribe(
                 business_info => {
@@ -136,7 +130,7 @@ export class CatalogdashboardComponent {
     }
     getHistory() {
         this.historyList = [];
-        this.buysellService.getBuyHistory(this.userEmail)
+        this.buysellService.getBuyHistory(this.userData.u_id)
             .pipe(first())
             .subscribe(
                 data => {

@@ -4,11 +4,7 @@
 	if(isset($postdata) && !empty($postdata)){
 			$request = json_decode($postdata);
 			$action = $request->action;
-			$sql = "SELECT u_id FROM tbl_user WHERE u_email = '".$request->userEmail."'";
-			$result = $conn->query($sql);
-			while($row = $result->fetch_assoc()) {
-				$user_id = $row['u_id'];
-			}
+			$user_id = $request->userId;
 			switch($action){
 				case "get_portfolio":
 					get_portfolio($conn, $request, $user_id);

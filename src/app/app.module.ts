@@ -16,10 +16,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
 import {
     MatButtonModule, MatCardModule,
-    MatDividerModule,
+    MatDividerModule, MatGridListModule,
     MatIconModule,
     MatListModule,
-    MatTableModule,
     MatToolbarModule,
     MatTooltipModule
 } from '@angular/material';
@@ -27,8 +26,14 @@ import {MatDialogModule} from '@angular/material';
 import {ModalComponent} from './pages/modal/modal.component';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.module';
 import {SlickModule} from 'ngx-slick';
-import {AuthService, SocialLoginModule} from 'angularx-social-login';
-import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
+import {
+    AuthService,
+    SocialLoginModule,
+    AuthServiceConfig,
+    GoogleLoginProvider,
+    FacebookLoginProvider,
+    LinkedinLoginProvider
+} from 'ng-social-login';
 import {AuthenticationService} from './_services/authentication/authentication.service';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {AgmCoreModule} from '@agm/core';
@@ -39,16 +44,25 @@ import { FooterComponent } from './includes/footer/footer.component';
 import { ContactComponent } from './front/contact/contact.component';
 import { AboutComponent } from './front/about/about.component';
 import {GoogleChartsModule} from 'angular-google-charts';
-const config = new AuthServiceConfig([
-    {
-        id: GoogleLoginProvider.PROVIDER_ID,
-        provider: new GoogleLoginProvider('340033599539-8o42jmosgp5l7nionok72c7gppeknkgu.apps.googleusercontent.com')
-    },
-    {
-        id: FacebookLoginProvider.PROVIDER_ID,
-        provider: new FacebookLoginProvider('2455540498025956')
-    },
-]);
+import {SuccessComponent} from './payment/success/success.component';
+import {NotificationComponent} from './payment/notificaion/notificaion.component';
+import {CancelComponent} from './payment/cancel/cancel.component';
+
+const config = new AuthServiceConfig(
+    [
+        {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('340033599539-8o42jmosgp5l7nionok72c7gppeknkgu.apps.googleusercontent.com')
+        },
+        {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('2455540498025956')
+        },
+        {
+            id: LinkedinLoginProvider.PROVIDER_ID,
+            provider: new LinkedinLoginProvider('id')
+        },
+    ]);
 
 export function provideConfig() {
     return config;
@@ -64,7 +78,10 @@ export function provideConfig() {
         HeaderComponent,
         FooterComponent,
         ContactComponent,
-        AboutComponent
+        AboutComponent,
+        SuccessComponent,
+        NotificationComponent,
+        CancelComponent
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'my-app'}),
@@ -93,7 +110,8 @@ export function provideConfig() {
         MatTooltipModule,
         MatListModule,
         GoogleChartsModule.forRoot(),
-        MatCardModule
+        MatCardModule,
+        MatGridListModule,
     ],
     bootstrap: [AppComponent],
     providers: [
