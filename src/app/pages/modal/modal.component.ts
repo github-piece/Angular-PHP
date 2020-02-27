@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {BuysellService} from '../../_services/buysell/buysell.service';
 import {first} from 'rxjs/operators';
@@ -7,7 +7,6 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '
 import {PayfastService} from '../../_services/payfast/payfast.service';
 import {PAYMENT_METHOD_CREDIT} from '../../../config/Constant';
 import {URL_PAYFAST_BUY} from '../../../config/url.servicios';
-import {validate} from 'codelyzer/walkerFactory/walkerFn';
 
 @Component({
     selector: 'app-modal',
@@ -22,7 +21,6 @@ export class ModalComponent implements OnInit {
     loading = false;
     userid: any;
     userName: string;
-    fail_sell = false;
     commission: any;
     platform_fee: any;
     item_name: any;
@@ -41,6 +39,7 @@ export class ModalComponent implements OnInit {
     fund: any;
     rate: any;
     frequency: any;
+    payData = {};
     constructor(public dialogRef: MatDialogRef<ModalComponent>,
                 private authenticationService: AuthenticationService,
                 private buysellService: BuysellService,
@@ -78,8 +77,8 @@ export class ModalComponent implements OnInit {
     }
     getCommission() {
         this.commission = this.buysellService.commission;
-        this.commission['url_return'] = 'http://localhost:4200/pages/catalogue';
-        this.commission['url_cancel'] = 'http://localhost:4200/pages/wishlist';
+        this.commission['url_return'] = 'http://localhost:4200/success';
+        this.commission['url_cancel'] = 'http://localhost:4200/cancel';
         this.commission['url_notify'] = '';
     }
 
@@ -138,25 +137,12 @@ export class ModalComponent implements OnInit {
     // Submit order.
     onCheckOut() {
         this.dialogRef.close();
-        localStorage.setItem('payData', JSON.stringify(this.formData));
-        // this.setHistory();
-    }
-    setHistory() {
-        const userId = this.formData.get('userId');
-        const businessId = this.formData.get('businessId');
-        const balance = this.formData.get('balance');
-        const amount = this.formData.get('amount');
-        const fund = this.formData.get('fund');
-        const rate = this.formData.get('rate');
-        const frequency = this.formData.get('frequency');
-        this.buysellService.buy(userId, businessId, balance, amount, fund, rate, frequency)
-            .pipe(first())
-            .subscribe(
-                result => {
-                    return result;
-                },
-                error => {
-                });
+        this.formData.append('u_avatar', this.authenticationService.currentUserSubject.value['u_avatar']);
+        this.formData.append('name', this.userName);
+        this.formData.forEach((value, key) => {
+            this.payData[key] = value;
+        });
+        localStorage.setItem('payData', JSON.stringify(this.payData));
     }
     showPart() {
         this.onShow = true;

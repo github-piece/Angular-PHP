@@ -1,9 +1,14 @@
     <mat-card>
+        <mat-card-header>
+            <img mat-card-avatar [src]="payData['u_avatar']">
+            <mat-card-title>{{payData['name']}}</mat-card-title>
+            <mat-card-subtitle style="margin-bottom: 0">{{payData['item_name']}}</mat-card-subtitle>
+        </mat-card-header>
         <img mat-card-image src="src/assets/imgs/success.jpg" alt="success">
         <div class="mat-card-header">
             Your payment has done successfully.
         </div>
-        <button mat-raised-button class="theme-btn">
+        <button mat-raised-button class="theme-success-btn" (click)="setHistory()">
             Continue
         </button>
     </mat-card>

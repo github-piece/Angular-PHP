@@ -10,6 +10,7 @@ import {AboutComponent} from './front/about/about.component';
 import {LoginComponent} from './front/auth/login.component';
 import {RegisterComponent} from './front/auth/register.component';
 import {SuccessComponent} from './payment/success/success.component';
+import {CancelComponent} from './payment/cancel/cancel.component';
 
 const routes: Routes = [
     {
@@ -23,6 +24,7 @@ const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'success', component: SuccessComponent},
+    {path: 'cancel', component: CancelComponent},
     {
         path: 'pages',
         loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)

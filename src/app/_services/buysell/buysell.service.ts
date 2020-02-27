@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {URL_SERVICIOS} from '../../../config/url.servicios';
 import {first, map} from 'rxjs/operators';
+import {pipe} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,9 @@ export class BuysellService {
   buy(userId, businessId, balance, amount, fund, rate, frequency) {
     const action = 'buy';
     const url = `${URL_SERVICIOS}/buysell.php`;
-    return this.http.post(url, {userId, businessId, balance, amount, fund, rate, frequency, action});
+    return this.http.post<any>(url, {userId, businessId, balance, amount, fund, rate, frequency, action})
+        .pipe(first())
+        .subscribe(data => {});
   }
 
   sell(business_id, amount, userid) {

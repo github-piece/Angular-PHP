@@ -6,7 +6,7 @@
         $return_arr = Array();
         $answer_list = Array();
         $request = json_decode($postdata);
-        $userid = $request->userId;
+        $userid = $request->userid;
         if($userid === '')
         {
             return http_response_code(400);
@@ -54,12 +54,12 @@
         array_push($business_info, getAnswerByIdCol(7, 'col_5_header',$answers));
         array_push($business_info, getAnswerByIdCol(2, 'col_0_header', $answers));
         array_push($business_info, getAnswerByIdCol(6, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(12, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(55, 'col_0_header', $answers));
         array_push($business_info, getAnswerByIdCol(14, 'col_1_header', $answers));
-        array_push($business_info, getAnswerByIdCol(38, 'col_0_header', $answers));
+        array_push($business_info, getAnswerByIdCol(12, 'col_0_header', $answers));
         array_push($business_info, getAnswerByIdCol(44, 'col_1_header', $answers));
-        array_push($business_info, getAnswerByIdCol(9, 'col_0_header', $answers));
+        array_push($business_info, getAnswerByIdCol(38, 'col_0_header', $answers));
+        array_push($business_info, getAnswerByIdCol(5, 'col_0_header', $answers));
+        array_push($business_info, getAnswerByIdCol(55, 'col_0_header', $answers));
         insertNewTab($key_business_info,$business_info,'key',$userid,$business_id,$conn);
     }
 
@@ -164,11 +164,11 @@
     }
     //Get completed new answers from tbl_business_answer by business id.
     function getAnswersByBusinessId($userid, $business_id, $conn){
-    $sql = "SELECT * FROM tbl_business_answer WHERE u_id='".$userid."' AND business_id = '".$business_id."'";
-    $result = mysqli_query($conn, $sql);
-    $answers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    return $answers;
-}
+        $sql = "SELECT * FROM tbl_business_answer WHERE u_id='".$userid."' AND business_id = '".$business_id."'";
+        $result = mysqli_query($conn, $sql);
+        $answers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $answers;
+    }
 // 'Business Summary', 'Business Information:', '', 'tbl_business_answer', $conn
 //Get key for tbl_business column using tab, sub tab from catalogue.
     function getKeyFromCatalogue($tab, $subTab, $button, $tbl_pull_request_1_source, $conn){

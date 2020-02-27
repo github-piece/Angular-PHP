@@ -100,15 +100,15 @@
                     </tr>
                 </table>
                 <!--Merchant details.-->
-                <input type="text" name="merchant_id" value="{{commission['mse_merchant_id']}}">
-                <input type="text" name="merchant_key" value="{{commission['mse_merchant_key']}}">
-                <input type="text" name="return_url" value="{{commission['url_return']}}">
-                <input type="text" name="cancel_url" value="{{commission['url_cancel']}}">
-                <input type="text" name="notify_url" value="{{commission['url_notify']}}">
-                <input type="text" name="amount" [value]="amount_to_buy"/>
-                <input type="text" name="item_name" [value]="item_name">
-                <input type="text" name="payment_method" value="{{commission['payment_method']}}">
-                <input type="text" name="signature" [value]="signature">
+                <input type="hidden" name="merchant_id" value="{{commission['mse_merchant_id']}}">
+                <input type="hidden" name="merchant_key" value="{{commission['mse_merchant_key']}}">
+                <input type="hidden" name="return_url" value="{{commission['url_return']}}">
+                <input type="hidden" name="cancel_url" value="{{commission['url_cancel']}}">
+                <input type="hidden" name="notify_url" value="{{commission['url_notify']}}">
+                <input type="hidden" name="amount" [value]="amount_to_buy"/>
+                <input type="hidden" name="item_name" [value]="item_name">
+                <input type="hidden" name="payment_method" value="{{commission['payment_method']}}">
+                <input type="hidden" name="signature" [value]="signature">
                 <div class="padding-top-20" style="text-align:center" *ngIf="loading">
                     <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                 </div>

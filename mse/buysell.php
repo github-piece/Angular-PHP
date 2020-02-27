@@ -162,6 +162,7 @@
 				'".$date."'
 			);";
 		echo mysqli_query($conn, $sql) or die("error to insert employee data");
+		echo 'success';
 	}
 	
 	function sell_history($conn, $request, $user_id){

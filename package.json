@@ -73,7 +73,7 @@
     "nouislider": "^12.1.0",
     "nvd3": "1.8.5",
     "popper.js": "^1.16.0",
-    "rxjs": "^6.3.3",
+    "rxjs": "^6.0.0",
     "rxjs-compat": "^6.3.3",
     "rxjs-tslint": "^0.1.6",
     "slick-carousel": "^1.8.1",

@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<mat-card>
+    <mat-card-header>
+        <img mat-card-avatar [src]="payData['u_avatar']">
+        <mat-card-title>{{payData['name']}}</mat-card-title>
+        <mat-card-subtitle style="margin-bottom: 0">{{payData['item_name']}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="src/assets/imgs/success.jpg" alt="success">
+    <div class="mat-card-header">
+        Your payment has been cancelled.
+    </div>
+    <button mat-raised-button class="btn-danger" (click)="return()">
+        Continue
+    </button>
+</mat-card>
