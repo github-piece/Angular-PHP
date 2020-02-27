@@ -50,10 +50,6 @@
 }
 
 mat-card {
-  max-height: 500px;
-  img {
-    max-height: 416px;
-  }
   .more-button {
     position: absolute;
     top: 5px;
@@ -64,4 +60,17 @@ mat-card {
 .mat-paginator {
   background: transparent;
   margin-bottom: 16px;
+}
+
+.news-image {
+  height: 500px;
+  margin-bottom: 32px;
+  img {
+    position: absolute;
+    max-height: 416px;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 16px;
+  }
 }

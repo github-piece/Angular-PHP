@@ -34,7 +34,7 @@ export class ListingABusinessComponent implements OnInit {
     imgURL = [];
     showImage = [];
     //  The current visible step
-    currentStep = 0;
+    currentStep = 54;
     //  Progress var init
     progress = '0';
     questionForm: FormGroup;

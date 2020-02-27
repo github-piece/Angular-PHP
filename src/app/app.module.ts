@@ -102,7 +102,7 @@ export function provideConfig() {
         SocialLoginModule,
         MatDividerModule,
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAvcDy5ZYc2ujCS6TTtI3RYX5QmuoV8Ffw'
+            apiKey: 'AIzaSyA6L4RK2RH8CmfPnyV1VEfjrHj3BP66gmE'
         }),
         MatToolbarModule,
         MatIconModule,

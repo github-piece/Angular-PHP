@@ -24,7 +24,7 @@ export class BusinessServiceService {
   }
 
   getGeometry(address) {
-    return this.http.post<any>(`${URL_SERVICIOS}/businesslist.php`, { address})
+    return this.http.post<any>(`${URL_SERVICIOS}/businesslist.php`, {address})
         .pipe(map(result => {
             return result;
         }));

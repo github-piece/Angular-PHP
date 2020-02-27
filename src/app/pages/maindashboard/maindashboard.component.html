@@ -20,15 +20,28 @@
                     <div class="float-right search-btn">
                         <mat-form-field class="float-right" style="width:400px;">
                             <mat-label>Please insert place address</mat-label>
-                            <input matInput [(ngModel)]="address">
-                            <mat-icon matSuffix (click)="viewMap();">search</mat-icon>
+                            <mat-select>
+                                <mat-option *ngFor="let business of businessData" value="{{business.name}}" (click)="onAddress(business.id)">{{business.name}}</mat-option>
+                                <mat-option value="All" (click)="onAddressAll()">Default</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
                 <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
-                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-                    <agm-marker *ngFor="let data of rowData; let i = index" [latitude]="data.lat"
-                                [longitude]="data.lng">
+                    <agm-marker
+                            *ngFor="let data of mapData"
+                            [latitude]="data.lat"
+                            [longitude]="data.lng"
+                    >
+                        <agm-info-window>
+                            <div class="feed">
+                                <img [src]="data.pic">
+                                <div class="content">
+                                    {{data.name}}({{data.address}})<br/>
+                                    <span>by</span> {{data.userName}}
+                                </div>
+                            </div>
+                        </agm-info-window>
                     </agm-marker>
                 </agm-map>
             </mat-card-content>

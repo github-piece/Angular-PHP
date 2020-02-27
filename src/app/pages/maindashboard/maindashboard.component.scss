@@ -13,6 +13,13 @@
 .search-btn {
   min-width: 400px;
   margin-left: calc(100% - 416px);
+  .location-btn {
+    cursor: pointer;
+    &:hover {
+      background: #eceff1;
+      border-radius: 50%;
+    }
+  }
 }
 
 .border-table {
@@ -42,4 +49,34 @@ agm-map {
 .table-warp {
   height: 80px;
   overflow-y: auto;
+}
+
+.feed {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
+  color: #263238;
+  font-size: 16px;
+
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.05px;
+  img {
+    width: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .content {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    span {
+      color: #546e7a;
+      font-size: 12px;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: -0.04px;
+    }
+  }
+
 }

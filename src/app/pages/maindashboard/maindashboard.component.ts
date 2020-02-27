@@ -3,6 +3,7 @@ import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {BusinessServiceService} from '../../_services/business/business-service.service';
 import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
+import {add} from 'ngx-bootstrap/chronos';
 
 @Component({
     selector: 'app-maindashboard',
@@ -40,6 +41,7 @@ export class MaindashboardComponent implements OnInit {
     u_id: any;
     businessData = [];
     userData: any = [];
+    mapData = [];
 
     tableData = [];
     dataSource: any;
@@ -63,17 +65,28 @@ export class MaindashboardComponent implements OnInit {
             this.getBusinessList(this.userData.u_id);
         }
     }
-    viewMap() {
-        console.log('address', this.address);
-        this.businessService.getGeometry(this.address)
-            .pipe(first())
-            .subscribe(
-                 data => {
-                    this.lat = 37.0551565;
-                    this.lng = -95.6726939;
-                },
-                error => {
-                });
+    onAddress(businessId) {
+        this.mapData = [];
+        for (let i = 0; i < this.businessData.length; i++) {
+            if (this.businessData[i].id === businessId) {
+                this.mapData[0] = this.businessData[i];
+            }
+        }
+    }
+    getAddress() {
+        for (let i = 0; i < this.businessData.length; i++) {
+            this.businessService.getGeometry(this.businessData[i].address)
+                .pipe(first())
+                .subscribe(
+                    data => {
+                        this.businessData[i].lat = data.lat;
+                        this.businessData[i].lng = data.long;
+                    });
+        }
+        this.mapData = this.businessData;
+    }
+    onAddressAll() {
+        this.mapData = this.businessData;
     }
     getBusinessList(userId) {
         this.businessService.getBusinessList(userId)
@@ -81,6 +94,7 @@ export class MaindashboardComponent implements OnInit {
             .subscribe(
                 data => {
                     this.businessData = data;
+                    this.getAddress();
                     let businessArray = [];
                     for (let i = 0; i < this.businessData.length; i++) {
                         const businessValue = this.businessData[i].business.split(',');
