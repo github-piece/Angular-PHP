@@ -4,7 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {AlertService} from '../../_services/common/alert.service';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {first} from 'rxjs/operators';
-import {AuthService, SocialUser, GoogleLoginProvider, FacebookLoginProvider, LinkedinLoginProvider} from 'ng-social-login';
+import {AuthService, GoogleLoginProvider, FacebookLoginProvider, LinkedinLoginProvider} from 'ng-dynami-social-login';
 import {UserService} from '../../_services/user/user.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   loading: boolean;
   submitted = false;
   returnUrl: string;
-  user: SocialUser;
+  user: any;
   constructor(
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
       private authService: AuthService,
       private userService: UserService,
   ) {
+    console.log(JSON.parse(localStorage.getItem('profile')));
   }
 
   ngOnInit() {
@@ -47,10 +48,11 @@ export class LoginComponent implements OnInit {
 
   signInWithGoogle() {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(x => {
+      console.log(x);
       const formData = new FormData();
       formData.append('name', x.name);
       formData.append('email', x.email);
-      formData.append('avatar', x.photoUrl);
+      formData.append('avatar', x.image);
       formData.append('token', x.token);
       formData.append('provider', x.provider);
       formData.append('action', 'social');
@@ -75,14 +77,13 @@ export class LoginComponent implements OnInit {
   }
 
   signInWithLinkedIn() {
-    this.authService.signIn(LinkedinLoginProvider.PROVIDER_ID).then(x => {
-      localStorage.setItem('currentUser', JSON.stringify(x));
-      this.userService.socialLogin(x)
-          .pipe(first())
-          .subscribe(data => {
-          });
-      window.location.replace('/pages/maindashboard');
-    });
+    this.authService.signIn(LinkedinLoginProvider.PROVIDER_ID).then(
+        (userData) => {
+          console.log(userData);
+
+
+        }
+    );
   }
 
   get f() {
@@ -110,5 +111,8 @@ export class LoginComponent implements OnInit {
   }
 
   signInWithTwitter() {
+    // 03fqnG8NNZQWfv1eTgPw4nogAoaGG2cL
+    // window.location.replace('https://api.twitter.com/oauth/authenticate?oauth_token=03fqnG8NNZQWfv1eTgPw4nogAoaGG2cL');
+    // window.location.replace('https://api.twitter.com/oauth/authenticate?oauth_token=MFlIlgAAAAAAvbinAAABcIsC290');
   }
 }

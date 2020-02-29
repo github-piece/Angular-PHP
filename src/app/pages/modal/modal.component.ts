@@ -77,8 +77,8 @@ export class ModalComponent implements OnInit {
     }
     getCommission() {
         this.commission = this.buysellService.commission;
-        this.commission['url_return'] = 'http://localhost:4200/success';
-        this.commission['url_cancel'] = 'http://localhost:4200/cancel';
+        this.commission['url_return'] = 'http://www.miexchange.tech/success';
+        this.commission['url_cancel'] = 'http://www.miexchange.tech/cancel';
         this.commission['url_notify'] = '';
     }
 

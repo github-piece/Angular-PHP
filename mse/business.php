@@ -36,7 +36,7 @@
 			$row_array['country'] = $row['country'];
 			$row_array['address'] = $row['address'];
 			$row_array['business_id'] = $row['business_id'];
-			$row_array['pic'] = $row['image for front page'];
+			$row_array['pic'] = 'mse/'.$row['image for front page'];
 			$row_array['userName'] = $row['u_name'];
 			if (substr($row['u_avatar'], 0, 6) == 'https:') {
 				$row_array['avatar'] = $row['u_avatar'];

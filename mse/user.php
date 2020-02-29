@@ -276,7 +276,7 @@
 
          $message = "<b>Reset password from Mse.</b>";
          $message .= "<h1>If you want to reset password Please click below link.</h1>";
-		 $message .= "<br/> <a href='http://localhost:3000/sendmail'></a>";
+		 $message .= "<br/> <a href='http://localhost:4200/sendmail'></a>";
 
          $header = "From:mse.support@mse.com \r\n";
          $header .= "Cc:afgh@somedomain.com \r\n";

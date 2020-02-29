@@ -28,12 +28,12 @@ import {GooglePlaceModule} from 'ngx-google-places-autocomplete/ngx-google-place
 import {SlickModule} from 'ngx-slick';
 import {
     AuthService,
-    SocialLoginModule,
+    DynamiSocialLoginModule,
     AuthServiceConfig,
     GoogleLoginProvider,
     FacebookLoginProvider,
     LinkedinLoginProvider
-} from 'ng-social-login';
+} from 'ng-dynami-social-login';
 import {AuthenticationService} from './_services/authentication/authentication.service';
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {AgmCoreModule} from '@agm/core';
@@ -48,23 +48,23 @@ import {SuccessComponent} from './payment/success/success.component';
 import {NotificationComponent} from './payment/notificaion/notificaion.component';
 import {CancelComponent} from './payment/cancel/cancel.component';
 
-const config = new AuthServiceConfig(
-    [
-        {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('340033599539-8o42jmosgp5l7nionok72c7gppeknkgu.apps.googleusercontent.com')
-        },
-        {
-            id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('2455540498025956')
-        },
-        {
-            id: LinkedinLoginProvider.PROVIDER_ID,
-            provider: new LinkedinLoginProvider('id')
-        },
-    ]);
-
-export function provideConfig() {
+export function getAuthServiceConfigs() {
+    const config = new AuthServiceConfig(
+        [
+            {
+                id: GoogleLoginProvider.PROVIDER_ID,
+                provider: new GoogleLoginProvider('340033599539-8o42jmosgp5l7nionok72c7gppeknkgu.apps.googleusercontent.com')
+            },
+            {
+                id: FacebookLoginProvider.PROVIDER_ID,
+                provider: new FacebookLoginProvider('2455540498025956')
+            },
+            {
+                id: LinkedinLoginProvider.PROVIDER_ID,
+                provider: new LinkedinLoginProvider('77kex7ww11igvi')
+            },
+        ]
+    );
     return config;
 }
 @NgModule({
@@ -99,7 +99,7 @@ export function provideConfig() {
         SlickModule.forRoot(),
         ChartsModule,
         ImageCropperModule,
-        SocialLoginModule,
+        DynamiSocialLoginModule,
         MatDividerModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyA6L4RK2RH8CmfPnyV1VEfjrHj3BP66gmE'
@@ -121,7 +121,7 @@ export function provideConfig() {
         },
         {
             provide: AuthServiceConfig,
-            useFactory: provideConfig
+            useFactory: getAuthServiceConfigs
         },
         AuthService,
         AuthenticationService,
