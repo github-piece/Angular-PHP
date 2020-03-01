@@ -17,14 +17,11 @@ export class AboutusService {
     getArticleList(formData) {
         return this.http.post<any>(`${URL_SERVICIOS}/aboutus.php`, formData)
             .pipe(map(articlelist => {
-                console.log('articleList');
-                console.log(articlelist);
                 return articlelist;
             }));
 
     }
     articleSubmit(formData) {
-        console.log(formData);
         return this.http.post<any>(`${URL_SERVICIOS}/aboutus.php`, formData)
             .pipe(map(articlelist => {
                 return articlelist;
@@ -41,7 +38,6 @@ export class AboutusService {
 
         }).pipe(map((data) => {
                 data = data['data'];
-                console.log(data);
                 return data;
             }),
             catchError(this.handleError));
@@ -49,8 +45,6 @@ export class AboutusService {
     deleteArticle(formData) {
         return this.http.post<any>(`${URL_SERVICIOS}/aboutus/delete.php`, formData)
             .pipe(map(articlelist => {
-                console.log('articleList');
-                console.log(articlelist);
                 return articlelist;
             }));
 

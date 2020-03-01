@@ -109,7 +109,7 @@ export function provideConfig() {
         MatButtonModule,
         MatTooltipModule,
         MatListModule,
-        GoogleChartsModule.forRoot(),
+        GoogleChartsModule.forRoot('AIzaSyB_O_MOsbttHQ9gAXE1iO7gCa1Vgg-6AYo'),
         MatCardModule,
         MatGridListModule,
     ],

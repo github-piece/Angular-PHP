@@ -148,11 +148,9 @@ export class MaterialFormsPageComponent implements OnInit {
   }
 
   onSubmitAccountDetails(value) {
-    console.log(value);
   }
 
   onSubmitUserDetails(value) {
-    console.log(value);
   }
 
 }

@@ -3,7 +3,6 @@ import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {BusinessServiceService} from '../../_services/business/business-service.service';
 import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
-import {add} from 'ngx-bootstrap/chronos';
 
 @Component({
     selector: 'app-maindashboard',
@@ -12,25 +11,18 @@ import {add} from 'ngx-bootstrap/chronos';
 })
 
 export class MaindashboardComponent implements OnInit {
+    public charts: Array<{
+        title: string;
+        type: string;
+        data: Array<Array<string | number | {}>>;
+        roles?: Array<{ type: string; role: string; index?: number }>;
+        columnNames?: Array<string>;
+        options?: {};
+    }> = [];
 
-    // TreeMap options
-    type1 = 'TreeMap';
     businessList = [['treeMap', null, 0, 0]];
-    options1 = {
-        minColor: '#f44336',
-        midColor: '#ffc107',
-        maxColor: '#00c853',
-        headerHeight: 0,
-        showScale: false
-    };
-    // BarCharts options
-    type2 = 'Histogram';
     tenureList = [];
     goalList = [];
-    options2 = {
-        legend: 'none',
-        colors: ['#607d8b']
-    };
 
     lat: any;
     lng: any;
@@ -60,7 +52,6 @@ export class MaindashboardComponent implements OnInit {
         if (this.authenticationService.currentUser == null) {
             this.showActions = false;
         } else {
-            this.showActions = true;
             this.userData = this.authenticationService.currentUserSubject.value;
             this.getBusinessList(this.userData.u_id);
         }
@@ -93,6 +84,7 @@ export class MaindashboardComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
+                    this.showActions = true;
                     this.businessData = data;
                     this.getAddress();
                     let businessArray = [];
@@ -109,36 +101,78 @@ export class MaindashboardComponent implements OnInit {
                             }
                         }
                     }
-                    let tenureArray = [];
+                    this.charts.push({
+                        title: 'Businesses listed by Industry',
+                        type: 'TreeMap',
+                        data: this.businessList,
+                        options: {
+                                    minColor: '#f44336',
+                                    midColor: '#ffc107',
+                                    maxColor: '#00c853',
+                                    headerHeight: 0,
+                                    showScale: false
+                        }
+                    });
                     let goalArray = [];
                     for (let j = 0; j < this.businessData.length; j++) {
-                        tenureArray = tenureArray.concat(this.businessData[j].tenure);
                         const goalValue = this.businessData[j].goal.split(',');
                         goalArray = goalArray.concat(goalValue);
                         this.tableData[j] = {
                             'no': this.businessData[j].no, 'name': this.businessData[j].name, 'location': this.businessData[j].country, 'address': this.businessData[j].address
                         };
                     }
-                    const tenureName = tenureArray.filter((v, i, a) => a.indexOf(v) === i);
-                    for (let j = 0; j < tenureName.length; j++) {
-                        if (tenureName[j] !== '') {
-                            this.tenureList[j] = [tenureName[j], 0];
-                            for (let i = 0; i < this.businessData.length; i++) {
-                                if (tenureName[j] === this.businessData[i].tenure) {
-                                    this.tenureList[j][1] = Number(this.tenureList[j][1]) + 1;
-                                }
-                            }
-                        }
+                    for (let i = 0; i < this.businessData.length; i++) {
+                        this.tenureList[i] = [
+                            this.businessData[i].name, parseFloat(this.businessData[i].tenure), this.getRandomColor(), this.businessData[i].name
+                        ];
                     }
+                    this.charts.push({
+                        title: 'Tenure Lists',
+                        type: 'Histogram',
+                        columnNames: ['Business', 'Years'],
+                        roles: [
+                            { role: 'style', type: 'string', index: 2},
+                            { role: 'tooltip', type: 'string', index: 3}
+                        ],
+                        data: this.tenureList,
+                        options: {
+                            hAxis: {
+                                title: 'Years'
+                            },
+                            vAxis: {
+                                title: 'Business Name'
+                            },
+                            legend: 'none'
+                        }
+                    });
                     const goalArrayName = goalArray.filter((v, i, a) => a.indexOf(v) === i);
                     for (let j = 0; j < goalArrayName.length; j++) {
-                        this.goalList[j] = [goalArrayName[j], 0];
+                        this.goalList[j] = [goalArrayName[j], 0, this.getRandomColor(), goalArrayName[j]];
                         for (let i = 0; i < goalArray.length; i++) {
                             if (goalArrayName[j] === goalArray[i]) {
                                 this.goalList[j][1] = Number(this.goalList[j][1]) + 1;
                             }
                         }
                     }
+                    this.charts.push({
+                        title: 'Business Goals',
+                        type: 'Histogram',
+                        columnNames: ['Business', 'Times'],
+                        roles: [
+                            { role: 'style', type: 'string', index: 2},
+                            { role: 'tooltip', type: 'string', index: 3}
+                        ],
+                        data: this.goalList,
+                        options: {
+                            hAxis: {
+                                title: 'Count'
+                            },
+                            vAxis: {
+                                title: 'Goal Name'
+                            },
+                            legend: 'none'
+                        }
+                    });
                     this.getTasks();
                 },
                 error => {
@@ -165,5 +199,13 @@ export class MaindashboardComponent implements OnInit {
         const start = this.currentPage * this.pageSize;
         const part = this.tasks.slice(start, end);
         this.dataSource = part;
+    }
+    getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
     }
 }

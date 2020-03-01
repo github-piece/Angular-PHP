@@ -139,13 +139,6 @@ export class AboutusdashboardComponent implements OnInit {
             .subscribe(
                 data => {
                     this.rowData = data;
-                    console.log(this.rowData);
-                    console.log(this.u_accounttype);
-
-                    // console.log("rowdata", this.rowData);
-                },
-                error => {
-                    console.log('error', error);
                 });
     }
 
@@ -166,7 +159,6 @@ export class AboutusdashboardComponent implements OnInit {
 
     imageCropped(event: ImageCroppedEvent) {
         this.croppedImage = event.base64;
-        console.log(this.croppedImage);
     }
 
     imageLoaded() {
@@ -177,16 +169,12 @@ export class AboutusdashboardComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log(data);
                     this.freezedflag = data.u_freezedflag;
                     if (this.freezedflag === 1) {
                         this.showActions = false;
                     } else {
                         this.showActions = true;
                     }
-                },
-                error => {
-                    console.log('error', error);
                 });
 
     }
@@ -215,7 +203,6 @@ export class AboutusdashboardComponent implements OnInit {
             formData.append('section2', this.aboutForm.get('section2').value);
             formData.append('section2', this.aboutForm.get('section2').value);
             formData.append('headline', this.aboutForm.get('headline').value);
-            console.log(formData);
             this.aboutService.articleSubmit(formData)
                 .pipe(first())
                 .subscribe(
@@ -225,9 +212,6 @@ export class AboutusdashboardComponent implements OnInit {
                             this.articleloading = false;
                         }, 1500);
 
-                    },
-                    error => {
-                        console.log('error', error);
                     });
         }
     }
