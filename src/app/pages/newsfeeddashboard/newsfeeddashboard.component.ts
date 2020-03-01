@@ -20,7 +20,7 @@ export class NewsfeeddashboardComponent implements OnInit {
     avatar = 'mse/uploaded/avatar/default.png';
     dataSource: any;
     tasks: any[];
-    pageSize = 6;
+    pageSize = 3;
     currentPage = 0;
     totalSize = 0;
 

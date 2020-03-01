@@ -3,6 +3,7 @@ import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {BusinessServiceService} from '../../_services/business/business-service.service';
 import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
+import {add} from 'ngx-bootstrap/chronos';
 
 @Component({
     selector: 'app-maindashboard',
@@ -83,7 +84,6 @@ export class MaindashboardComponent implements OnInit {
                     });
         }
         this.mapData = this.businessData;
-        console.log(this.mapData);
     }
     onAddressAll() {
         this.mapData = this.businessData;
