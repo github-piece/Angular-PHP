@@ -4,8 +4,6 @@ import {PagesComponent} from './pages.component';
 import {WishlistorgtreeComponent} from './wishlistorgtree/wishlistorgtree.component';
 import {FaqstreeComponent} from './faqstree/faqstree.component';
 import {TandcstreeComponent} from './tandcstree/tandcstree.component';
-import {SendmailComponent} from '../auth/sendmail/sendmail.component';
-import {ResetpwdComponent} from '../auth/resetpwd/resetpwd.component';
 import {MessagingComponent} from './messaging/messaging.component';
 import {MaindashboardComponent} from './maindashboard/maindashboard.component';
 import {NewsfeeddashboardComponent} from './newsfeeddashboard/newsfeeddashboard.component';
@@ -46,8 +44,6 @@ const routes: Routes = [
             {path: 'aboutus', component: AboutusdashboardComponent},
             {path: 'termsandconditions', component: TandcstreeComponent},
             {path: 'contactus', component: ContactusdashboardComponent},
-            {path: 'sendmail', component: SendmailComponent},
-            {path: 'resetpwd', component: ResetpwdComponent},
             {path: 'upcominglistings', component: UpcominglistingsdashboardComponent},
             {path: 'listingABusinessComponent', component: ListingABusinessComponent},
             {path: 'messaging', component: MessagingComponent},

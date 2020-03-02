@@ -60,7 +60,7 @@ const config = new AuthServiceConfig(
         },
         {
             id: LinkedinLoginProvider.PROVIDER_ID,
-            provider: new LinkedinLoginProvider('id')
+            provider: new LinkedinLoginProvider('77kex7ww11igvi')
         },
     ]);
 
@@ -111,7 +111,7 @@ export function provideConfig() {
         MatListModule,
         GoogleChartsModule.forRoot('AIzaSyB_O_MOsbttHQ9gAXE1iO7gCa1Vgg-6AYo'),
         MatCardModule,
-        MatGridListModule,
+        MatGridListModule
     ],
     bootstrap: [AppComponent],
     providers: [

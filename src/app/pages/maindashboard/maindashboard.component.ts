@@ -128,7 +128,7 @@ export class MaindashboardComponent implements OnInit {
                     }
                     this.charts.push({
                         title: 'Tenure Lists',
-                        type: 'Histogram',
+                        type: 'Bar',
                         columnNames: ['Business', 'Years'],
                         roles: [
                             { role: 'style', type: 'string', index: 2},
@@ -156,7 +156,7 @@ export class MaindashboardComponent implements OnInit {
                     }
                     this.charts.push({
                         title: 'Business Goals',
-                        type: 'Histogram',
+                        type: 'Bar',
                         columnNames: ['Business', 'Times'],
                         roles: [
                             { role: 'style', type: 'string', index: 2},
@@ -174,9 +174,6 @@ export class MaindashboardComponent implements OnInit {
                         }
                     });
                     this.getTasks();
-                },
-                error => {
-                    console.log('error', error);
                 });
     }
     getTasks() {

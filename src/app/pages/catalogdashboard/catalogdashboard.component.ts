@@ -84,7 +84,6 @@ export class CatalogdashboardComponent {
             .subscribe(
                 business_info => {
                     this.businessInfo = business_info;
-                    console.log(this.businessInfo);
                     this.mainBusiness = this.businessInfo['mainBusiness'];
                     for (let i = 0; i < this.mainBusiness.length; i++) {
                         for (let j = 0; j < this.businessInfo.businessUser.length; j++) {

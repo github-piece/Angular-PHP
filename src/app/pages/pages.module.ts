@@ -14,8 +14,6 @@ import {PortanalysistreeComponent} from './portanalysistree/portanalysistree.com
 import {MenubarComponent} from '../common/menubar/menubar.component';
 import {MessagingComponent} from './messaging/messaging.component';
 import {AlertComponent} from '../alert/alert.component';
-import {SendmailComponent} from '../auth/sendmail/sendmail.component';
-import {ResetpwdComponent} from '../auth/resetpwd/resetpwd.component';
 import {ChartComponent} from './chart/chart.component';
 import {AutocomponentComponent} from '../autocomponent/autocomponent.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -79,8 +77,6 @@ import { CreateModalComponent } from './userModal/create-modal/create-modal.comp
             ListingABusinessComponent,
             MessagingComponent,
             AlertComponent,
-            SendmailComponent,
-            ResetpwdComponent,
             ChartComponent,
             DetailArticleComponent,
             AutocomponentComponent,
