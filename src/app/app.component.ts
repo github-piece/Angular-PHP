@@ -33,6 +33,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   }
   ngOnInit() {
     this.loading = false;
+    localStorage.setItem('siteShow', 'no');
   }
 
   ngAfterContentInit(): void {

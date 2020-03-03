@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   user: SocialUser;
+  onShow = false;
   constructor(
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
@@ -34,6 +35,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('siteShow') === 'ok') {
+      this.onShow = true;
+    }
     this.loading = false;
     this.loginForm = this.formBuilder.group({
       u_email: ['', [Validators.required, Validators.email]],

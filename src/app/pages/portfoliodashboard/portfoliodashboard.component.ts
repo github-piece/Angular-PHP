@@ -19,6 +19,7 @@ export class PortfoliodashboardComponent implements OnInit {
         roles?: Array<{ type: string; role: string; index?: number }>;
         columnNames?: Array<string>;
         options?: {};
+        length: number;
     }> = [];
 
     businessList = [['treeMap', null, 0, 0]];
@@ -152,39 +153,33 @@ export class PortfoliodashboardComponent implements OnInit {
                             maxColor: '#00c853',
                             headerHeight: 0,
                             showScale: false
-                        }
+                        },
+                        length: 3
                     });
-                    let goalArray = [];
+                    let goalArray = []; let tenureArray = [];
                     for (let j = 0; j < this.businessData.length; j++) {
                         const goalValue = this.businessData[j].goal.split(',');
                         goalArray = goalArray.concat(goalValue);
+                        tenureArray = tenureArray.concat(this.businessData[j].tenure);
                         this.tableData[j] = {
                             'no': this.businessData[j].no, 'name': this.businessData[j].name, 'location': this.businessData[j].country, 'address': this.businessData[j].address
                         };
                     }
-                    for (let i = 0; i < this.businessData.length; i++) {
-                        this.tenureList[i] = [
-                            this.businessData[i].name, parseFloat(this.businessData[i].tenure), this.getRandomColor(), this.businessData[i].name
-                        ];
+                    const tenureArrayName = tenureArray.filter((v, i, a) => a.indexOf(v) === i);
+                    for (let j = 0; j < tenureArrayName.length; j++) {
+                        this.tenureList[j] = [tenureArrayName[j], 0];
+                        for (let i = 0; i < this.businessData.length; i++) {
+                            if (tenureArrayName[j] === this.businessData[i].tenure) {
+                                this.tenureList[j][1] += parseFloat(this.businessData[i].tenure);
+                            }
+                        }
                     }
                     this.charts.push({
                         title: 'Tenure Lists',
-                        type: 'Histogram',
+                        type: 'PieChart',
                         columnNames: ['Business', 'Years'],
-                        roles: [
-                            { role: 'style', type: 'string', index: 2},
-                            { role: 'tooltip', type: 'string', index: 3}
-                        ],
                         data: this.tenureList,
-                        options: {
-                            hAxis: {
-                                title: 'Years'
-                            },
-                            vAxis: {
-                                title: 'Business Name'
-                            },
-                            legend: 'none'
-                        }
+                        length: 1
                     });
                     const goalArrayName = goalArray.filter((v, i, a) => a.indexOf(v) === i);
                     for (let j = 0; j < goalArrayName.length; j++) {
@@ -197,7 +192,7 @@ export class PortfoliodashboardComponent implements OnInit {
                     }
                     this.charts.push({
                         title: 'Business Goals',
-                        type: 'Histogram',
+                        type: 'PieChart',
                         columnNames: ['Business', 'Times'],
                         roles: [
                             { role: 'style', type: 'string', index: 2},
@@ -205,14 +200,19 @@ export class PortfoliodashboardComponent implements OnInit {
                         ],
                         data: this.goalList,
                         options: {
-                            hAxis: {
-                                title: 'Count'
-                            },
-                            vAxis: {
-                                title: 'Goal Name'
-                            },
-                            legend: 'none'
-                        }
+                            slices: {
+                                1: {offset: 0.2},
+                                3: {offset: 0.3},
+                                5: {offset: 0.4},
+                                7: {offset: 0.3},
+                                9: {offset: 0.1},
+                                11: {offset: 0.3},
+                                13: {offset: 0.4},
+                                15: {offset: 0.3},
+                                17: {offset: 0.2},
+                            }
+                        },
+                        length: 2
                     });
                     this.getTasks();
                 });

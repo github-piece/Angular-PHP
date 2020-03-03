@@ -9390,3 +9390,8 @@ input.mat-input-element, mat-label, .mat-title, .mat-list-text {
   line-height: 20px;
   letter-spacing: -0.05px;
 }
+.security {
+  width: 400px!important;
+  margin-top: 100px;
+  margin-left: 100px;
+}

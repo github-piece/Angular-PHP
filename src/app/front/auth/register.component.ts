@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
   duplicate = false;
+  onShow = false;
   constructor(
       private formBuilder: FormBuilder,
       private router: Router,
@@ -29,6 +30,9 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+      if (localStorage.getItem('siteShow') === 'ok') {
+          this.onShow = true;
+      }
     this.registerForm = this.formBuilder.group({
           u_name: ['', Validators.required],
           u_email: ['', [Validators.required, Validators.email]],
