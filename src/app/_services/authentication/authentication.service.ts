@@ -21,6 +21,17 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+  twitter() {
+      return this.http.post<any>(`${URL_SERVICIOS}/twitter.php`, {})
+          .pipe(map(user => {
+              if (user) {
+                  localStorage.setItem('currentUser', JSON.stringify(user));
+                  this.currentUserSubject.next(user);
+              }
+              return user;
+          }));
+  }
+
   login(u_email: string, u_password: string) {
     const action = 'login';
     return this.http.post<any>(`${URL_SERVICIOS}/user.php`, { u_email, u_password, action })

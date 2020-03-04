@@ -114,5 +114,12 @@ export class LoginComponent implements OnInit {
   }
 
   signInWithTwitter() {
+    this.authenticationService.twitter()
+        .pipe(first())
+        .subscribe(
+            data => {
+              console.log(data);
+            }
+        );
   }
 }
