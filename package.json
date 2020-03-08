@@ -67,6 +67,7 @@
     "ngx-google-places-autocomplete": "^2.0.4",
     "ngx-image-cropper": "^2.0.2",
     "ngx-intl-tel-input": "^2.3.1",
+    "ngx-pagination": "^5.0.0",
     "ngx-slick": "^0.2.1",
     "ngx-slick-carousel": "^0.4.6",
     "node-sass": "^4.12.0",

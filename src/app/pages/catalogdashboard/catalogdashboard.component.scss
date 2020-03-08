@@ -14,6 +14,10 @@ body {
   }
 }
 
+.pagination /deep/ .ngx-pagination .current {
+  background: #263248;
+}
+
 .tabs-folder {
   &.mat-tab-group {
     .mat-tab-header {

@@ -371,7 +371,7 @@
         return $totalScoringData;
     }
     //Get table data.
-    function getContent($table, $option,$conn){
+    function getContent($table, $option, $conn){
         if($option){
             $sql = "SELECT * FROM ".$table." WHERE  u_id='".$option."'";
         }

@@ -52,6 +52,7 @@ import { RadarChartComponent } from './radar-chart/radar-chart.component';
 import {GoogleChartsModule} from 'angular-google-charts';
 import { EditModalComponent } from './userModal/edit-modal/edit-modal.component';
 import { CreateModalComponent } from './userModal/create-modal/create-modal.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 @NgModule({
         declarations: [
             PagesComponent,
@@ -88,32 +89,34 @@ import { CreateModalComponent } from './userModal/create-modal/create-modal.comp
             EditModalComponent,
             CreateModalComponent,
         ],
-    imports: [
-        PagesRoutingModule,
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        SlickModule.forRoot(),
-        ChartsModule,
-        HttpClientModule,
-        CoreModule,
-        SharedModule,
-        TransferHttpCacheModule,
-        MaterialModule,
-        MatDialogModule,
-        MatTabsModule,
-        MatTableModule,
-        MatRadioModule,
-        GooglePlaceModule,
-        ImageCropperModule,
-        MatRippleModule,
-        AgmCoreModule,
-        AgGridModule.withComponents(null),
-        BsDropdownModule.forRoot(),
-        NgxIntlTelInputModule,
-        TreeViewModule,
-        GoogleChartsModule
-    ],
+        imports: [
+            PagesRoutingModule,
+            CommonModule,
+            ReactiveFormsModule,
+            FormsModule,
+            SlickModule.forRoot(),
+            ChartsModule,
+            HttpClientModule,
+            CoreModule,
+            SharedModule,
+            TransferHttpCacheModule,
+            MaterialModule,
+            MatDialogModule,
+            MatTabsModule,
+            MatTableModule,
+            MatRadioModule,
+            GooglePlaceModule,
+            ImageCropperModule,
+            MatRippleModule,
+            AgmCoreModule,
+            AgGridModule.withComponents(null),
+            BsDropdownModule.forRoot(),
+            NgxIntlTelInputModule,
+            TreeViewModule,
+            GoogleChartsModule,
+            NgxPaginationModule
+        ],
+        bootstrap: [CatalogdashboardComponent],
         providers: [
             HowtoService,
         ],

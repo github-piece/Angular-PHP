@@ -59,6 +59,7 @@ export class CatalogdashboardComponent {
     goalList = [];
     historyList: any;
 
+    p = 1;
     constructor(private breakpointObserver: BreakpointObserver,
                 private authenticationService: AuthenticationService,
                 private catalogueService: CatalogueService,
@@ -84,26 +85,26 @@ export class CatalogdashboardComponent {
             .subscribe(
                 business_info => {
                     this.businessInfo = business_info;
-                    this.mainBusiness = this.businessInfo['mainBusiness'];
+                    this.mainBusiness = this.businessInfo[0]['mainBusiness'];
                     for (let i = 0; i < this.mainBusiness.length; i++) {
-                        for (let j = 0; j < this.businessInfo.businessUser.length; j++) {
-                            if (this.mainBusiness[i].u_id === this.businessInfo.businessUser[j].u_id) {
-                                this.mainBusiness[i].businessUser = this.businessInfo.businessUser[j].u_name;
+                        for (let j = 0; j < this.businessInfo[3].businessUser.length; j++) {
+                            if (this.mainBusiness[i].u_id === this.businessInfo[3].businessUser[j].u_id) {
+                                this.mainBusiness[i].businessUser = this.businessInfo[3].businessUser[j].u_name;
                             }
                         }
                     }
                     this.getHistory();
-                    this.countryList = this.businessInfo.countryList;
-                    this.goalList = this.businessInfo.goalList;
-                    this.buysellService.fundTypes = this.businessInfo.instruments;
-                    this.unSdg = this.businessInfo['unSdg'];
-                    this.interactions = this.businessInfo['interactions'];
-                    this.stakeholders = this.businessInfo['stakeholders'];
-                    this.stakeholdersCountry = this.stakeholders['country'];
-                    this.stakeholdersButton3 = this.stakeholders['button3'];
-                    this.stakeholdersButton4 = this.stakeholders['button4'];
-                    this.stakeholdersConsideration = this.stakeholders['consideration'];
-                    this.stakeholdersMap = this.stakeholders['maps'];
+                    this.countryList = this.businessInfo[2].countryList;
+                    this.goalList = this.businessInfo[4].goalList;
+                    this.buysellService.fundTypes = this.businessInfo[10].instruments;
+                    this.unSdg = this.businessInfo[6]['unSdg'];
+                    this.interactions = this.businessInfo[7]['interactions'];
+                    this.stakeholders = this.businessInfo[8]['stakeholders'];
+                    this.stakeholdersCountry = this.stakeholders[0]['country'];
+                    this.stakeholdersButton3 = this.stakeholders[1]['button3'];
+                    this.stakeholdersButton4 = this.stakeholders[2]['button4'];
+                    this.stakeholdersConsideration = this.stakeholders[3]['consideration'];
+                    this.stakeholdersMap = this.stakeholders[4]['maps'];
                     this.radarChartLabels = ['resource counter', 'opportunity counter', 'venture life cycle', 'liability of age size'
                         , 'organisation', 'entrepreneur', 'environment', 'impact sector'];
                     this.mainBusiness.forEach((main_business_item, index) => {
@@ -170,7 +171,7 @@ export class CatalogdashboardComponent {
         this.buysellService.modal_content = 'Are you going to buy this item?';
         this.buysellService.action = 'buy';
         this.buysellService.business_name = business['business name'];
-        this.buysellService.commission = this.businessInfo['commission'][0];
+        this.buysellService.commission = this.businessInfo[9]['commission'][0];
         this.buysellService.business_id = business['business_id'];
         this.openDialog();
     }

@@ -31,7 +31,7 @@ export class QuestionsService {
     }
 
     getQuestionnaireList(userid: string, profile: string) {
-        return this.read(userid, profile,'read');
+        return this.read(userid, profile, 'read');
     }
 
 

@@ -11,9 +11,10 @@ export class CatalogueService {
     constructor(private http: HttpClient) {
     }
 
-    getBusinessList(userid) {
+    getBusinessList(userId) {
         const action = 'read';
-        return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`, {userid, action})
+        return this.http.post<any>(`http://localhost:3000/getCategory`, {userId})
+        // return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`, {userid, action})
             .pipe(map(business_info => {
                 return business_info;
             }));

@@ -72,7 +72,7 @@ export class MaindashboardComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.businessData[i].lat = data.lat;
-                        this.businessData[i].lng = data.long;
+                        this.businessData[i].lng = data.lng;
                     });
         }
         this.mapData = this.businessData;
@@ -174,6 +174,8 @@ export class MaindashboardComponent implements OnInit {
                         length: 2
                     });
                     this.getTasks();
+                }, error => {
+                    console.log(error);
                 });
     }
     getTasks() {

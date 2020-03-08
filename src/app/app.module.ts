@@ -111,7 +111,7 @@ export function provideConfig() {
         MatListModule,
         GoogleChartsModule.forRoot('AIzaSyB_O_MOsbttHQ9gAXE1iO7gCa1Vgg-6AYo'),
         MatCardModule,
-        MatGridListModule
+        MatGridListModule,
     ],
     bootstrap: [AppComponent],
     providers: [
