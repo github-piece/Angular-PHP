@@ -10,16 +10,20 @@ import {MatChipInputEvent, MatDialog} from '@angular/material';
 import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 import {TreeViewComponent} from '@syncfusion/ej2-angular-navigations';
 import {CatalogueService} from '../../_services/catalogue/catalogue.service';
+import * as XLSX from 'xlsx';
+import {Router} from '@angular/router';
+
+type AOA = any[][];
 
 @Component({
     selector: 'app-listing-abusiness',
     templateUrl: './listing-abusiness.component.html',
     styleUrls: ['../../layouts/pages/cards/styles/cards.scss', 'styles/listing-abusiness.component.scss'],
 })
-@ViewChild('samples')
 export class ListingABusinessComponent implements OnInit {
     @ViewChild('treeview')
     public tree: TreeViewComponent;
+    businessAnswers: AOA;
     username = '';
     showProfile = true;
     showActions = false;
@@ -28,13 +32,13 @@ export class ListingABusinessComponent implements OnInit {
     loading = false;
     address: string;
     userid: any;
-    action: any;
+    action =  'insert';
     profile: string;
     imagePath: any;
     imgURL = [];
     showImage = [];
     //  The current visible step
-    currentStep = 54;
+    currentStep = 0;
     //  Progress var init
     progress = '0';
     questionForm: FormGroup;
@@ -92,14 +96,21 @@ export class ListingABusinessComponent implements OnInit {
     domAddItem_flag = false;
     message: string;
     click_flag: number;
+    businessId = '';
+    excelAnswers = [];
+
     // Sector tree view
     public treeData: Object = {dataSource: this.sectors, id: 'id', parentID: 'pid', text: 'name', hasChildren: 'hasChild'};
     public showCheckBox = true;
+
+    public records: any = [];
+
     constructor(private fb: FormBuilder,
                 private questionnaireService: QuestionsService,
                 private putAnswerService: AnswerService,
                 private authenticationService: AuthenticationService,
                 private catalogueService: CatalogueService,
+                private router: Router
     ) {
         this.formData = new FormData();
     }
@@ -159,6 +170,11 @@ export class ListingABusinessComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
+                    // if (data['rememberValue'][0].id_business_quiz !== '133') {
+                    //     this.currentStep = data['rememberValue'][0].id_business_quiz;
+                    //     this.businessId = data['rememberValue'][0].business_id;
+                    //     this.action = 'update';
+                    // }
                     this.questionData = data['data'];
                     this.country = data['country'];
                     this.instruments = data['instruments'];
@@ -407,6 +423,8 @@ export class ListingABusinessComponent implements OnInit {
             localStorage.setItem('employer_profile', this.questionTypeID);
         }
         this.formData.append('questionTypeID', this.questionTypeID);
+        this.formData.append('action', this.action);
+        // this.formData.append('businessId', this.businessId);
         return this.putAnswerService.putAnswer(this.formData)
             .pipe(first()).subscribe((res: any) => {
                     return res;
@@ -610,7 +628,6 @@ export class ListingABusinessComponent implements OnInit {
                                 row_data['name'] = row_sector['sub_sector_' + j];
                             }
                         }
-
                         this.sectors[i] = row_data; row_data = {}; i++;
                     }
                 }
@@ -650,6 +667,49 @@ export class ListingABusinessComponent implements OnInit {
         return this.catalogueService.setBusinessList(this.userid, this.questionTypeID).pipe(first()).subscribe(result => {
             return result;
         });
+    }
+    import(evt: any) {
+        const excelAnswers = []; let j = 0;
+        const target: DataTransfer = <DataTransfer>(evt.target);
+        if (target.files.length !== 1) { throw new Error('Cannot use multiple files'); }
+        const reader: FileReader = new FileReader();
+        reader.onload = (e: any) => {
+            /* read workbook */
+            const bstr: string = e.target.result;
+            const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+            /* grab first sheet */
+            const wsname: string = wb.SheetNames[0];
+            const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+            /* save data */
+            this.businessAnswers = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+            for (let i = 2; i < this.businessAnswers.length; i++) {
+                if (this.businessAnswers[i][2] !== undefined) {
+                    excelAnswers[j] = {
+                        no: j + 1,
+                        answer1: this.businessAnswers[i][3],
+                        answer2: this.businessAnswers[i][6],
+                        answer3: this.businessAnswers[i][9],
+                        answer4: this.businessAnswers[i][12],
+                        answer5: this.businessAnswers[i][15],
+                        answer6: this.businessAnswers[i][18],
+                        answer7: this.businessAnswers[i][21],
+                        answer8: this.businessAnswers[i][24]
+                    };
+                    j++;
+                }
+            }
+            const time = Date.now();
+            return this.putAnswerService.excelAnswer(excelAnswers, this.userid, time)
+                .pipe(first())
+                .subscribe(data => {
+                    this.questionTypeID = data.businessId;
+                    this.catalogueService.setBusinessListByExcel(this.userid, this.questionTypeID);
+                    this.router.navigate(['/pages/catalogue']);
+                });
+        };
+        reader.readAsBinaryString(target.files[0]);
     }
 }
 

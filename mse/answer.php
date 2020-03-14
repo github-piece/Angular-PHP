@@ -1,12 +1,28 @@
 <?php
 include_once("connection.php");
-$query_values = "'" . $_POST['userid'] . "'" . "," . "'" . $_POST['profile'] . "'" . "," . "'" . $_POST['id_business_quiz'] . "'";
-//check if request.
 if ($_POST) {
-    $token_questionTypeID = md5($_POST['questionTypeID']);
-    $query_values = "'".$token_questionTypeID."'".",".$query_values;
+    $query_values = "'" . $_POST['userid'] . "'" . "," . "'" . $_POST['profile'] . "'" . "," . "'" . $_POST['id_business_quiz'] . "'";
+    if ($_POST['action'] === 'insert') {
+        $token_questionTypeID = md5($_POST['questionTypeID']);
+        $query_values = "'".$token_questionTypeID."'".",".$query_values;
+    } else {
+        $query_values = "'".$_POST['businessId']."'".",".$query_values;
+    }
     putAnswerList($_POST['profile'], $conn, $query_values);
 }
+//if ($_POST) {
+//    if ($_POST['action'] === 'excel') {
+//        $answers = json_decode($_POST['excelAnswer'], true);
+//        $userId = $_POST['userid'];
+//        $profile = $_POST['profile'];
+//        foreach($answers as $answer) {
+//            echo $answer['no'];
+//            $sql = "INSERT INTO tbl_business_answer (u_id, profile, id_business_quiz, col_1_header, col_2_header, col_3_header, col_4_header, col_5_header, col_6_header, col_7_header, col_8_header, business_id)
+//                    VALUES ('".$userId."', '".$answer['no']."', '".$answer['answer1']."', '".$answer['answer2']."', '".$answer['answer3']."', '".$answer['answer4']."', '".$answer['answer5']."', '".$answer['answer6']."', '".$answer['answer7']."', '".$answer['answer8']."', '".$businessId."')";
+//            mysqli_query($conn, $sql);
+//        }
+//    }
+//}
 //insert answers into tbl_business_answer table.
 function putAnswerList($profile, $conn, $query_values)
 {

@@ -17,6 +17,10 @@
                 $business_id = md5($request->questionTypeID);
                 registerNewBusiness($userid, $business_id, $conn);
                 break;
+            case 'createByExcel':
+                $business_id = $request->questionTypeID;
+                registerNewBusiness($userid, $business_id, $conn);
+                break;
             case 'read':
                 getAllRegisteredBusiness($userid, $conn);
                 break;

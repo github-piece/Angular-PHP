@@ -4,6 +4,7 @@
 	header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding");
 
 	$servername = "localhost";
+//	$servername = "http://miexchange.tech/mse";
 	$username = "root";
 	$password = "";
 	$dbname = "mse_db";

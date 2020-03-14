@@ -78,6 +78,7 @@
     "rxjs-compat": "^6.3.3",
     "rxjs-tslint": "^0.1.6",
     "slick-carousel": "^1.8.1",
+    "xlsx": "^0.15.5",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

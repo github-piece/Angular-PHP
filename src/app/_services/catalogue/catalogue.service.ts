@@ -34,4 +34,8 @@ export class CatalogueService {
                 return result;
             }));
     }
+    setBusinessListByExcel(userid: string, questionTypeID: string) {
+        const action = 'createByExcel';
+        return this.http.post<any>(`${URL_SERVICIOS}/catalogue.php`, {userid, questionTypeID, action});
+    }
 }
