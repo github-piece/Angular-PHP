@@ -90,6 +90,9 @@ export class MaindashboardComponent implements OnInit {
                     this.getAddress();
                     let businessArray = [];
                     for (let i = 0; i < this.businessData.length; i++) {
+                        if (this.businessData[i].pic.substr(0, 4) !== 'http') {
+                            this.businessData[i].pic = 'mse/' + this.businessData[i].pic;
+                        }
                         const businessValue = this.businessData[i].business.split(',');
                         businessArray = businessArray.concat(businessValue);
                     }

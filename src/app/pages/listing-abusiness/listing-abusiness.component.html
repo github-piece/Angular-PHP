@@ -64,7 +64,6 @@
         </div>
     </div>
 </div>
-<!--query part 1 -3-->
 <div *ngIf="showActions && !showProfile" id="forms-wizard">
     <div class="container">
         <a mat-raised-button class="theme-primary-btn float-right text-white" href="./src/assets/Business.xlsx" style="color: white">
@@ -90,7 +89,7 @@
                     <div *ngFor="let i of rangeMain">
                         <div *ngIf="rowData['col_'+i+'_header']">
                             <!--q1_1-->
-                            <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the province'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
+                            <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
                                 <mat-form-field>
                                     <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                     <input matInput type="text" formControlName="col_{{i}}_header" placeholder="Enter your answer">
@@ -122,22 +121,55 @@
                                     <input matInput type="number" formControlName="col_{{i}}_header" placeholder="Enter your answer">
                                 </mat-form-field>
                             </ng-template>
+                            <!--Current item is country, next item is province-->
                             <ng-template [ngIf]="rowData['col_'+i] && (rowData['col_'+i].toLowerCase().includes('country'))">
+                                <ng-container *ngIf="(rowData['col_'+1*(i+1)]&&(rowData['col_'+1*(i+1)].toLowerCase().includes('province')))">
+                                    <mat-form-field>
+                                        <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
+                                        <mat-select formControlName="col_{{i}}_header" placeholder="Please select one of these items">
+                                            <mat-option *ngFor="let x of country; " value="{{x.country}}" (click)="getProvince(x.country)">
+                                                {{x.country}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                            </ng-template>
+                            <!--Current item is only country-->
+                            <ng-template [ngIf]="rowData['col_'+i] && (rowData['col_'+i].toLowerCase().includes('country'))">
+                                <ng-container *ngIf="rowData['col_'+1*(i+1)]&&(!rowData['col_'+1*(i+1)].toLowerCase().includes('province'))||(!rowData['col_'+1*(i+1)])">
+                                    <mat-form-field>
+                                        <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
+                                        <mat-select formControlName="col_{{i}}_header" placeholder="Please select one of these items">
+                                            <mat-option *ngFor="let x of country; " value="{{x.country}}">
+                                                {{x.country}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                            </ng-template>
+                            <!--Select province option based on selected country-->
+                            <ng-template [ngIf]="rowData['col_'+i] && (rowData['col_'+i].toLowerCase().includes('province'))">
                                 <mat-form-field>
                                     <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                     <mat-select formControlName="col_{{i}}_header" placeholder="Please select one of these items">
-                                        <mat-option *ngFor="let x of country; " value="{{x.country}}">
-                                            {{x.country}}
+                                        <mat-option *ngFor="let selected_province of province; " value="{{selected_province}}" (click)="getMunicipality(selected_province, i)">
+                                            {{selected_province}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </ng-template>
+                            <!--Select multiple option for sector.-->
+                            <ng-template [ngIf]="(rowData['col_'+i].toLowerCase().includes('sector'))">
+                                <div id='treeparent'><ejs-treeview #treeview="" id='treeelement' [fields]='treeData' [showCheckBox]='showCheckBox' (nodeChecked)='nodeChecked($event)'></ejs-treeview></div>
+                            </ng-template>
+                            <!--Select multiple option for normal multiple-->
                             <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('selectmultiple'))&&(!rowData['col_'+i].toLowerCase().includes('sector'))" >
-                                <div class="mat-title">Choose your sector</div>
+                                <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                 <mat-list *ngFor="let x of (rowData['col_'+i].slice(15,rowData['col_'+i].length-1)).split(',');" >
                                     <mat-checkbox >{{x}}</mat-checkbox>
                                 </mat-list>
                             </ng-template>
+                            <!--Upload for image-->
                             <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('uploadimage')" >
                                 <div class="col-lg-4">
                                     <mat-card style="height: 480px; margin-bottom: 16px;">
@@ -152,6 +184,7 @@
                                     </mat-card>
                                 </div>
                             </ng-template>
+
                             <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('email')">
                                 <mat-form-field>
                                     <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
@@ -237,7 +270,7 @@
                             <!--select date picker-->
                             <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('selectdate'))">
                                 <mat-form-field style="width: 320px">
-                                    <mat-label>Choose a date</mat-label>
+                                    <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                     <input matInput [matDatepicker]="picker" formControlName="col_{{i}}_header">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
@@ -278,37 +311,24 @@
                                 <mat-selection-list [formControl]="questionForm.controls['col_'+i+'_header']">
                                     <table class="table-devias odd">
                                         <tbody>
-                                            <tr *ngFor="let x of stakeholder">
-                                                <td style="padding: 0 16px">{{x.stakeholder}}</td>
-                                                <td style="padding: 0 16px">
-                                                    <mat-form-field style="margin-bottom: 0">
-                                                        <mat-label>Choose Method</mat-label>
-                                                        <mat-select>
-                                                            <mat-option *ngFor="let ring of stakeholderRings"  (click)="getStakeholderRing(ring.ring,i+1)" value="{{ring.ring}}">
-                                                                {{ring.ring}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-                                                </td>
-                                                <td style="padding: 0 16px">
-                                                    <mat-list-option value="{{x.stakeholder}}"></mat-list-option>
-                                                </td>
+                                        <tr *ngFor="let x of stakeholder">
+                                            <td style="padding: 0 16px">{{x.stakeholder}}</td>
+                                            <td style="padding: 0 16px">
+                                                <mat-form-field style="margin-bottom: 0">
+                                                    <mat-label>Choose Method</mat-label>
+                                                    <mat-select>
+                                                        <mat-option *ngFor="let ring of stakeholderRings"  (click)="getStakeholderRing(ring.ring,i+1)" value="{{ring.ring}}">
+                                                            {{ring.ring}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+                                            <td style="padding: 0 16px">
+                                                <mat-list-option value="{{x.stakeholder}}"></mat-list-option>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
-
-<!--                                    <mat-list-option *ngFor="let x of stakeholder;"  value="{{x.stakeholder}}">-->
-<!--                                        <mat-grid-list cols="3" rowHeight="40px">-->
-<!--                                            <mat-grid-tile>{{x.stakeholder}}</mat-grid-tile>-->
-<!--                                            <mat-grid-tile>-->
-<!--                                                <mat-select>-->
-<!--                                                    <mat-option *ngFor="let ring of stakeholderRings"  (click)="getStakeholderRing(ring.ring,i+1)" value="{{ring.ring}}">-->
-<!--                                                        {{ring.ring}}-->
-<!--                                                    </mat-option>-->
-<!--                                                </mat-select>-->
-<!--                                            </mat-grid-tile>-->
-<!--                                        </mat-grid-list>-->
-<!--                                    </mat-list-option>-->
                                 </mat-selection-list>
                             </ng-template>
                             <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('stakeholderscoring_ring')">
@@ -437,7 +457,6 @@
                                     <input matInput ngx-google-places-autocomplete  placeholder="Enter Address" formControlName="col_{{i}}_header" #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event, i)"/>
                                 </mat-form-field>
                             </ng-template>
-
                             <!--start from tbl_bee_quiz    -->
                             <!--my business option-->
                             <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('my business'))">
@@ -449,6 +468,29 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
+                            </ng-template>
+                            <!--Select municipality if country is south africa-->
+                            <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('south africa')">
+                                <div class="mat-card-header" style="padding-bottom: 0; padding-top: 16px">{{rowData['col_'+i+'_header']}}</div>
+                                <ng-container *ngIf="selected_country ==='South Africa'">
+                                    <mat-selection-list [formControl]="questionForm.controls['col_'+i+'_header']">
+                                        <table class="table-devias odd">
+                                            <tbody>
+                                            <tr *ngFor="let x of Municipality">
+                                                <td style="padding: 0 16px">{{x.province}}</td>
+                                                <td style="padding: 0 16px">{{x.district}}</td>
+                                                <td style="padding: 0 16px">{{x.municipality}}</td>
+                                                <td style="padding: 0 16px">
+                                                    <mat-list-option value="{{x.municipality}}"></mat-list-option>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </mat-selection-list>
+                                </ng-container>
+                                <ng-container *ngIf="selected_country !=='South Africa'">
+                                    <input matInput type="text" formControlName="col_{{i}}_header">
+                                </ng-container>
                             </ng-template>
                             <!--validation message-->
                             <ng-container *ngFor="let validation of validatorMessage['col_'+i+'_header']">
@@ -490,13 +532,39 @@
                                         <input matInput type="number" formControlName="col_{{i}}_header" placeholder="Enter your answer">
                                     </mat-form-field>
                                 </ng-template>
-                                <!--country option-->
-                                <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('country'))" >
+                                <!--Current item is country, next item is province-->
+                                <ng-template [ngIf]="rowData['col_'+i] && (rowData['col_'+i].toLowerCase().includes('country'))">
+                                    <ng-container *ngIf="(rowData['col_'+1*(i+1)]&&(rowData['col_'+1*(i+1)].toLowerCase().includes('province')))">
+                                        <mat-form-field>
+                                            <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
+                                            <mat-select formControlName="col_{{i}}_header" placeholder="Please select one of these items">
+                                                <mat-option *ngFor="let x of country; " value="{{x.country}}" (click)="getProvince(x.country)">
+                                                    {{x.country}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-container>
+                                </ng-template>
+                                <!--Current item is only country-->
+                                <ng-template [ngIf]="rowData['col_'+i] && (rowData['col_'+i].toLowerCase().includes('country'))">
+                                    <ng-container *ngIf="rowData['col_'+1*(i+1)]&&(!rowData['col_'+1*(i+1)].toLowerCase().includes('province'))||(!rowData['col_'+1*(i+1)])">
+                                        <mat-form-field>
+                                            <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
+                                            <mat-select formControlName="col_{{i}}_header" placeholder="Please select one of these items">
+                                                <mat-option *ngFor="let x of country; " value="{{x.country}}">
+                                                    {{x.country}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-container>
+                                </ng-template>
+                                <!--Select province option based on selected country-->
+                                <ng-template [ngIf]="rowData['col_'+i] && (rowData['col_'+i].toLowerCase().includes('province'))">
                                     <mat-form-field>
                                         <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
-                                        <mat-select formControlName="col_{{i}}_header">
-                                            <mat-option *ngFor="let x of country; " value="{{x.country}}">
-                                                {{x.country}}
+                                        <mat-select formControlName="col_{{i}}_header" placeholder="Please select one of these items">
+                                            <mat-option *ngFor="let selected_province of province; " value="{{selected_province}}">
+                                                {{selected_province}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -512,7 +580,7 @@
                                 </ng-template>
 
                                 <!--upload option-->
-                                <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('uploadthisfile')" >
+                                <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('uploadimage')" >
                                     <mat-card style="width: 480px" id="{{'thisfile' + i}}">
                                         <div class="mat-card-header" style="height: 50px">
                                             If you want to add your image, please click here
@@ -609,7 +677,7 @@
                                 <!--select date picker-->
                                 <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('selectdate'))">
                                     <mat-form-field style="width: 360px">
-                                        <mat-label>Choose a date</mat-label>
+                                        <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                         <input matInput [matDatepicker]="picker" formControlName="col_{{i}}_header">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
@@ -776,7 +844,7 @@
                                     <div id='treeparent'><ejs-treeview #treeview="" id='treeelement' [fields]='treeData' [showCheckBox]='showCheckBox' (nodeChecked)='nodeChecked($event)'></ejs-treeview></div>
                                 </ng-template>
                                 <!--input default option-->
-                                <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the province'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
+                                <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
                                     <mat-form-field>
                                         <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                         <input matInput type="text" formControlName="col_{{i}}_header" placeholder="Enter your answer">
@@ -787,7 +855,7 @@
                                 <span class="help-block" *ngIf=" questionForm.get('col_'+i+'_header').hasError(validation.type)&&(questionForm.get('col_'+i+'_header').touched||questionForm.get('col_'+i+'_header').dirty)">
                                     {{validation.errorMessage}}
                                 </span>
-                            </ng-container>
+                                </ng-container>
                             </div>
                         </div>
                         <label *ngIf="dom_addItem_flag" class="add-item" (click)="dom_addItem();"><span  class="fa fa-plus" ></span>please click here to add more details.</label>
@@ -851,7 +919,7 @@
                                             </ng-template>
                                             <!--select multiple option-->
                                             <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('selectmultiple'))&&(!(rowData['col_'+i].toLowerCase().includes('sector')))">
-                                                <div class="mat-title">Choose your sector</div>
+                                                <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                                 <mat-list *ngFor="let x of (rowData['col_'+i].slice(15,rowData['col_'+i].length-1)).split(',');" >
                                                     <mat-list-item>
                                                         <mat-checkbox>{{x}}</mat-checkbox>
@@ -955,7 +1023,7 @@
                                             <!--select date picker-->
                                             <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('selectdate'))">
                                                 <mat-form-field style="width: 360px">
-                                                    <mat-label>Choose a date</mat-label>
+                                                    <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                                     <input matInput [matDatepicker]="picker" formControlName="col_{{i}}_header">
                                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker></mat-datepicker>
@@ -1127,7 +1195,7 @@
                                                 </mat-list>
                                             </ng-template>
                                             <!--input default option-->
-                                            <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the province'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
+                                            <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
                                                 <mat-form-field>
                                                     <mat-label>
                                                         {{rowData['col_'+i+'_header']}}
@@ -1299,7 +1367,7 @@
                                             <!--select date picker-->
                                             <ng-template [ngIf]="rowData['col_'+i]&&(rowData['col_'+i].toLowerCase().includes('selectdate'))">
                                                 <mat-form-field style="width: 360px">
-                                                    <mat-label>Choose a date</mat-label>
+                                                    <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                                     <input matInput [matDatepicker]="picker" formControlName="col_{{i}}_header">
                                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker></mat-datepicker>
@@ -1463,7 +1531,7 @@
                                                 </mat-list>
                                             </ng-template>
                                             <!--input default option-->
-                                            <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the province'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
+                                            <ng-template [ngIf]="((rowData['col_'+i].toLowerCase().includes('smalltextbox'))||(rowData['col_'+i].toLowerCase().includes('select the municipality'))||(rowData['col_'+i] =='null')||(rowData['col_'+i] =='')||(rowData['col_'+i] ==0))">
                                                 <mat-form-field>
                                                     <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                                     <input matInput type="text" formControlName="col_{{i}}_header" placeholder="Enter your answer">

@@ -46,13 +46,13 @@
                                 Delete
                             </button>
                         </div>
-                        <mat-tab-group class="tabs-vertical menu-tab">
+                        <mat-tab-group class="tabs-vertical menu-tab" (selectedTabChange)="getTabData($event)">
                             <mat-tab label="Business Summary">
                                 <mat-tab-group class="body-tab">
                                     <mat-tab label="Business Information">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <div class="bg" [style.background-image] ="'url(mse/' + mainBusiness[index]['image for front page'] + ')'"></div>
+                                                <div class="bg" [style.background-image] ="'url(' + mainBusiness[index]['image for front page'] + ')'"></div>
                                                 <div *ngIf="!mainBusiness[index][10]" class="bg" [style.background-image] ="'url(https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg)'"></div>
                                             </div>
                                             <div class="col-sm-9">
@@ -124,63 +124,63 @@
                                             </tr>
                                             <tr>
                                                 <td>Average Wages</td>
-                                                <td>{{business['average wages']}}</td>
+                                                <td>{{round(business['average wages'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Annual Sales Forecast</td>
-                                                <td>{{business['annual sales forecast']}}</td>
+                                                <td>{{round(business['annual sales forecast'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Total Asset Turnover</td>
-                                                <td>{{business['total asset turnover']}}</td>
+                                                <td>{{round(business['total asset turnover'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Fixed Asset Turnover</td>
-                                                <td>{{business['fixed asset turnover']}}</td>
+                                                <td>{{round(business['fixed asset turnover'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Inventory Turnover:I think wrong8</td>
-                                                <td>{{business['inventory turnover']}}</td>
+                                                <td>{{round(business['inventory turnover'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Current Ratio</td>
-                                                <td>{{business['current ratio']}}</td>
+                                                <td>{{round(business['current ratio'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Cash Ratio</td>
-                                                <td>{{business['cash ratio']}}</td>
+                                                <td>{{round(business['cash ratio'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Defensive Interval</td>
-                                                <td>{{business['defensive interval']}}</td>
+                                                <td>{{round(business['defensive interval'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Debt-to-Equity</td>
-                                                <td>{{business['debt-to-equity']}}</td>
+                                                <td>{{round(business['debt-to-equity'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Debt-to-Asset</td>
-                                                <td>{{business['debt-to-asset']}}</td>
+                                                <td>{{round(business['debt-to-asset'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Cash Conversion Cycle</td>
-                                                <td>{{business['cash conversion cycle']}}</td>
+                                                <td>{{round(business['cash conversion cycle'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Net Profit Margin</td>
-                                                <td>{{business['net profit margin']}}</td>
+                                                <td>{{round(business['net profit margin'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Gross Margin</td>
-                                                <td>{{business['gross margin']}}</td>
+                                                <td>{{round(business['gross margin'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Annual Projected CoGS</td>
-                                                <td>{{business['annual projected cogs']}}</td>
+                                                <td>{{round(business['annual projected cogs'])}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Return on Assets</td>
-                                                <td>{{business['return on assets']}}</td>
+                                                <td>{{round(business['return on assets'])}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -198,37 +198,37 @@
                                             <tbody>
                                             <tr>
                                                 <td>Current Asset</td>
-                                                <td>{{business['current assets']/mainBusiness[index]['total assets']}}%</td>
+                                                <td>{{round(business['current assets'])}}</td>
                                                 <td>{{business['date completed']}}</td>
                                                 <td><button class="btn btn-success">Button 1</button></td>
                                             </tr>
                                             <tr>
                                                 <td>Non - Current Asset</td>
-                                                <td>{{business['non-current assets']/mainBusiness[index]['total assets']}}%</td>
+                                                <td>{{round(business['non-current assets'])}}</td>
                                                 <td>{{business['date completed']}}</td>
                                                 <td><button class="btn btn-success">Button 2</button></td>
                                             </tr>
                                             <tr>
                                                 <td>Total Asset</td>
-                                                <td>{{business['total assets']}}</td>
+                                                <td>{{round(business['total assets'])}}</td>
                                                 <td>{{business['date completed']}}</td>
                                                 <td><button class="btn btn-success">Button 2</button></td>
                                             </tr>
                                             <tr>
                                                 <td>Current Liability</td>
-                                                <td>{{business['current liabilities']/mainBusiness[index]['total liabilities']}}%</td>
+                                                <td>{{round(business['current liabilities'])}}</td>
                                                 <td>{{business['date completed']}}</td>
                                                 <td><button class="btn btn-success">Button 2</button></td>
                                             </tr>
                                             <tr>
                                                 <td>Non - Current Liability</td>
-                                                <td>{{business['non-current liabilities']/mainBusiness[index]['total liabilities']}}%</td>
+                                                <td>{{round(business['non-current liabilities'])}}</td>
                                                 <td>{{business['date completed']}}</td>
                                                 <td><button class="btn btn-success">Button 2</button></td>
                                             </tr>
                                             <tr>
                                                 <td>Total Liability</td>
-                                                <td>{{business['total liabilites']}}</td>
+                                                <td>{{round(business['total liabilites'])}}</td>
                                                 <td>{{business['date completed']}}</td>
                                                 <td><button class="btn btn-success">Button 2</button></td>
                                             </tr>
@@ -316,53 +316,57 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr *ngFor="let unSdg_path of unSdg[index]['path']; let sdg_index = index;">
-                                                <td>
-                                                    <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+unSdg_path+')'"></div>
-                                                </td>
-                                                <td>
-                                                    {{unSdg[index]['goal_number'][sdg_index]}}
-                                                </td>
-                                                <td>
-                                                    {{unSdg[index]['goal_description'][sdg_index]}}
-                                                </td>
-                                                <td><button class="btn btn-success">Button 1</button></td>
-                                                <td><button class="btn btn-success">Button 1</button></td>
-                                            </tr>
+                                                <ng-container *ngIf="unSdg.length">
+                                                    <tr *ngFor="let unSdg_path of unSdg[index]['path']; let sdg_index = index;">
+                                                        <td class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+unSdg_path+')'"></td>
+                                                        <td>
+                                                            {{unSdg[index]['goal_number'][sdg_index]}}
+                                                        </td>
+                                                        <td>
+                                                            {{unSdg[index]['goal_description'][sdg_index]}}
+                                                        </td>
+                                                        <td><button class="btn btn-success">Button 1</button></td>
+                                                        <td><button class="btn btn-success">Button 1</button></td>
+                                                    </tr>
+                                                </ng-container>
                                             </tbody>
                                         </table>
                                     </mat-tab>
                                     <mat-tab label="Interactions" class="full-height">
                                         <div class="full-height">
                                             <div class="col-xs-12 full-height">
-                                                <div class="col-xs-3  tab-scroll">
-                                                    <p class="padding-top-20">*Please select goal interaction.</p>
-                                                    <ng-container *ngFor="let goal_number of unSdg[index]['goal_number']">
-                                                        <label class="form-label full-width padding-top-20">
-                                                            <span>{{goal_number}}</span>&nbsp;<span>Interaction.</span>
-                                                            <mat-select class="form-control" >
-                                                                <mat-option *ngFor="let interaction of interactions[index][goal_number]; let goal_index = index;" (click)="explain_content(goal_index, index)">
-                                                                    <p>{{interaction['goal_main']}}  -  {{interaction['goal_alternative_1']}}</p>
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </label>
-                                                    </ng-container>
-                                                </div>
-                                                <div class="col-xs-9 tab-scroll">
-                                                    <ng-container *ngFor="let interaction_item of interactions[index]|keyvalue; let goal_index = index;">
-                                                        <ng-container *ngIf="(explain_index == goal_index)&&(click_flag == index)">
-                                                            <div class="full-width padding-top-20">
-                                                                <ng-container *ngFor="let interaction of interaction_item.value">
-                                                                    <ng-container *ngFor="let interact of interaction|keyvalue">
-                                                                        <h6>- {{interact.key}}</h6>
-                                                                        {{interact.value}}
+                                                <ng-container *ngIf="unSdg.length&&interactions.length">
+                                                    <div class="col-xs-3  tab-scroll">
+                                                        <p class="padding-top-20">*Please select goal interaction.</p>
+                                                        <ng-container *ngFor="let goal_number of unSdg[index]['goal_number']">
+                                                            <label class="form-label full-width padding-top-20">
+                                                                <span>{{goal_number}}</span>&nbsp;<span>Interaction.</span>
+                                                                <mat-select class="form-control">
+                                                                    <mat-option *ngFor="let interaction of interactions[index][goal_number]; let goal_index = index;" value="" (click)="explain_content(goal_index, goal_number)">
+                                                                        <p>{{interaction['goal_main']}}  -  {{interaction['goal_alternative_1']}}</p>
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </label>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div class="col-xs-9 tab-scroll">
+                                                        <ng-container *ngFor="let interaction_item of interactions[index]|keyvalue">
+                                                            <ng-container class="full-width padding-top-20">
+                                                                <ng-container *ngFor="let interaction of interaction_item.value ; let goal_index = index;">
+                                                                    <ng-container *ngIf="(explain_number==interaction_item.key)&&(explain_index==goal_index)">
+                                                                        <ng-container *ngFor="let interact of interaction|keyvalue">
+                                                                            <ng-container *ngIf="interact.value">
+                                                                                <h4><b>- {{interact.key}}</b></h4>
+                                                                                {{interact.value}}
+                                                                            </ng-container>
+                                                                        </ng-container>
                                                                     </ng-container>
                                                                 </ng-container>
-                                                            </div>
+                                                            </ng-container>
                                                             <mat-divider></mat-divider>
                                                         </ng-container>
-                                                    </ng-container>
-                                                </div>
+                                                    </div>
+                                                </ng-container>
                                             </div>
                                         </div>
                                     </mat-tab>
@@ -382,13 +386,13 @@
                                                     </ng-container>
                                                 </div>
                                                 <div class="col-xs-6 tab-scroll">
-                                                    <ng-container *ngIf="(explain_index=='stake_country'||explain_index==0)&&(click_flag == index||click_flag==0)">
+                                                    <ng-container *ngIf="(explain_index=='stake_country')&&(explain_number==index)">
                                                         <ng-container *ngFor="let stakeholder_country_item of stakeholdersCountry[index]">
                                                             <ng-container *ngIf="stakeholder_country_item">
                                                                 <ng-container *ngFor="let item of stakeholder_country_item|keyvalue">
-                                                                    <h5>
+                                                                    <h4>
                                                                         - {{item.key}}.
-                                                                    </h5>
+                                                                    </h4>
                                                                     <p>
                                                                         {{item.value}}
                                                                     </p>
@@ -396,7 +400,7 @@
                                                             </ng-container>
                                                         </ng-container>
                                                     </ng-container>
-                                                    <ng-container *ngIf="(explain_index=='stake_button_3'||explain_index==0)&&(click_flag == index||click_flag==0)">
+                                                    <ng-container *ngIf="(explain_index=='stake_button_3')&&(explain_number==index)">
                                                         <ng-container *ngFor="let stakeholder_button3_item of stakeholdersButton3[index]">
                                                             <ng-container *ngIf="stakeholder_button3_item">
                                                                 <ng-container *ngFor="let item of stakeholder_button3_item|keyvalue">
@@ -410,7 +414,7 @@
                                                             </ng-container>
                                                         </ng-container>
                                                     </ng-container>
-                                                    <ng-container *ngIf="(explain_index=='stake_button_4')&&(click_flag == index)">
+                                                    <ng-container *ngIf="(explain_index=='stake_button_4')&&(explain_number==index)">
                                                         <ng-container *ngFor="let stakeholder_button4_item of stakeholdersButton4[index]">
                                                             <ng-container *ngIf="stakeholder_button4_item">
                                                                 <ng-container *ngFor="let item of stakeholder_button4_item|keyvalue">
@@ -424,7 +428,7 @@
                                                             </ng-container>
                                                         </ng-container>
                                                     </ng-container>
-                                                    <ng-container  *ngIf="(explain_index=='stake_consideration')&&(click_flag == index)">
+                                                    <ng-container  *ngIf="(explain_index=='stake_consideration')&&(explain_number==index)">
                                                         <ng-container *ngFor="let stakeholder_consideration_item of stakeholdersConsideration[index]">
                                                             <ng-container *ngIf="stakeholder_consideration_item">
                                                                 <ng-container *ngFor="let item of stakeholder_consideration_item|keyvalue">
@@ -494,29 +498,29 @@
                                                         <th>Impact Sector</th>
                                                     </tr>
                                                     </thead>
-                                                    <tr>
-                                                        <td>Business Name</td>
-                                                        <td>{{business['resource counter']}}</td>
-                                                        <td>{{business['opportunity counter']}}</td>
-                                                        <td>{{business['venture life cycle']}}</td>
-                                                        <td>{{business['liability of age size']}}</td>
-                                                        <td>{{business['organisation']}}</td>
-                                                        <td>{{business['entrepreneur']}}</td>
-                                                        <td>{{business['environment']}}</td>
-                                                        <td>{{business['impact sector']}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Average</td>
-                                                        <td>{{business['resource counter']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['opportunity counter']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['venture life cycle']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['liability of age size']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['organisation']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['entrepreneur']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['environment']/businessInfo['business_length']}}</td>
-                                                        <td>{{business['impact sector']/businessInfo['business_length']}}</td>
-                                                    </tr>
                                                     <tbody>
+                                                        <tr>
+                                                            <td>{{business['business name']}}</td>
+                                                            <td>{{business['resource counter']}}</td>
+                                                            <td>{{business['opportunity counter']}}</td>
+                                                            <td>{{business['venture life cycle']}}</td>
+                                                            <td>{{business['liability of age size']}}</td>
+                                                            <td>{{business['organisation']}}</td>
+                                                            <td>{{business['entrepreneur']}}</td>
+                                                            <td>{{business['environment']}}</td>
+                                                            <td>{{business['impact sector']}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Average</td>
+                                                            <td>{{round(business['resource counter']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['opportunity counter']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['venture life cycle']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['liability of age size']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['organisation']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['entrepreneur']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['environment']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['impact sector']/businessInfo['business_length'])}}</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -541,10 +545,12 @@
                             <mat-tab label="Badges">
                                 <mat-tab-group class="body-tab">
                                     <mat-tab label="Badges">
-                                        <ng-container *ngFor="let goal_list of unSdg[index]['path']">
-                                            <div class="col-xs-2 padding-top-20">
-                                                <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+goal_list+')'"></div>
-                                            </div>
+                                        <ng-container *ngIf="unSdg.length">
+                                            <ng-container *ngFor="let goal_list of unSdg[index]['path']">
+                                                <div class="col-md-3 padding-top-20">
+                                                    <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+goal_list+')'"></div>
+                                                </div>
+                                            </ng-container>
                                         </ng-container>
                                     </mat-tab>
                                 </mat-tab-group>

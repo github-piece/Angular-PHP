@@ -1,12 +1,11 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {first} from 'rxjs/operators';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionsService} from '../../_services/questions/questions.service';
 import {AnswerService} from '../../_services/answers/answer.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent, MatDialog} from '@angular/material';
+import {MatChipInputEvent} from '@angular/material';
 import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 import {TreeViewComponent} from '@syncfusion/ej2-angular-navigations';
 import {CatalogueService} from '../../_services/catalogue/catalogue.service';
@@ -37,23 +36,24 @@ export class ListingABusinessComponent implements OnInit {
     imagePath: any;
     imgURL = [];
     showImage = [];
-    //  The current visible step
     currentStep = 0;
-    //  Progress var init
-    progress = '0';
+    progress = '1';
     questionForm: FormGroup;
     questionData = [];
     rowData = [];
     col_validator: {};
     formData: FormData;
     upload_index = [];
-    // Display validation message.
     validatorMessage = {  };
     dom_flag = false;
     dom_position_click = false;
     country = [];
+    selected_country: any;
+    provinces = [];
+    province = [];
+    Municipalities = [];
+    Municipality = [];
     file = [];
-    // Tag attributes
     chips: any = [];
     chips_temp: any = [];
     chips_row = [];
@@ -83,28 +83,19 @@ export class ListingABusinessComponent implements OnInit {
     addItem_colData = [];
     sectors: Object = [];
     addItem_rowsData: any = [];
-    // phone
     SearchCountryField = SearchCountryField;
     TooltipLabel = TooltipLabel;
     CountryISO = CountryISO;
     hidden = 1;
-    // selected sectors.
     sectorsSel: any = '';
-    // show the + button when dom - add item option.
     dom_addItem_flag = false;
-    // show the add item option after click the + button.
     domAddItem_flag = false;
     message: string;
     click_flag: number;
     businessId = '';
     excelAnswers = [];
-
-    // Sector tree view
     public treeData: Object = {dataSource: this.sectors, id: 'id', parentID: 'pid', text: 'name', hasChildren: 'hasChild'};
     public showCheckBox = true;
-
-    public records: any = [];
-
     constructor(private fb: FormBuilder,
                 private questionnaireService: QuestionsService,
                 private putAnswerService: AnswerService,
@@ -114,9 +105,7 @@ export class ListingABusinessComponent implements OnInit {
     ) {
         this.formData = new FormData();
     }
-
     ngOnInit() {
-        //  check if authenticated
         if (this.authenticationService.currentUserSubject.value == null) {
             this.showActions = false;
         } else {
@@ -124,15 +113,12 @@ export class ListingABusinessComponent implements OnInit {
             this.userid = this.authenticationService.currentUserSubject.value.u_id;
         }
     }
-
-    // Get profile
     getProfile(profile) {
         this.questionData = [];
         this.profile = profile;
         this.getQuestionnaireList();
         return this.profile;
     }
-    //  Init Validation message.
     InitValidationMsg() {
         for (let i = 0; i < 10; i++) {
             if (this.rowData['col_' + i] === 'email') {
@@ -148,7 +134,6 @@ export class ListingABusinessComponent implements OnInit {
             }
         }
     }
-    // Init all the global variables.
     initVar() {
         this.dom_position_click = false;
         this.dom_flag = false;
@@ -164,17 +149,16 @@ export class ListingABusinessComponent implements OnInit {
         this.addItem_rowsData = [];
         this.addItem_colData = [];
     }
-    // Get questionnaire from tbl_business_quiz
     getQuestionnaireList() {
         return this.questionnaireService.getQuestionnaireList(this.userid, this.profile)
             .pipe(first())
             .subscribe(
                 data => {
-                    // if (data['rememberValue'][0].id_business_quiz !== '133') {
-                    //     this.currentStep = data['rememberValue'][0].id_business_quiz;
-                    //     this.businessId = data['rememberValue'][0].business_id;
-                    //     this.action = 'update';
-                    // }
+                    if (data['rememberValue'][0].id_business_quiz !== '133') {
+                        this.currentStep = data['rememberValue'][0].id_business_quiz;
+                        this.businessId = data['rememberValue'][0].business_id;
+                        this.action = 'update';
+                    }
                     this.questionData = data['data'];
                     this.country = data['country'];
                     this.instruments = data['instruments'];
@@ -186,21 +170,15 @@ export class ListingABusinessComponent implements OnInit {
                     this.cashFlows = data['cashFlows'];
                     this.stakeholderRings = data['stakeholderRings'];
                     this.sectors = this.getTreeStructure(data['sectors']);
+                    this.provinces = data['provinceList'];
+                    this.Municipalities = data['Municipalities'];
                     this.question_start(this.currentStep);
-                },
-                error => {
-                    console.log('error', error);
-                }
-            );
+                });
     }
-
-    // Start question
     question_start(i) {
         let required;
         this.initVar();
-        // Parse questionData one by one row.
         this.rowData = this.questionData[i];
-        // dom manipulation.
         if (this.rowData['notes'] === 'Dom manipulation required') {
             this.dom_position = parseInt(this.rowData['dom_position']);
             this.dom_validator();
@@ -212,31 +190,24 @@ export class ListingABusinessComponent implements OnInit {
             for (let m = 0; m < 10; m++) {
                 this.rangeMain.push(m);
             }
-            // required yes, form validator.
             if (this.rowData['required']) {
                 required = 1;
             } else {
                 required = 0;
             }
-            //  Call Init each form group with validator.
             this.form_validator(required, this.rowData);
         }
     }
-    // Init each form group with validator.
     form_validator(required, rowData) {
         this.InitValidationMsg();
-        // required yes or not.
         if (required) {
-            //  required yes
             for (let i = 0; i < 10; i++) {
                 if (rowData['col_' + i + '_header']) {
                     if (this.rowData['col_' + i] === 'email') {
-                        //  this.col_validator['col_' + i + '_header'] = ['', [Validators.required, Validators.email]];
                         this.col_validator['col_' + i + '_header'] = new FormControl('');
                     } else if (this.rowData['col_' + i] === 'SelectionAndDetails') {
                         this.col_validator['col_' + i + '_header'] = new FormControl('');
                     } else {
-                        //  this.col_validator['col_' + i + '_header'] = new FormControl('',Validators.required);
                         this.col_validator['col_' + i + '_header'] = new FormControl('');
                     }
                 }
@@ -251,10 +222,8 @@ export class ListingABusinessComponent implements OnInit {
         this.questionForm = this.fb.group(
             this.col_validator
         );
-        // After form validation , and load questionnaire part.
         this.showProfile = false;
     }
-    // Init each dom with dynamic validator.
     dom_validator() {
         this.InitValidationMsg();
         for (let i = 0; i <= 10; i++) {
@@ -266,18 +235,15 @@ export class ListingABusinessComponent implements OnInit {
         this.questionForm = this.fb.group(
             this.col_validator
         );
-        // decide for loop range depending on dom position.
         for (let i = 0; i <= this.dom_position; i++) {
             this.rangeMain.push(i);
         }
         for (let i = this.dom_position + 1; i < 10; i++) {
             this.rangeExtra.push(i);
         }
-        // after dom validator, show extra dom .
         this.dom_flag = true;
         this.showProfile = false;
     }
-    // Init each add item with dynamic
     addItem_validator() {
         let position;
         if (this.rowData['col_0'] === 'SelectionAndDetails') {
@@ -290,27 +256,21 @@ export class ListingABusinessComponent implements OnInit {
         this.questionForm = this.fb.group(
             this.col_validator
         );
-        // decide for loop range depending on dom position.
         for (let i = 0; i <= position; i++) {
             this.rangeMain.push(i);
         }
         for (let i = position + 1; i < 10; i++) {
             this.rangeExtra.push(i);
         }
-        // after add item validator, show main add item.
         this.addItem_flag  = true;
     }
-    // Init each dom-add item with dynamic.
     dom_addItem_validator() {
         this.dom_position = parseInt(this.rowData['dom_position']);
-        // Plus icon button to show in dom.
         this.dom_addItem_flag = true;
         this.dom_validator();
     }
-    // Go to next question
     changeStep() {
         if (!this.submitted) {
-            //  Form validation failed.
             if (!this.questionForm.valid) {
                 for (const control in this.questionForm.controls) {
                     if (this.questionForm.controls.hasOwnProperty(control)) {
@@ -319,7 +279,6 @@ export class ListingABusinessComponent implements OnInit {
                 }
                 return false;
             } else {
-                // set business ID.
                 if (this.currentStep === 0) {
                     const businessName = this.questionForm.get('col_0_header').value;
                     const time = Date.now();
@@ -331,11 +290,7 @@ export class ListingABusinessComponent implements OnInit {
                     return;
                 }
                 this.progress = String(Math.round(this.currentStep * 100 / this.questionData.length));
-
-                // Before inserting add item data, Parse all the data by ",".
                 if (this.addItem_flag || this.domAddItem_flag) {
-
-                    // Initialise the add item col data except for other array.
                     for (const i of this.rangeExtra) {
                         if (this.questionForm.get('col_' + i + '_header')) {
                             this.addItem_colData['col_' + i + '_header'] = this.questionForm.get('col_' + i + '_header').value;
@@ -343,27 +298,19 @@ export class ListingABusinessComponent implements OnInit {
                             this.addItem_colData['col_' + i + '_header'] = '';
                         }
                     }
-                    // If dom add item set true, then col_0_header set 'yes'.
                     if (this.domAddItem_flag) {
                         this.addItem_colData['col_0_header'] = 'Yes';
                     }
-
-                    //  Insert other data into col data.
                     for (const {addItem_rowData, index} of this.questionForm.get('other').value.map((addItem_rowData, index) => ({
-                        addItem_rowData,
-                        index
+                        addItem_rowData,index
                     }))) {
-
-                        // when index =0, duplicated as questionForm control. ignore this case.
                         if (index === 0) {
                             const target = {};
-                            // array to object
                             Object.assign(target, this.addItem_colData);
                             this.addItem_rowsData[0] = target;
                             if (this.domAddItem_flag) {
                                 this.addItem_rowsData[1] = addItem_rowData;
                             }
-
                         } else {
                             if (this.domAddItem_flag) {
                                 this.addItem_rowsData[index + 1] = addItem_rowData;
@@ -373,31 +320,23 @@ export class ListingABusinessComponent implements OnInit {
                         }
                     }
                 }
-                // Call answer service to Insert answer into database.
                 const answer_id = this.putAnswerList();
-                // Display new question.
                 if (answer_id) {
-                    // If answer is inserted successfully, then reset form data.
                     this.formData = new FormData();
                     this.question_start(this.currentStep);
                 }
             }
         }
     }
-    //  Put answer into formData, then answer service.
     putAnswerList() {
-        // If dynamic add item, then append other control data to form data.
         if (this.addItem_flag || this.domAddItem_flag) {
             this.formData.append('addItem_rowsData', JSON.stringify(this.addItem_rowsData));
         } else {
             for (let i = 0; i < 10; i++) {
-                //  appending data to formdata.
                 if (this.questionForm.get('col_' + i + '_header')) {
-                    // upload exists.
                     if (this.upload_index[i] === i) {
                         this.formData.append('col_' + i + '_header', '');
                     } else {
-                        // if phone number is.// sector is// if tag is.
                         if (this.rowData['col_' + i].toLowerCase().includes('phone')
                             && this.questionForm.get('col_' + i + '_header').value) {
                             this.formData.append('col_' + i + '_header', this.questionForm.get('col_' + i + '_header').value.number);
@@ -424,7 +363,7 @@ export class ListingABusinessComponent implements OnInit {
         }
         this.formData.append('questionTypeID', this.questionTypeID);
         this.formData.append('action', this.action);
-        // this.formData.append('businessId', this.businessId);
+        this.formData.append('businessId', this.businessId);
         return this.putAnswerService.putAnswer(this.formData)
             .pipe(first()).subscribe((res: any) => {
                     return res;
@@ -434,10 +373,7 @@ export class ListingABusinessComponent implements OnInit {
                 }
             );
     }
-    //  file upload
     onFileChange(event, i) {
-        //  column index to upload file.
-        console.log(event, i);
         this.upload_index[i] = i;
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
@@ -449,7 +385,6 @@ export class ListingABusinessComponent implements OnInit {
             this.message = 'Only images are supported.';
             return;
         }
-
         const reader = new FileReader();
         this.imagePath = event.target.files;
         reader.readAsDataURL(event.target.files[0]);
@@ -459,14 +394,12 @@ export class ListingABusinessComponent implements OnInit {
         this.file[i] = event.target.files.item(0);
         this.showImage[i] = true;
     }
-    //  When clicking the start button, move to start page.
     goToStart() {
         this.showProfile = true;
         this.currentStep = 0;
         this.progress = '0';
-        location.reload();
+        this.router.navigate(['']);
     }
-    // When input tag, remove item from input.
     removeTag(chip: any, i): void {
         let index;
         if (this.addItem_flag) {
@@ -481,13 +414,11 @@ export class ListingABusinessComponent implements OnInit {
             }
         }
     }
-    // When input tag, add item into input.
     addTag(event: MatChipInputEvent, index, i): void {
         const input = event.input;
         const value = event.value;
         if ((value || '').trim()) {
             if (this.addItem_flag) {
-                // change position to add tag.
                 if (this.chips_position !== index) {
                     this.chips_row = [];
                     if (this.chips_temp[index]) {
@@ -508,24 +439,18 @@ export class ListingABusinessComponent implements OnInit {
             } else {
                 this.chips.push(value.trim());
             }
-
         }
-
         if (input) {
             input.value = '';
         }
     }
-
-    // when input currency amount.
     addCurrencyAmount(event, i): void {
         this.currency_amount = event.target.value;
     }
-    // when select currency symbol.
     addCurrencySymbol(symbol, i): void {
         this.currency_symbol = symbol;
         this.questionForm.controls['col_' + i + '_header'].setValue(this.currency_amount + this.currency_symbol);
     }
-    // when select goal name, then display description, number.
     explain_content(i, index) {
         this.explain_index = i;
         if (index) {
@@ -538,7 +463,6 @@ export class ListingABusinessComponent implements OnInit {
             }
         }
     }
-    // when click the stake holder rings, get the selected stake holder rings array.
     getStakeholderRing(ring, i) {
         let rings;
         if (this.rings) {
@@ -548,9 +472,7 @@ export class ListingABusinessComponent implements OnInit {
         }
         this.rings = rings;
         this.questionForm.controls['col_' + i + '_header'].setValue(this.rings);
-        if (this.questionForm.get('col_' + i + '_header').value) {
-        }
-    }    // when dom manipulation,clicking, after dom position extra quiz trigger
+    }
     addOtherSkillFormGroup(position): FormGroup {
         for (let i = position + 1; i < 10; i++) {
             if (this.rowData['col_' + i + '_header']) {
@@ -559,7 +481,6 @@ export class ListingABusinessComponent implements OnInit {
         }
         return this.fb.group(this.col_validator);
     }
-    // when dom manipulation, if click yes, then dom_position_click flas set true, or not.
     showExtraDom(event) {
         if (event.value === 'Yes') {
             this.dom_position_click = true;
@@ -582,19 +503,15 @@ export class ListingABusinessComponent implements OnInit {
         const getAddBtn = document.getElementsByClassName('add-btn_1');
         for (let i = 0; i < getAddBtn.length; i++) {
             const btnDisplay = getAddBtn.item(i) as HTMLElement;
-            console.log('asdfasdfasdfasdfasdfasdfasdf');
             btnDisplay.style.display = 'none';
         }
     }
-    // multiple selector remove validator if click one more.
     removeValidator(value, i) {
         if (value) {
             this.questionForm.get('col_' + i + '_header').clearValidators();
             this.questionForm.get('col_' + i + '_header').updateValueAndValidity();
         }
     }
-
-    // set the checknodes to the TreeView
     public nodeChecked(): void {
         const checkedNodesId = this.tree.checkedNodes;
         for (const checkedID of checkedNodesId) {
@@ -605,7 +522,6 @@ export class ListingABusinessComponent implements OnInit {
             }
         }
     }
-    // Format tree structure from the tbl_sector_section data.
     getTreeStructure(sectors) {
         let row_data = {}, i = 0;
         for (const row_sector of sectors) {
@@ -633,20 +549,17 @@ export class ListingABusinessComponent implements OnInit {
                 }
             }
         }
-        return   this.sectors;
+        return this.sectors;
     }
-    // When clicking the dom-add item option.
     dom_addItem() {
         const position = 0;
         this.col_validator = {};
         this.rangeExtraDomAddItem = [];
         this.click_flag = undefined;
         (<FormArray>this.questionForm.get('other')).push(this.addOtherSkillFormGroup(position));
-        // decide for loop range depending on dom position.
         for (let i = position + 1; i < 10; i++) {
             this.rangeExtraDomAddItem.push(i);
         }
-        // after click + button when dom - add item option, show extra add item part.
         this.domAddItem_flag = true;
     }
     addCurrencySymbolDomAddItem(symbol, i, index) {
@@ -654,10 +567,29 @@ export class ListingABusinessComponent implements OnInit {
         (<FormArray>this.questionForm.controls['other']).controls[index]['controls']
             ['col_' + i + '_header'].setValue(this.currency_amount + this.currency_symbol);
     }
-    // Call When Google auto complete types.
     public handleAddressChange(address: any, i) {
         this.address = address['formatted_address'];
         this.questionForm.controls['col_' + i + '_header'].setValue(this.address);
+    }
+    getProvince(country) {
+        this.province = [];
+        this.selected_country = country;
+        for (let i = 0; i < this.provinces.length; i++) {
+            if (this.provinces[i].country === country) {
+                this.province.push(this.provinces[i].names);
+            }
+        }
+    }
+    getMunicipality (selected_province, index) {
+        if (!this.rowData['col_' + 1 * (index + 1)].toLowerCase().include('south africa') && this.selected_country === 'South Africa') {
+            return ;
+        }
+        this.Municipality = [];
+        for (let i = 0; i < this.Municipalities.length; i++) {
+            if (this.Municipalities[i].province === selected_province) {
+                this.Municipality.push(this.Municipalities[i]);
+            }
+        }
     }
     onSubmit() {
         this.onFinish = false;
@@ -674,28 +606,42 @@ export class ListingABusinessComponent implements OnInit {
         if (target.files.length !== 1) { throw new Error('Cannot use multiple files'); }
         const reader: FileReader = new FileReader();
         reader.onload = (e: any) => {
-            /* read workbook */
             const bstr: string = e.target.result;
             const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-
-            /* grab first sheet */
             const wsname: string = wb.SheetNames[0];
             const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-
-            /* save data */
             this.businessAnswers = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
             for (let i = 2; i < this.businessAnswers.length; i++) {
                 if (this.businessAnswers[i][2] !== undefined) {
+                    let value = '';
+                    for (let n = 3; n <= 24; n += 3) {
+                        if (this.businessAnswers[i][n] !== undefined) {
+                            for (let m = 0; m < this.businessAnswers[i][n].length; m++) {
+                                if (this.businessAnswers[i][n][m] === "'") {
+                                    let character = "'";
+                                    for (let k = m; k < this.businessAnswers[i][n].length; k++) {
+                                        character += this.businessAnswers[i][n][k];
+                                    }
+                                    for (let ii = 0; ii < m; ii++) {
+                                        value += this.businessAnswers[i][n][ii];
+                                    }
+                                    value += character;
+                                    this.businessAnswers[i][n] = value;
+                                    m = this.businessAnswers[i][n].length;
+                                }
+                            }
+                        }
+                    }
                     excelAnswers[j] = {
                         no: j + 1,
-                        answer1: this.businessAnswers[i][3],
-                        answer2: this.businessAnswers[i][6],
-                        answer3: this.businessAnswers[i][9],
-                        answer4: this.businessAnswers[i][12],
-                        answer5: this.businessAnswers[i][15],
-                        answer6: this.businessAnswers[i][18],
-                        answer7: this.businessAnswers[i][21],
-                        answer8: this.businessAnswers[i][24]
+                        answer0: this.businessAnswers[i][3],
+                        answer1: this.businessAnswers[i][6],
+                        answer2: this.businessAnswers[i][9],
+                        answer3: this.businessAnswers[i][12],
+                        answer4: this.businessAnswers[i][15],
+                        answer5: this.businessAnswers[i][18],
+                        answer6: this.businessAnswers[i][21],
+                        answer7: this.businessAnswers[i][24]
                     };
                     j++;
                 }
@@ -705,8 +651,13 @@ export class ListingABusinessComponent implements OnInit {
                 .pipe(first())
                 .subscribe(data => {
                     this.questionTypeID = data.businessId;
-                    this.catalogueService.setBusinessListByExcel(this.userid, this.questionTypeID);
-                    this.router.navigate(['/pages/catalogue']);
+                    this.catalogueService.setBusinessListByExcel(this.userid, this.questionTypeID)
+                        .pipe(first())
+                        .subscribe(result => {
+                            this.router.navigate(['/pages/catalogue']);
+                        }, error => {
+                            this.router.navigate(['/pages/catalogue']);
+                        });
                 });
         };
         reader.readAsBinaryString(target.files[0]);

@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {first} from 'rxjs/operators';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatDialog} from '@angular/material';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
 import {CatalogueService} from '../../_services/catalogue/catalogue.service';
@@ -20,16 +19,16 @@ interface ExampleFlatNode {
     templateUrl: './catalogdashboard.component.html',
     styleUrls: ['./catalogdashboard.component.scss'],
 })
-export class CatalogdashboardComponent {
 
+export class CatalogdashboardComponent {
     showActions = false;
     userData: any = [];
     businessInfo: any;
     amount = [];
     // Business information
     businessUser: any = [];
-    profile: any;
     explain_index: any = 0;
+    explain_number: any = 0;
     click_flag: any = 0;
     mainBusiness = [];
     showBusiness = [];
@@ -58,16 +57,16 @@ export class CatalogdashboardComponent {
     countryList = [];
     goalList = [];
     historyList: any;
-
+    tabList = ['Business', 'Financial', 'Sustainability', 'Scoring', 'Funding', 'Badges'];
+    tabIndex = [];
     p = 1;
-    constructor(private breakpointObserver: BreakpointObserver,
-                private authenticationService: AuthenticationService,
-                private catalogueService: CatalogueService,
-                private buysellService: BuysellService,
-                public dialog: MatDialog,
+    constructor(
+        private authenticationService: AuthenticationService,
+        private catalogueService: CatalogueService,
+        private buysellService: BuysellService,
+        private dialog: MatDialog
     ) {
         if (this.authenticationService.currentUserSubject.value == null) {
-            // if user didnt login
             this.showActions = false;
         } else {
             this.showActions = true;
@@ -75,9 +74,7 @@ export class CatalogdashboardComponent {
             this.getBusinessList();
         }
     }
-
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
-    // Get business answers and users information.
     getBusinessList() {
         this.businessInfo = [];
         this.catalogueService.getBusinessList(this.userData.u_id)
@@ -87,6 +84,9 @@ export class CatalogdashboardComponent {
                     this.businessInfo = business_info;
                     this.mainBusiness = this.businessInfo[0]['mainBusiness'];
                     for (let i = 0; i < this.mainBusiness.length; i++) {
+                        if (this.mainBusiness[i]['image for front page'].substring(0, 4) !== 'http') {
+                            this.mainBusiness[i]['image for front page'] = 'mse/' + this.mainBusiness[i]['image for front page'];
+                        }
                         for (let j = 0; j < this.businessInfo[3].businessUser.length; j++) {
                             if (this.mainBusiness[i].u_id === this.businessInfo[3].businessUser[j].u_id) {
                                 this.mainBusiness[i].businessUser = this.businessInfo[3].businessUser[j].u_name;
@@ -125,9 +125,6 @@ export class CatalogdashboardComponent {
                         ];
                         this.radarChartData[index] = this.scoring[index] as any[];
                     });
-                },
-                error => {
-                    console.log(error);
                 });
     }
     getHistory() {
@@ -141,13 +138,10 @@ export class CatalogdashboardComponent {
                     for (let j = 0; j < this.mainBusiness.length; j++) {
                         const value = this.mainBusiness[j]['how much they\'re raising'];
                         for (let i = 0; i < this.historyList.length; i++) {
-                            // console.log(this.historyList[i].business_id);
                             if (this.mainBusiness[j].business_id === this.historyList[i].business_id) {
                                 const length = this.mainBusiness[j]['how much they\'re raising'].length;
                                 const symbol = this.mainBusiness[j]['how much they\'re raising'].slice(length - 3, length);
-                                // tslint:disable-next-line:max-line-length radix
                                 this.mainBusiness[j]['how much they\'re raising'] = parseFloat(this.mainBusiness[j]['how much they\'re raising']) - this.historyList[i].amount;
-                                // tslint:disable-next-line:max-line-length
                                 this.mainBusiness[j]['how much they\'re raising'] = this.mainBusiness[j]['how much they\'re raising'] + symbol;
                             }
                         }
@@ -160,10 +154,7 @@ export class CatalogdashboardComponent {
                     }
                     this.mainBusiness = [];
                     this.mainBusiness = this.showBusiness;
-                },
-                error => {
-                }
-            );
+                });
     }
     buy(business_id, business) {
         this.buysellService.business_id = business_id;
@@ -175,37 +166,24 @@ export class CatalogdashboardComponent {
         this.buysellService.business_id = business['business_id'];
         this.openDialog();
     }
-
     sell(business_id) {
         this.buysellService.business_id = business_id;
         this.buysellService.modal_content = 'ARE you sure want to sell more?';
         this.buysellService.action = 'sell';
         this.openDialog();
     }
-
     openDialog(): void {
         const dialogRef = this.dialog.open(ModalComponent, {
             width: '600px',
             data: {fundTypes: this.type}
         });
-
         dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
             this.getBusinessList();
         });
     }
-    // When click the button, display the content for corresponding index.
-    explain_content(i, index) {
+    explain_content(i, j) {
         this.explain_index = i;
-        if (index) {
-            this.click_flag = index;
-        } else {
-            if (index === '0') {
-                this.click_flag = 0;
-            } else {
-                this.click_flag = undefined;
-            }
-        }
+        this.explain_number = j;
     }
     businessSearch(businessName, countryName, goalName) {
         this.nameSearch = businessName;
@@ -234,6 +212,41 @@ export class CatalogdashboardComponent {
         this.goalSearch = '';
         this.showBusiness = this.mainBusiness;
         this.businessMatch = true;
+    }
+    round(string) {
+        if (isNaN(string) || string === '') {
+            return 'No available data';
+        }
+        return parseFloat(string).toFixed(2);
+    }
+    getTabData($event) {
+        const tab = this.tabList[$event.index];
+        if (($event.index === 2) || ($event.index === 5)) {
+            if (this.tabIndex[tab] === $event.index) {
+                return;
+            }
+            this.tabIndex[tab] = $event.index;
+            this.catalogueService.getTabData(this.userData.u_id, JSON.stringify(this.mainBusiness), tab).
+            pipe().subscribe(
+                ( data =>   {
+                        this.setTabData($event.index, data);
+                    }
+                ));
+        }
+    }
+    setTabData(index, data) {
+        if (index === 2) {
+            this.unSdg = data['unSdg'];
+            this.interactions = data['interactions'];
+            this.stakeholders = data['stakeholders'];
+            this.stakeholdersCountry = this.stakeholders['country'];
+            this.stakeholdersButton3 = this.stakeholders['button3'];
+            this.stakeholdersButton4 = this.stakeholders['button4'];
+            this.stakeholdersConsideration = this.stakeholders['consideration'];
+            this.stakeholdersMap = this.stakeholders['maps'];
+        } else {
+            this.unSdg = data['unSdg'];
+        }
     }
 }
 
