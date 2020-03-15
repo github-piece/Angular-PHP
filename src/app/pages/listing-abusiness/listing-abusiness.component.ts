@@ -154,10 +154,16 @@ export class ListingABusinessComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    if (data['rememberValue'][0].id_business_quiz !== '133') {
-                        this.currentStep = data['rememberValue'][0].id_business_quiz;
-                        this.businessId = data['rememberValue'][0].business_id;
-                        this.action = 'update';
+                    if (this.action === 'restart') {
+                        this.currentStep = 0;
+                        this.action = 'insert';
+                    } else {
+                        if (data['rememberValue'] !== undefined && data['rememberValue'][0].id_business_quiz !== '134')  {
+                            this.currentStep = data['rememberValue'][0].id_business_quiz;
+                            this.businessId = data['rememberValue'][0].business_id;
+                            this.questionTypeID = this.businessId;
+                            this.action = 'update';
+                        }
                     }
                     this.questionData = data['data'];
                     this.country = data['country'];
@@ -398,7 +404,8 @@ export class ListingABusinessComponent implements OnInit {
         this.showProfile = true;
         this.currentStep = 0;
         this.progress = '0';
-        this.router.navigate(['']);
+        this.router.navigate(['/pages/listingABusinessComponent']);
+        this.action = 'restart';
     }
     removeTag(chip: any, i): void {
         let index;
@@ -592,13 +599,16 @@ export class ListingABusinessComponent implements OnInit {
         }
     }
     onSubmit() {
+        this.changeStep();
         this.onFinish = false;
         this.submitted = true;
         this.currentStep = this.questionData.length;
         this.progress = '100';
-        return this.catalogueService.setBusinessList(this.userid, this.questionTypeID).pipe(first()).subscribe(result => {
-            return result;
-        });
+        return this.catalogueService.setBusinessList(this.userid, this.questionTypeID)
+            .pipe(first())
+            .subscribe(result => {
+                return result;
+            });
     }
     import(evt: any) {
         const excelAnswers = []; let j = 0;

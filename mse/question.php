@@ -47,7 +47,7 @@
 		$data['scoreBusiness'] = getContent($conn, 'tbl_score_business');
 		$data['Municipalities'] = getContent($conn, 'tbl_local_dist_muni');
 		$data['provinceList'] = getProvince($conn);
-		$sql = 'SELECT id_business_quiz, business_id FROM tbl_business_answer WHERE u_id ="' .$u_id. '" AND profile = "' .$profile. '" ORDER BY time_started DESC LIMIT 1';
+		$sql = 'SELECT id_business_quiz, business_id FROM tbl_business_answer WHERE u_id = "' .$u_id. '" AND profile = "' .$profile. '" ORDER BY time_started DESC LIMIT 1';
 		$result = mysqli_query($conn, $sql);
 		$data['rememberValue'] = mysqli_fetch_all($result, MYSQLI_ASSOC);
 		echo json_encode($data);
