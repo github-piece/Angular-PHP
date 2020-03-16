@@ -2,7 +2,6 @@
     font-size: $font-size-small;
     font-weight: $font-weight-normal;
 }
-
 .tooltip-inner {
     background-color: $white-color;
     border-radius: $border-radius-base;
@@ -23,9 +22,6 @@
     display: inline-block;
     position: absolute;
 }
-
-//tooltip arrow positioning
-//onLeft
 .tooltip.bs-tooltip-left,
 .tooltip.bs-tooltip-left.show{
     margin-right: 5px;
@@ -50,7 +46,6 @@
     }
 }
 
-//onRight
 .tooltip.bs-tooltip-right,
 .tooltip.bs-tooltip-right.show{
     margin-left: 6px;
@@ -75,7 +70,6 @@
     }
 }
 
-//onTop
 .tooltip.bs-tooltip-top,
 .tooltip.bs-tooltip-top.show{
     margin-top: -6px;
@@ -100,7 +94,6 @@
     }
  }
 
-//onBottom
 .tooltip.bs-tooltip-bottom,
 .tooltip.bs-tooltip-bottom.show{
     margin-top: 6px;

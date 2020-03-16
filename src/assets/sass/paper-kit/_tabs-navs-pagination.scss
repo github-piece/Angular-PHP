@@ -1,11 +1,6 @@
-/*             Navigation menu                */
-
-/*             Navigation Tabs                 */
 .nav-tabs-navigation{
     text-align: center;
     border-bottom: 1px solid $medium-pale-bg;
-
-
     .nav > .nav-item > .nav-link{
         padding-bottom: 20px;
     }
@@ -47,7 +42,6 @@
             .nav-link.active:focus{
                 background-color: transparent;
                 border: 0 none;
-                //height: 50px;
                 &:after{
                     border-bottom: 11px solid $white-color;
                     border-left: 11px solid rgba(0, 0, 0, 0);
@@ -117,7 +111,6 @@
         }
     }
 }
-/*             Navigation Pills               */
 
 .nav-pills {
     .nav-item + .nav-link {
@@ -341,7 +334,6 @@
     }
 }
 
-// Stefan making edits
 
 
 .page-item:first-child .page-link,

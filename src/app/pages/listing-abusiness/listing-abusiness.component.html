@@ -160,6 +160,7 @@
                             </ng-template>
                             <!--Select multiple option for sector.-->
                             <ng-template [ngIf]="(rowData['col_'+i].toLowerCase().includes('sector'))">
+                                <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
                                 <div id='treeparent'><ejs-treeview #treeview="" id='treeelement' [fields]='treeData' [showCheckBox]='showCheckBox' (nodeChecked)='nodeChecked($event)'></ejs-treeview></div>
                             </ng-template>
                             <!--Select multiple option for normal multiple-->

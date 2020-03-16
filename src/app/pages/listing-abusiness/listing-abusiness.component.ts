@@ -158,7 +158,7 @@ export class ListingABusinessComponent implements OnInit {
                         this.currentStep = 0;
                         this.action = 'insert';
                     } else {
-                        if (data['rememberValue'] !== undefined && data['rememberValue'][0].id_business_quiz !== '134')  {
+                        if (data['rememberValue'][0] !== undefined && data['rememberValue'][0].id_business_quiz !== '134')  {
                             this.currentStep = data['rememberValue'][0].id_business_quiz;
                             this.businessId = data['rememberValue'][0].business_id;
                             this.questionTypeID = this.businessId;
@@ -375,7 +375,6 @@ export class ListingABusinessComponent implements OnInit {
                     return res;
                 },
                 error => {
-                    console.log(error);
                 }
             );
     }
@@ -624,8 +623,20 @@ export class ListingABusinessComponent implements OnInit {
             for (let i = 2; i < this.businessAnswers.length; i++) {
                 if (this.businessAnswers[i][2] !== undefined) {
                     let value = '';
-                    for (let n = 3; n <= 24; n += 3) {
+                    for (let n = 3; n < this.businessAnswers[i].length; n += 3) {
                         if (this.businessAnswers[i][n] !== undefined) {
+                            if (this.businessAnswers[i][n - 2] === 'Currency') {
+                                this.businessAnswers[i][n - 3] += this.businessAnswers[i][n];
+                                const answer = []; let kk = 0;
+                                for ( let k = 0; k < this.businessAnswers[i].length; k++ ) {
+                                    if (k !== n - 1 && k !== n - 2 && k !== n) {
+                                        answer[kk] = this.businessAnswers[i][k];
+                                        kk++;
+                                    }
+                                }
+                                this.businessAnswers[i] = answer;
+                                n = n - 3;
+                            }
                             for (let m = 0; m < this.businessAnswers[i][n].length; m++) {
                                 if (this.businessAnswers[i][n][m] === "'") {
                                     let character = "'";
@@ -644,6 +655,7 @@ export class ListingABusinessComponent implements OnInit {
                     }
                     excelAnswers[j] = {
                         no: j + 1,
+                        type: this.businessAnswers[i][2],
                         answer0: this.businessAnswers[i][3],
                         answer1: this.businessAnswers[i][6],
                         answer2: this.businessAnswers[i][9],
@@ -651,9 +663,27 @@ export class ListingABusinessComponent implements OnInit {
                         answer4: this.businessAnswers[i][15],
                         answer5: this.businessAnswers[i][18],
                         answer6: this.businessAnswers[i][21],
-                        answer7: this.businessAnswers[i][24]
+                        answer7: this.businessAnswers[i][24],
+                        answer8: this.businessAnswers[i][27]
                     };
                     j++;
+                }
+            }
+            for (let i = 0; i < excelAnswers.length; i++) {
+                if (excelAnswers[i]['type'] === undefined && excelAnswers[i + 1]['type'] !== undefined) {
+                    excelAnswers[i + 1] = {
+                        no: i + 1,
+                        answer0: 'Yes',
+                        answer1: this.businessAnswers[i + 1][3],
+                        answer2: this.businessAnswers[i + 1][6],
+                        answer3: this.businessAnswers[i + 1][9],
+                        answer4: this.businessAnswers[i + 1][12],
+                        answer5: this.businessAnswers[i + 1][15],
+                        answer6: this.businessAnswers[i + 1][18],
+                        answer7: this.businessAnswers[i + 1][21],
+                        answer8: this.businessAnswers[i + 1][24],
+                        answer9: this.businessAnswers[i + 1][27]
+                    };
                 }
             }
             const time = Date.now();

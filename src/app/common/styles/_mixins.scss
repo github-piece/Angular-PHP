@@ -1,4 +1,3 @@
-//preload image
 @mixin spinner-size($size){
 	.spinner
   {
@@ -32,18 +31,15 @@
   transition: $transitions;
 }
 
-// Placeholder shadow DOM
 @mixin _placeholder {
   &::-webkit-input-placeholder {
     @content;
   }
 
-  // Firefox 18-
   &:-moz-placeholder {
     @content;
   }
 
-  // Firefox 19+
   &::-moz-placeholder {
     @content;
   }

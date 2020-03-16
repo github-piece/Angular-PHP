@@ -1,24 +1,8 @@
-/*!
-
- =========================================================
- * Paper Kit 2 Angular - v1.2.0
- =========================================================
-
- * Product Page: https://www.creative-tim.com/product/paper-kit-2-angular
- * Copyright 2017 Creative Tim (https://www.creative-tim.com)
- * Licensed under MIT (https://github.com/timcreative/paper-kit/blob/master/LICENSE.md)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- */
-
 @import "paper-kit/variables";
 @import "paper-kit/mixins";
 
 @import "paper-kit/typography";
 
-// Core CSS
 @import "paper-kit/misc";
 @import "paper-kit/buttons";
 @import "paper-kit/inputs";
@@ -35,20 +19,14 @@
 @import "paper-kit/footers";
 
 
-// Bootstrap Switch
 @import "paper-kit/bootstrap-switch";
 
-// Fancy Stuff
 @import "paper-kit/dropdown";
-//
-// icons
 @import "paper-kit/icons";
-//
 @import "paper-kit/tabs-navs-pagination";
 @import "paper-kit/collapse";
 @import "paper-kit/carousel";
 @import "paper-kit/modal";
-//
 @import "paper-kit/responsive";
 @import "paper-kit/plugins/datetimepicker";
 @import "paper-kit/social-buttons";

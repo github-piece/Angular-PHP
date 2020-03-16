@@ -5,19 +5,19 @@
         $return_arr = Array();
         $answer_list = Array();
         $request = json_decode($postData);
-        $userid = $request->userid;
-        if($userid === '') {
+        $userId = $request->userid;
+        if($userId === '') {
             return http_response_code(400);
         }
         $action = $request->action;
         switch($action){
             case 'create':
                 $business_id = md5($request->questionTypeID);
-                registerNewBusiness($userid, $business_id, $conn);
+                registerNewBusiness($userId, $business_id, $conn);
                 break;
             case 'createByExcel':
                 $business_id = $request->questionTypeID;
-                registerNewBusiness($userid, $business_id, $conn);
+                registerNewBusiness($userId, $business_id, $conn);
                 break;
             case 'readTab':
                 $tab = $request->tab;
@@ -26,47 +26,45 @@
                 break;
         }
     }
-    function registerNewBusiness($userid, $business_id, $conn){
-        //Register user id first.
-        $sql = "INSERT INTO tbl_business(u_id, business_id)  VALUES   ('".$userid."', '".$business_id."')";
+    function registerNewBusiness($userId, $business_id, $conn){
+        $sql = "INSERT INTO tbl_business(u_id, business_id)  VALUES   ('".$userId."', '".$business_id."')";
         mysqli_query($conn, $sql);
-        //Register tab content
-        $answers = getAnswersByBusinessId($userid, $business_id, $conn);
-        businessInformation($userid, $business_id, $answers, $conn);
-        financialInformation($userid, $business_id, $answers, $conn);
-        financialBalance($userid, $business_id,$conn);
-        financialIncome($userid, $business_id, $answers, $conn);
-        financialCash($userid, $business_id, $conn);
-        sustainabilityUnSdg($userid, $business_id, $answers, $conn);
-        sustainabilityStakeholderCountry($userid, $business_id, $answers, $conn);
-        scoringFinancial($answers, $userid, $business_id, $conn);
-        badgeBusiness($answers, $userid, $business_id, $conn);
-        notification($userid, $business_id, $conn);
+        $answers = getAnswersByBusinessId($userId, $business_id, $conn);
+        businessInformation($userId, $business_id, $answers, $conn);
+        financialInformation($userId, $business_id, $answers, $conn);
+        financialBalance($userId, $business_id,$conn);
+        financialIncome($userId, $business_id, $answers, $conn);
+        financialCash($userId, $business_id, $conn);
+        sustainabilityUnSdg($userId, $business_id, $answers, $conn);
+        sustainabilityStakeholderCountry($userId, $business_id, $answers, $conn);
+        scoringFinancial($answers, $userId, $business_id, $conn);
+        badgeBusiness($answers, $userId, $business_id, $conn);
+        notification($userId, $business_id, $conn);
     }
 
     /*------------- tbl_business create start---------------*/
     //Insert answers into tbl_business about business.
-    function businessInformation($userid, $business_id, $answers, $conn){
+    function businessInformation($userId, $business_id, $answers, $conn){
         $count_question = count($answers);
         $key_business_info = getKeyFromCatalogue('Business Summary', 'Business Information:', '', 'tbl_business_answer', $conn);
         $business_info = [];
-        array_push($business_info, getAnswerByIdCol(1, 'col_0_header', $answers));
-        array_push($business_info, $answers[$count_question-1]['time_started']);
-        array_push($business_info, $business_id);
-        array_push($business_info, getAnswerByIdCol(7, 'col_5_header',$answers));
-        array_push($business_info, getAnswerByIdCol(2, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(6, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(14, 'col_1_header', $answers));
-        array_push($business_info, getAnswerByIdCol(12, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(44, 'col_1_header', $answers));
-        array_push($business_info, getAnswerByIdCol(38, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(5, 'col_0_header', $answers));
-        array_push($business_info, getAnswerByIdCol(55, 'col_0_header', $answers));
-        insertNewTab($key_business_info,$business_info,'key',$userid,$business_id,$conn);
+        $business_info[] = getAnswerByIdCol(1, 'col_0_header', $answers);
+        $business_info[] = $answers[$count_question - 1]['time_started'];
+        $business_info[] = $business_id;
+        $business_info[] = getAnswerByIdCol(7, 'col_5_header', $answers);
+        $business_info[] = getAnswerByIdCol(2, 'col_0_header', $answers);
+        $business_info[] = getAnswerByIdCol(6, 'col_0_header', $answers);
+        $business_info[] = getAnswerByIdCol(14, 'col_1_header', $answers);
+        $business_info[] = getAnswerByIdCol(24, 'col_2_header', $answers);
+        $business_info[] = getAnswerByIdCol(44, 'col_1_header', $answers);
+        $business_info[] = getAnswerByIdCol(9, 'col_0_header', $answers);
+        $business_info[] = getAnswerByIdCol(1, 'col_1_header', $answers);
+        $business_info[] = getAnswerByIdCol(55, 'col_0_header', $answers);
+        insertNewTab($key_business_info, $business_info,'key',$userId,$business_id,$conn);
     }
 
     //Insert new answers into tbl_business about financial.
-    function financialInformation($userid, $business_id, $answers,$conn){
+    function financialInformation($userId, $business_id, $answers,$conn){
         $key_financial_info = getKeyFromCatalogue('Financial Summary', 'Financial Information', '', 'tbl_business_answer', $conn);
         $business_info = [];
         array_push($business_info, getSum($answers,30, 'col_1_header', '','',''));
@@ -85,16 +83,16 @@
         array_push($business_info, (getSum($answers,56,'col_0_header','','','')-(getSum($answers,57,'col_6_header','','','')+getSum($answers,57,'col_7_header','','',''))*6)/getSum($answers,56,'col_0_header','','',''));
         array_push($business_info, (getSum($answers,57,'col_6_header','','','')+getSum($answers,57,'col_7_header','','',''))*6);
         array_push($business_info, getSum($answers,32,'col_1_header','','','')*12/getSum($answers,61,'col_2_header','','',''));
-        insertNewTab($key_financial_info, $business_info, 'key',$userid,$business_id,$conn);
+        insertNewTab($key_financial_info, $business_info, 'key',$userId,$business_id,$conn);
     }
     //Insert new answers into tbl_business about balance sheet.
-    function financialBalance($userid,$business_id,$conn){
+    function financialBalance($userId,$business_id,$conn){
         $key_balance_info = getKeyFromCatalogue('Financial Summary', 'Balance Sheet', '', 'tbl_business_answer', $conn);
-        insertNewTab($key_balance_info,  getAnswerByQuery($key_balance_info, $conn), 'key', $userid,$business_id,$conn);
+        insertNewTab($key_balance_info,  getAnswerByQuery($key_balance_info, $conn), 'key', $userId,$business_id,$conn);
     }
 
     //Insert new answers into tbl_business about income statement.
-    function financialIncome($userid, $business_id, $answers, $conn){
+    function financialIncome($userId, $business_id, $answers, $conn){
         $business_info = [];$business_info['income amounts'] = '';$business_info['income items'] = '';
         $answer_by_id = getAnswerById($answers, 64);
         foreach($answer_by_id as  $answer ){
@@ -107,28 +105,28 @@
                 $business_info['income amounts'] = $answer['col_2_header'];
             }
         }
-        insertNewTab('', $business_info, 'query',$userid, $business_id, $conn);
+        insertNewTab('', $business_info, 'query',$userId, $business_id, $conn);
     }
     //Insert new answers into tbl_business about cash flow statement.
-    function financialCash($userid, $business_id, $conn){
+    function financialCash($userId, $business_id, $conn){
         $key_cash_info = getKeyFromCatalogue('Financial Summary', 'Cash Flow Statement', '', 'tbl_business_answer', $conn);
-        insertNewTab($key_cash_info,  getAnswerByQuery($key_cash_info, $conn), 'key', $userid,$business_id,$conn);
+        insertNewTab($key_cash_info,  getAnswerByQuery($key_cash_info, $conn), 'key', $userId,$business_id,$conn);
     }
     //Insert new answers into tbl_business about UN SDG.
-    function sustainabilityUnSdg($userid, $business_id, $answers, $conn){
+    function sustainabilityUnSdg($userId, $business_id, $answers, $conn){
         $goal_name = getAnswerByIdCol(47, 'col_0_header', $answers);
         $business_info['goal name'] = $goal_name;
-        insertNewTab('', $business_info, 'query', $userid,$business_id,$conn);
+        insertNewTab('', $business_info, 'query', $userId,$business_id,$conn);
     }
     //Insert new answers into tbl_business about Interactions.
-    function sustainabilityStakeholderCountry($userid, $business_id, $answers, $conn){
+    function sustainabilityStakeholderCountry($userId, $business_id, $answers, $conn){
         $business_info = [];
         $country = getAnswerByIdCol(6,'col_1_header', $answers);
         $business_info['country'] = $country;
-        insertNewTab('', $business_info, 'query', $userid, $business_id, $conn);
+        insertNewTab('', $business_info, 'query', $userId, $business_id, $conn);
     }
     //Insert new answers into tbl_business about Scoring summary.
-    function scoringFinancial($answers, $userid, $business_id, $conn){
+    function scoringFinancial($answers, $userId, $business_id, $conn){
         $scoringDataList = [];
         $key_scoring_info = getKeyFromCatalogue('Scoring Summary', 'Financial Scoring', '', 'tbl_business_answer&score_business', $conn);
         $scoringData =  getScoringData($answers, $conn);
@@ -140,11 +138,11 @@
                 }
             }
         }
-        insertNewTab('', $scoringDataList, 'query', $userid, $business_id, $conn);
+        insertNewTab('', $scoringDataList, 'query', $userId, $business_id, $conn);
 
     }
     //Insert new answers into tbl_business about Badge business
-    function badgeBusiness($answers, $userid, $business_id, $conn){
+    function badgeBusiness($answers, $userId, $business_id, $conn){
         $goal_path='';$business_info = [];
         $goals= getContent('tbl_unsdg_database','', $conn);
         $goal_name = getAnswerByIdCol(47, 'col_0_header', $answers);
@@ -162,24 +160,19 @@
             }
         }
         $business_info['badge name'] = $goal_path;
-        insertNewTab('', $business_info, 'query', $userid, $business_id, $conn);
+        insertNewTab('', $business_info, 'query', $userId, $business_id, $conn);
     }
     //Get completed new answers from tbl_business_answer by business id.
-    function getAnswersByBusinessId($userid, $business_id, $conn){
-        $sql = "SELECT * FROM tbl_business_answer WHERE u_id='".$userid."' AND business_id = '".$business_id."'";
+    function getAnswersByBusinessId($userId, $business_id, $conn){
+        $sql = "SELECT * FROM tbl_business_answer WHERE u_id='".$userId."' AND business_id = '".$business_id."'";
         $result = mysqli_query($conn, $sql);
-        $answers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        return $answers;
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
-    // 'Business Summary', 'Business Information:', '', 'tbl_business_answer', $conn
-    //Get key for tbl_business column using tab, sub tab from catalogue.
     function getKeyFromCatalogue($tab, $subTab, $button, $tbl_pull_request_1_source, $conn){
         $sql = "SELECT `description` FROM tbl_catalogue_summary WHERE tab = '".$tab."' AND sub_tab = '".$subTab."' AND button_in_sub_tab = '".$button."' AND tbl_pull_request_1_source = '".$tbl_pull_request_1_source."'";
         $result = mysqli_query($conn, $sql);
-        $key = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        return $key;
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
-    //Get answers by id = 'x', col = 'col_x_header'
     function getAnswerByIdCol($id, $col, $answers){
         foreach($answers as $key=>$value){
             if($value['id_business_quiz']==$id){
@@ -223,19 +216,21 @@
         return $AnswersById;
     }
     //Insert key value pair into tbl_business
-    function insertNewTab($key_info, $business_info, $type, $userid, $business_id, $conn){
-        if($type=='key'){
-            foreach($key_info as $key=>$value){
-                $sql = "UPDATE tbl_business SET `".strtolower($value['description'])."`='".$business_info[$key]."' WHERE u_id='".$userid."' AND business_id='".$business_id."'";
+    function insertNewTab($key_info, $business_info, $type, $userId, $business_id, $conn){
+        if ($type==='key') {
+            foreach ($key_info as $key => $value) {
+                $sql = 'UPDATE tbl_business SET `'.strtolower($value['description']).'` = "'. $business_info[$key] .'" WHERE u_id= "'.$userId.'" AND business_id= "'.$business_id.'"';
                 mysqli_query($conn, $sql);
-                echo $answer_id = mysqli_insert_id($conn);
+                $answer_id = mysqli_insert_id($conn);
+                echo $answer_id;
             }
         }
-        if($type=='query'){
-            foreach($business_info as $key=>$value){
-                $sql = "UPDATE tbl_business SET `".$key."`='".$value."' WHERE u_id='".$userid."' AND business_id='".$business_id."'";
+        if ($type==='query'){
+            foreach ($business_info as $key=>$value) {
+                $sql = "UPDATE tbl_business SET `".$key."`='".$value."' WHERE u_id='".$userId."' AND business_id='".$business_id."'";
                 mysqli_query($conn, $sql);
-                echo $answer_id = mysqli_insert_id($conn);
+                $answer_id = mysqli_insert_id($conn);
+                echo $answer_id;
             }
         }
     }
@@ -372,38 +367,19 @@
         }
         return $totalScoringData;
     }
-    //Get table data.
-    function getContent($table, $option, $conn){
-        if($option){
-            $sql = "SELECT * FROM ".$table." WHERE  u_id='".$option."'";
-        }
-        else{
-            $sql = "SELECT * FROM ".$table;
-        }
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-        return $row;
-    }
-
     /*---------------------tbl_business create end------------------------*/
 
     /*-----------------------tbl_business read start  ---------------------*/
 
     //Get new business from current user.
-    function getAllRegisteredBusiness($userid, $conn){
+    function getAllRegisteredBusiness($conn){
         $businessList = [];
         //Get new business main data from tbl_business.
         $businessList['mainBusiness'] = getContent('tbl_business', '', $conn);
-        $businessList['currentUserBusiness'] = getContent('tbl_business', $userid, $conn);
         $businessList['countryList'] = getContent('tbl_country_basic_information', '', $conn);
         $businessList['businessUser'] = getContent('tbl_user', '', $conn);
         $businessList['goalList'] = getContent('tbl_unsdg_database', '', $conn);
-        //Get data from the other table.
         $businessList['business_length'] = count($businessList['mainBusiness']);
-        $businessList['unSdg'] = getUnSdg($businessList['mainBusiness'], $conn);
-        $businessList['interactions'] = getInteractions($businessList['mainBusiness'],$businessList['unSdg'], $conn);
-        $businessList['stakeholders'] = getStakeholders($businessList['mainBusiness'], $conn);
         $businessList['commission'] = getContent('tbl_business_commission', '', $conn);
         $businessList['instruments'] = getContent('tbl_instrument_types', '', $conn);
         echo json_encode($businessList);
@@ -411,8 +387,8 @@
     //Get unSdg from un sdg database.
     function getUnSdg($mainBusiness, $conn){
         $unSdg = [];
-        $unSdg_item['goal_number'] = $unSdg_item['goal_description'] = $unSdg_item['path'] = [];
         foreach ($mainBusiness as $mainBusiness_item){
+            $unSdg_item['goal_number'] = $unSdg_item['goal_description'] = $unSdg_item['path'] = [];
             $goal_names = explode(',',$mainBusiness_item['goal name']);
             $goals = getContent('tbl_unsdg_database','', $conn);
             foreach($goals as $goal){
@@ -430,15 +406,16 @@
     };
     //Get interactions from tbl un sdg goal interactions.
     function getInteractions($mainBusiness, $unSdg, $conn){
-        $interactions = [];$interaction=[];
+        $interactions = [];
         foreach ($mainBusiness as $key=>$mainBusiness_item){
+            $interaction=[];
             $goals_number = $unSdg[$key]['goal_number'];
             foreach ($goals_number as $goal_number){
                 $interaction[$goal_number] = [];
-                $sql = "SELECT `goal_main`, `goal_alternative_1`, `interaction_1`, `key_points`, `key_uncertainties`, `comprehensive_breakdown`, 
+                $sql = "SELECT `goal_main`, `goal_alternative_1`, `interaction_1`, `key_points`, `key_uncertainties`, `comprehensive_breakdown`,
                         `illustrative_example_1`, `key_dimensions_1`, `key_dimensions_2`, `key_dimensions_3`, `key_dimensions_4`
-                        FROM `tbl_unsdg_goal_interactions` 
-                        WHERE 
+                        FROM `tbl_unsdg_goal_interactions`
+                        WHERE
                         `goal_main` = '".$goal_number."'
                         OR
                         `goal_alternative_1` = '".$goal_number."'
@@ -526,6 +503,37 @@
             $sql = "INSERT INTO tbl_notification (userId, businessId, sended_at)
                         VALUES ('".$tables[$i]['u_id']."', '".$businessId."', '".$date."')";
             mysqli_query($conn, $sql);
+        }
+    }
+    $conn->close();
+    //Get table data.
+    function getContent($table, $option,$conn){
+        if($option){
+            $sql = "SELECT * FROM ".$table." WHERE  u_id='".$option."'";
+        }
+        else{
+            $sql = "SELECT * FROM ".$table;
+        }
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        return $row;
+    }
+
+    //Get data for each tab.
+    function getTabBusiness($mainBusiness, $tab, $conn) {
+        $businessList = [];
+        switch($tab) {
+            case 'Sustainability':
+                $businessList['unSdg'] = getUnSdg($mainBusiness, $conn);
+                $businessList['interactions'] = getInteractions($mainBusiness,$businessList['unSdg'], $conn);
+                $businessList['stakeholders'] = getStakeholders($mainBusiness, $conn);
+                echo json_encode($businessList);
+                break;
+            case 'Badges':
+                $businessList['unSdg'] = getUnSdg($mainBusiness, $conn);
+                echo json_encode($businessList);
+                break;
         }
     }
     $conn->close();

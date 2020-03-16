@@ -14,12 +14,9 @@
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    /* Center vertically */
     align-items: center;
-    /*Center horizontaly */
     justify-content: center;
 
-    /*Center horizontaly ie */
     -ms-flex-pack: center;
 
     .filter::after{
@@ -156,9 +153,6 @@
 .follows hr{
     margin-top: 10px;
 }
-.alert h5{
-    // margin-bottom: 10px;
-}
 .title-brand{
     max-width: 730px;
     margin: 0 auto;
@@ -185,7 +179,6 @@
     font-weight: 700;
     margin: 0;
     color: #FFFFFF;
-    // background: #fbf8ec;
     background: -moz-linear-gradient(to bottom, #FFFFFF 35%, #4e6773 100%);
     background: -webkit-linear-gradient(to bottom, #FFFFFF 35%,#4e6773 100%);
     background: -ms-linear-gradient(to bottom, #FFFFFF 35%,#4e6773 100%);
@@ -241,11 +234,6 @@
 
     img{
         width: 100%;
-    }
-}
-.page-header{
-    .content-center{
-        //margin-top: 85px;
     }
 }
 .moving-clouds{

@@ -17,7 +17,6 @@ export class BusinessServiceService {
 
   getBusinessList(userId) {
       return this.http.post<any>(`http://localhost:3000/business`, { userId })
-          // return this.http.post<any>(`${URL_SERVICIOS}/business.php`, { userId,  action })
           .pipe(map(business => {
               return business;
           }));
@@ -25,7 +24,6 @@ export class BusinessServiceService {
 
   getGeometry(address) {
       return this.http.post<any>(`http://localhost:3000/getGeometry`, { address })
-          // return this.http.post<any>(`${URL_SERVICIOS}/businesslist.php`, {address})
           .pipe(map(result => {
               return result;
           }));

@@ -105,7 +105,6 @@
        margin: $navbar-margin-btn;
        font-size: $font-size-small;
        i{
-        //    margin-right: 5px !important;
            font-size: 14px;
            line-height: 13px;
        }
@@ -276,8 +275,6 @@
         }
 }
 
-/*      Navbar with icons            */
-
 .navbar-icons{
     &.navbar .navbar-brand{
         margin-top: 12px;
@@ -337,8 +334,6 @@
     }
 }
 
-// stefan making edits
-
 .navbar-light .navbar-nav .nav-link:hover{
     color: $light-gray;
 }
@@ -380,10 +375,6 @@
         border-bottom: 0 none;
     }
 }
-
-
-//menu bars
-
 .navbar-nav > li > .dropdown-menu,
 .dropdown .dropdown-menu{
     transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s, opacity 0.3s ease 0s, height 0s linear 0.35s;
@@ -458,9 +449,6 @@
 #second-tabs{
     margin-left: 20px;
 }
-
-// navigation areas
-
 .scroll-area{
     max-height: 310px;
     overflow-y: scroll;

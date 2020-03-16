@@ -32,7 +32,6 @@ mat-slide-toggle {
 
 mat-button-toggle-group {
   &.mat-button-toggle-group {
-    // We have to go deeper in the hierarchy to override material styles
     &.mat-button-toggle-vertical {
       .mat-button-toggle + .mat-button-toggle {
         border: solid 1px $form-label-color;
@@ -44,7 +43,6 @@ mat-button-toggle-group {
 mat-button-toggle {
   &.mat-button-toggle-checked {
     background-color: $form-tag-color;
-    // We need to add !important to to override the deep hierarchy of material styles
     border-color: $form-tag-color !important;
 
     .mat-button-toggle-label-content {

@@ -1,11 +1,9 @@
-/*           Font Smoothing      */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td, button, input, select, textarea{
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     font-family: $font-family-sans-serif;
     font-weight: $font-weight-light;
 }
-
 h1, .h1, h2, .h2, h3, .h3, h4, .h4{
     margin: $margin-large-vertical 0 0;
 }
@@ -94,13 +92,10 @@ blockquote small{
 .glyphicon{
     line-height: 1;
 }
-
-// Pulsing Heart (footer)
 .heart {
   color: #EB5E28;
   animation: heathing 1s ease infinite,;
 }
-
 @keyframes heathing {
   0% { transform: scale( .75 ); }
   20% { transform: scale( 1 ); }

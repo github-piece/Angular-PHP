@@ -21,17 +21,9 @@ h5.font-opal {
   align-items: center;
   width: auto;
 }
-/*nb-layout-header {*/
-/*  display: flex;*/
-/*  justify-content: space-between;*/
-/*  width: 100%;*/
-/*}*/
 .nb-theme-cosmic nb-layout-header nav {
   justify-content: space-between !important;
 }
-/*:host nb-layout-header ::ng-deep nav {*/
-/*  justify-content: flex-end;*/
-/*}*/
 
 .mat-drawer {
   overflow-y: unset;

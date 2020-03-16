@@ -1,18 +1,12 @@
-// Properly configure bootstrap Sass so it works with the Angular-CLI
-//    - https://github.com/angular/angular-cli/wiki/stories-include-bootstrap#configuring-project-1
-//    - https://github.com/angular/angular-cli/issues/2170#issuecomment-247766610
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
-// Core variables and mixins
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 
-// Reset and dependencies
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/normalize';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/print';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons';
 
-// Core CSS
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/type';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/code';
@@ -21,7 +15,6 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/forms';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/buttons';
 
-// Components
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/component-animations';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/button-groups';
@@ -44,12 +37,10 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/wells';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/close';
 
-// Components w/ JavaScript
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/modals';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/tooltip';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/popovers';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/carousel';
 
-// Utility classes
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/utilities';
 @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities';

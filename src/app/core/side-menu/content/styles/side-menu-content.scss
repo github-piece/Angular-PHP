@@ -42,7 +42,6 @@ app-side-menu-content {
 
 	mat-expansion-panel.expandable-menu-item
 	{
-		// Resets
 		box-shadow: none !important;
 		background: transparent;
 		color: #FFF;
@@ -54,7 +53,6 @@ app-side-menu-content {
 			{
 				background: #FFF;
 
-				// Resets
 				&:hover
 				{
 					background: #FFF !important;
@@ -84,7 +82,6 @@ app-side-menu-content {
 		{
 			.mat-expansion-panel-header
 			{
-				// Resets
 				&:hover,
 				&:focus
 				{
@@ -104,7 +101,6 @@ app-side-menu-content {
 				display: flex;
   			flex: 1;
 				flex-wrap: wrap;
-				// Resets
 				line-height: initial !important;
 
 				.expandable-item-title
@@ -137,7 +133,6 @@ app-side-menu-content {
 		.mat-expansion-panel-body
 		{
 			padding: 0px 0px 16px 0px;
-			// Reset
 			margin: 0px;
 		}
 

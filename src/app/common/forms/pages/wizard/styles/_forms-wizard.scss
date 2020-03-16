@@ -60,7 +60,6 @@ $card-pbar-inactive-bg-color: $inactive-bg-color;
       }
     }
 
-    // Image selection of step 3
     .checkboxes {
       margin-bottom: 50px;
 
@@ -149,7 +148,6 @@ $card-pbar-inactive-bg-color: $inactive-bg-color;
       }
     }
 
-    // Material progress bar
     .wizard-progress {
       background-color: $card-progress-bg-color;
       bottom: 0;
@@ -246,7 +244,6 @@ $card-pbar-inactive-bg-color: $inactive-bg-color;
 
 mat-button-toggle-group {
   &.mat-button-toggle-group {
-    // We have to go deeper in the hierarchy to override material styles
     &.mat-button-toggle-vertical {
       .mat-button-toggle + .mat-button-toggle {
         border: solid 1px $form-label-color;
@@ -258,7 +255,6 @@ mat-button-toggle-group {
 mat-button-toggle {
   &.mat-button-toggle-checked {
     background-color: $form-tag-color;
-    // We need to add !important to to override the deep hierarchy of material styles
     border-color: $form-tag-color !important;
 
     .mat-button-toggle-label-content {

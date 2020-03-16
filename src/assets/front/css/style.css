@@ -9020,10 +9020,6 @@ tbody, td {
   overflow: hidden!important;
 }
 
-.body-tab .mat-tab-body {
-  /*height: 568px !important;*/
-}
-
 .body-tab .mat-tab-body-content {
   overflow: hidden!important;
 }

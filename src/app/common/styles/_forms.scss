@@ -1,4 +1,3 @@
-
 .form-stacked {
   .form-group {
     .form-label {
@@ -20,7 +19,6 @@
     font-size: $font-size-sm;
     letter-spacing: $letter-spacing-sm;
 
-    // Required asterisk *
     em {
       color: $card-txt-color;
     }
@@ -41,8 +39,6 @@
       font-size: $font-size-sm;
     }
   }
-
-
 
   &.form-group-vertical {
     .form-label {

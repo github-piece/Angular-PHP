@@ -19,20 +19,17 @@
                     $addItem_rowsData = json_decode($_POST['addItem_rowsData'],true);
                     foreach($addItem_rowsData as $value){
                         $sql = getQuery($value,$query_values, $profile);
-                        $answer_id = InsertRowData($sql, $conn);
-                        echo $answer_id;
+                        echo InsertRowData($sql, $conn);
                     }
                 } else {
                     $sql = getQuery($_POST, $query_values, $profile) ;
-                    $answer_id = InsertRowData($sql, $conn);
-                    echo $answer_id;
+                    echo InsertRowData($sql, $conn);
                 }
                 break;
             case 'employer_profile':
             case 'scouter_profile':
                 $sql = getQuery($_POST, $query_values, $profile) ;
-                $answer_id = InsertRowData($sql, $conn);
-                echo $answer_id;
+                echo InsertRowData($sql, $conn);
                 break;
         }
     }

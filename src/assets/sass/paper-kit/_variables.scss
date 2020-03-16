@@ -61,20 +61,12 @@ $purple-states-color:        darken($purple-color, 8%) !default;
 $brown-color:                #dcb285 !default;
 $brown-states-color:         darken($brown-color, 8%) !default;
 
-
-
-
-/*      light colors - used for select dropdown         */
-
 $light-blue:                 rgba($primary-color, .2);
 $light-azure:                rgba($info-color, .2);
 $light-green:                rgba($success-color, .2);
 $light-orange:               rgba($warning-color, .2);
 $light-red:                  rgba($danger-color, .2);
 
-
-//== Components
-//
 $padding-base-vertical:         7px !default;
 $padding-base-horizontal:       18px !default;
 
@@ -96,19 +88,16 @@ $padding-xs-horizontal:         5px !default;
 $padding-label-vertical:        2px !default;
 $padding-label-horizontal:     12px !default;
 
-// padding for links inside dropdown menu
 $padding-dropdown-vertical:     10px !default;
 $padding-dropdown-horizontal:   15px !default;
 
 $margin-large-vertical:        30px !default;
 $margin-base-vertical:         15px !default;
 
-// border radius for buttons
 $border-radius-none:             0px !default;
 $border-radius-btn-small:      26px !default;
 $border-radius-btn-base:       20px !default;
 $border-radius-btn-large:      50px !default;
-
 
 $margin-bottom:                0 0 10px 0 !default;
 $border-radius-small:           3px !default;
@@ -156,7 +145,6 @@ $line-height-small:            20px !default;
 $line-height-general:          1.5em !default;
 $line-height:                 36px !default;
 $line-height-lg:              54px !default;
-
 
 $border-radius-top:        10px 10px 0 0 !default;
 $border-radius-bottom:     0 0 10px 10px !default;
@@ -263,7 +251,6 @@ $background-lighter-grey:   #F0EFEB !default;
 $font-background-light-grey: #9C9B99 !default;
 $font-hover-background-light-grey: #5E5E5C !default;
 
-// variables used in headers
 $header-background:         #B2AFAB !default;
 
 $filter-primary:         darken($primary-color, 10%);
@@ -272,12 +259,10 @@ $filter-success:        darken($success-color, 10%);
 $filter-warning:       darken($warning-color, 10%);
 $filter-danger:          darken($danger-color, 10%);
 
-// variable used in footers
 $black-footer-bg:            #252422 !default;
 $brown-font-color:           #A49E9E !default;
 $brown-font-color-hover:     #F1EAE0 !default;
 
-//variables used in cards
 $card-black-color:           #333333 !default;
 $card-muted-color:           #ccc !default;
 
@@ -311,9 +296,8 @@ $card-border-color:           #427C89 !default;
 $color-red-error: rgb(185, 74, 72) !default;
 $color-grey-arrow: rgba(204, 204, 204, 0.2) !default;
 
-$width-default: 220px !default; // 3 960px-grid columns
+$width-default: 220px !default;
 
-$zindex-select-dropdown: 1060 !default; // must be higher than a modal background (1050)
+$zindex-select-dropdown: 1060 !default;
 
-//** Placeholder text color
 $input-color-placeholder: #999 !default;

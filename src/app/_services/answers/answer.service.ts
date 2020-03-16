@@ -11,11 +11,10 @@ export class AnswerService {
     }
 
     putAnswer(formData: FormData) {
-        return this.http.post<any>(`${URL_SERVICIOS}/answer.php`, formData, {responseType: 'json'})
+        return this.http.post<any>(`${URL_SERVICIOS}/answer.php`, formData)
             .pipe(map(res => {
                 return res;
             }));
-
     }
     excelAnswer(excelAnswers, userId, time) {
         return this.http.post<any>(`http://localhost:3000/getAnswer`, { excelAnswers, userId, time })

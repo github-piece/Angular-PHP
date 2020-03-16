@@ -1,20 +1,16 @@
-
 .section-nucleo-icons{
     padding: 100px 0;
-
     .icons-container{
         position: relative;
         max-width: 450px;
         height: 300px;
         max-height: 300px;
         margin: 0 auto;
-
         i{
             font-size: 34px;
             position: absolute;
             top: 0;
             left: 0;
-
             &:nth-child(1){
                 top: 5%;
                 left: 7%;

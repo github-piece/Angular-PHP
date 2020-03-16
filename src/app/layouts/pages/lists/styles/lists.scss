@@ -36,7 +36,6 @@
       margin: 0;
     }
 
-    // If there's a title the first item should have a border-top
     & ~ .list-body {
       .list-item {
         border-top: 1px solid $grey4;

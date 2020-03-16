@@ -1,8 +1,6 @@
-/*          Changes for small display      */
 
 @media (max-width: 767px){
     .navbar-transparent{
-        // padding-top: 15px;
         background-color: rgba(0, 0, 0, 0.45);
     }
     body {
@@ -25,7 +23,6 @@
     .navbar .navbar-collapse.collapse,
     .navbar .navbar-collapse.collapse.in,
     .navbar .navbar-collapse.collapsing{
-        // display: none !important;
     }
     .demo-header .motto{
         padding-top: 30% !important;
@@ -380,11 +377,9 @@
         ul {
             position: relative;
             z-index: 3;
-            // overflow-y:scroll;
             height: 95%;
         }
         .navbar-nav > .nav-item{
-            // border-bottom: 1px solid;
             &:last-child {
             border-bottom: 0;
             }
@@ -438,7 +433,6 @@
 
     .fixed-top .navbar-collapse{
         background-color: #FF8F5E;
-        // width: 100%;
         float: left;
     }
 
@@ -493,7 +487,6 @@
         @include transition (0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1));
     }
     .wrapper{
-    //    @include transform-translate-x(0px);
        @include transition (0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1));
        left: 0;
        background-color: white;
@@ -608,7 +601,6 @@
         }
 
         .wrapper{
-            //    @include transform-translate-x(0px);
             @include transition (0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1));
             left: 0;
             background-color: white;
