@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {QuestionsService} from '../../_services/questions/questions.service';
 import {AnswerService} from '../../_services/answers/answer.service';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -49,17 +49,19 @@ export class ListingABusinessComponent implements OnInit {
     dom_position_click = false;
     country = [];
     selected_country: any;
+    municipality_index = [];
+    municipality_zero = false;
     provinces = [];
-    province = [];
+    province = [[]];
     Municipalities = [];
-    Municipality = [];
+    Municipality = [[]];
     file = [];
     chips: any = [];
-    chips_temp: any = [];
-    chips_row = [];
-    chips_position = 0;
+    chips_temp = [[]];
+    chips_row = [[]];
     selectable = true;
     removable = true;
+    muni_temp = [[]];
     separatorKeysCodes = [COMMA, ENTER];
     addOnBlur = true;
     instruments = [];
@@ -144,8 +146,6 @@ export class ListingABusinessComponent implements OnInit {
         this.col_validator = {};
         this.addItem_flag = false;
         this.upload_index = [];
-        this.chips = [];
-        this.chips_temp = [];
         this.addItem_rowsData = [];
         this.addItem_colData = [];
     }
@@ -186,7 +186,7 @@ export class ListingABusinessComponent implements OnInit {
         this.initVar();
         this.rowData = this.questionData[i];
         if (this.rowData['notes'] === 'Dom manipulation required') {
-            this.dom_position = parseInt(this.rowData['dom_position']);
+            this.dom_position = parseInt(this.rowData['dom_position'], 10);
             this.dom_validator();
         } else if (this.rowData['notes'] === 'Add Item Option') {
             this.addItem_validator();
@@ -271,7 +271,7 @@ export class ListingABusinessComponent implements OnInit {
         this.addItem_flag  = true;
     }
     dom_addItem_validator() {
-        this.dom_position = parseInt(this.rowData['dom_position']);
+        this.dom_position = parseInt(this.rowData['dom_position'], 10);
         this.dom_addItem_flag = true;
         this.dom_validator();
     }
@@ -299,7 +299,11 @@ export class ListingABusinessComponent implements OnInit {
                 if (this.addItem_flag || this.domAddItem_flag) {
                     for (const i of this.rangeExtra) {
                         if (this.questionForm.get('col_' + i + '_header')) {
-                            this.addItem_colData['col_' + i + '_header'] = this.questionForm.get('col_' + i + '_header').value;
+                            if (!this.municipality_zero && this.rowData['col_' + i].includes('South Africa')) {
+                                this.addItem_colData['col_' + i + '_header'] = '';
+                            } else {
+                                this.addItem_colData['col_' + i + '_header'] = this.questionForm.get('col_' + i + '_header').value;
+                            }
                         } else {
                             this.addItem_colData['col_' + i + '_header'] = '';
                         }
@@ -307,8 +311,10 @@ export class ListingABusinessComponent implements OnInit {
                     if (this.domAddItem_flag) {
                         this.addItem_colData['col_0_header'] = 'Yes';
                     }
+                    // tslint:disable-next-line:no-shadowed-variable
                     for (const {addItem_rowData, index} of this.questionForm.get('other').value.map((addItem_rowData, index) => ({
-                        addItem_rowData,index
+                        addItem_rowData,
+                        index
                     }))) {
                         if (index === 0) {
                             const target = {};
@@ -425,22 +431,16 @@ export class ListingABusinessComponent implements OnInit {
         const value = event.value;
         if ((value || '').trim()) {
             if (this.addItem_flag) {
-                if (this.chips_position !== index) {
-                    this.chips_row = [];
-                    if (this.chips_temp[index]) {
-                        this.chips_row = this.chips_temp[index];
-                    }
-                    this.chips_row.push(value.trim());
-                } else {
-                    this.chips_row.push(value.trim());
+                if (!this.chips_row[i]) {
+                    this.chips_row[i] = [];
                 }
-                this.chips_position = index;
-                this.chips_temp[index] = this.chips_row;
+                this.chips_row[i].push(value.trim());
+                this.chips_temp[index][i] = this.chips_row[i];
                 if (index === 0) {
-                    this.questionForm.controls['col_' + i + '_header'].setValue(this.chips_temp[index]);
+                    this.questionForm.controls['col_' + i + '_header'].setValue(this.chips_temp[index][i]);
                 } else {
                     (<FormArray>this.questionForm.controls['other']).
-                        controls[index]['controls']['col_' + i + '_header'].setValue(this.chips_temp[index]);
+                        controls[index]['controls']['col_' + i + '_header'].setValue(this.chips_temp[index][i]);
                 }
             } else {
                 this.chips.push(value.trim());
@@ -453,8 +453,13 @@ export class ListingABusinessComponent implements OnInit {
     addCurrencyAmount(event, i): void {
         this.currency_amount = event.target.value;
     }
-    addCurrencySymbol(symbol, i): void {
+    addCurrencySymbol(symbol, index, i): void {
         this.currency_symbol = symbol;
+        if (this.addItem_flag || this.domAddItem_flag) {
+            (<FormArray>this.questionForm.controls['other']).
+                controls[index]['controls']['col_' + i + '_header'].setValue(this.currency_amount + this.currency_symbol);
+            return;
+        }
         this.questionForm.controls['col_' + i + '_header'].setValue(this.currency_amount + this.currency_symbol);
     }
     explain_content(i, index) {
@@ -495,9 +500,13 @@ export class ListingABusinessComponent implements OnInit {
             this.domAddItem_flag = false;
         }
     }
-    addItem(): void {
+    addItem(index): void {
         this.col_validator = {};
-        this.chips_row = [];
+        this.chips_row = [[]];
+        this.chips_temp[parseInt(index + 1, 10)] = [];
+        this.Municipality[parseInt(index + 1, 10)] = [];
+        this.muni_temp[parseInt(index + 1, 10)] = [];
+        this.province[parseInt(index + 1, 10)] = [];
         this.click_flag = undefined;
         let position;
         if (this.rowData['col_0'] === 'SelectionAndDetails') {
@@ -537,11 +546,7 @@ export class ListingABusinessComponent implements OnInit {
                         if (key === 'sector') {
                             row_data['id'] = row_sector['id'];
                             row_data['name'] = row_sector[key];
-                            if (row_sector['sub_sector_0']) {
-                                row_data['hasChild'] = true;
-                            } else {
-                                row_data['hasChild'] = false;
-                            }
+                            row_data['hasChild'] = !!row_sector['sub_sector_0'];
                         }
                         for (let j = 0; j <= 4; j++) {
                             if (key === 'sub_sector_' + j) {
@@ -568,33 +573,40 @@ export class ListingABusinessComponent implements OnInit {
         }
         this.domAddItem_flag = true;
     }
-    addCurrencySymbolDomAddItem(symbol, i, index) {
-        this.currency_symbol = symbol;
-        (<FormArray>this.questionForm.controls['other']).controls[index]['controls']
-            ['col_' + i + '_header'].setValue(this.currency_amount + this.currency_symbol);
-    }
     public handleAddressChange(address: any, i) {
         this.address = address['formatted_address'];
         this.questionForm.controls['col_' + i + '_header'].setValue(this.address);
     }
-    getProvince(country) {
-        this.province = [];
-        this.selected_country = country;
-        for (let i = 0; i < this.provinces.length; i++) {
-            if (this.provinces[i].country === country) {
-                this.province.push(this.provinces[i].names);
+    getCountryProvince(selected_value, index, j) {
+        const next_value = this.rowData['col_' + 1 * ( j + 1 )];
+        if (next_value) {
+            if (next_value.toLowerCase().includes('province')) {
+                this.province[index] = [];
+                this.selected_country = selected_value;
+                for (let i = 0; i < this.provinces.length; i++) {
+                    if (this.provinces[i].country === selected_value) {
+                        this.province[index].push(this.provinces[i].names);
+                    }
+                }
+            } else if (next_value.toLowerCase().includes('south africa')) {
+                this.Municipality[index] = [];
+                this.municipality_index[index] = true;
+                for (let i = 0; i < this.Municipalities.length; i++) {
+                    if (this.Municipalities[i].province === selected_value) {
+                        this.Municipality[index].push(this.Municipalities[i]);
+                    }
+                }
             }
         }
     }
-    getMunicipality (selected_province, index) {
-        if (!this.rowData['col_' + 1 * (index + 1)].toLowerCase().include('south africa') && this.selected_country === 'South Africa') {
-            return ;
-        }
-        this.Municipality = [];
-        for (let i = 0; i < this.Municipalities.length; i++) {
-            if (this.Municipalities[i].province === selected_province) {
-                this.Municipality.push(this.Municipalities[i]);
-            }
+    setOtherData (dataA, dataB, index, i) {
+        const data = dataA + '!!' + dataB;
+        this.muni_temp[index].push(data);
+        if (index === 0) {
+            this.municipality_zero = true;
+        } else {
+            (<FormArray>this.questionForm.controls['other']).
+                controls[index]['controls']['col_' + i + '_header'].setValue(this.muni_temp[index]);
         }
     }
     onSubmit() {
@@ -606,6 +618,7 @@ export class ListingABusinessComponent implements OnInit {
         return this.catalogueService.setBusinessList(this.userid, this.questionTypeID)
             .pipe(first())
             .subscribe(result => {
+                this.router.navigate(['/pages/catalogue']);
                 return result;
             });
     }
@@ -638,8 +651,8 @@ export class ListingABusinessComponent implements OnInit {
                                 n = n - 3;
                             }
                             for (let m = 0; m < this.businessAnswers[i][n].length; m++) {
-                                if (this.businessAnswers[i][n][m] === "'") {
-                                    let character = "'";
+                                if (this.businessAnswers[i][n][m] === '\'') {
+                                    let character = '\'';
                                     for (let k = m; k < this.businessAnswers[i][n].length; k++) {
                                         character += this.businessAnswers[i][n][k];
                                     }

@@ -25,11 +25,9 @@ export class CatalogdashboardComponent {
     userData: any = [];
     businessInfo: any;
     amount = [];
-    // Business information
     businessUser: any = [];
     explain_index: any = 0;
     explain_number: any = 0;
-    click_flag: any = 0;
     mainBusiness = [];
     showBusiness = [];
     nameSearch = '';
@@ -44,6 +42,9 @@ export class CatalogdashboardComponent {
     stakeholdersButton4 = [];
     stakeholdersConsideration = [];
     stakeholdersMap = [];
+    stakeholdersProvince = [];
+    stakeholdersDistrict = [];
+    stakeholdersMunicipality = [];
     type = [];
     radarChartData: any = [{
         data: []
@@ -87,24 +88,16 @@ export class CatalogdashboardComponent {
                         if (this.mainBusiness[i]['image for front page'].substring(0, 4) !== 'http') {
                             this.mainBusiness[i]['image for front page'] = 'mse/' + this.mainBusiness[i]['image for front page'];
                         }
-                        for (let j = 0; j < this.businessInfo[3].businessUser.length; j++) {
-                            if (this.mainBusiness[i].u_id === this.businessInfo[3].businessUser[j].u_id) {
-                                this.mainBusiness[i].businessUser = this.businessInfo[3].businessUser[j].u_name;
+                        for (let j = 0; j < this.businessInfo[2].businessUser.length; j++) {
+                            if (this.mainBusiness[i].u_id === this.businessInfo[2].businessUser[j].u_id) {
+                                this.mainBusiness[i].businessUser = this.businessInfo[2].businessUser[j].u_name;
                             }
                         }
                     }
                     this.getHistory();
-                    this.countryList = this.businessInfo[2].countryList;
-                    this.goalList = this.businessInfo[4].goalList;
-                    this.buysellService.fundTypes = this.businessInfo[10].instruments;
-                    this.unSdg = this.businessInfo[6]['unSdg'];
-                    this.interactions = this.businessInfo[7]['interactions'];
-                    this.stakeholders = this.businessInfo[8]['stakeholders'];
-                    this.stakeholdersCountry = this.stakeholders[0]['country'];
-                    this.stakeholdersButton3 = this.stakeholders[1]['button3'];
-                    this.stakeholdersButton4 = this.stakeholders[2]['button4'];
-                    this.stakeholdersConsideration = this.stakeholders[3]['consideration'];
-                    this.stakeholdersMap = this.stakeholders[4]['maps'];
+                    this.countryList = this.businessInfo[1].countryList;
+                    this.goalList = this.businessInfo[3].goalList;
+                    this.buysellService.fundTypes = this.businessInfo[6].instruments;
                     this.radarChartLabels = ['resource counter', 'opportunity counter', 'venture life cycle', 'liability of age size'
                         , 'organisation', 'entrepreneur', 'environment', 'impact sector'];
                     this.mainBusiness.forEach((main_business_item, index) => {
@@ -115,12 +108,12 @@ export class CatalogdashboardComponent {
                                     main_business_item['environment'], main_business_item['impact sector'], ],
                                 label: main_business_item['business name'] },
                             {data: [
-                                main_business_item['resource counter'] / business_info['business_length'], main_business_item['opportunity counter'] / business_info['business_length'],
-                                main_business_item['venture life cycle'] / business_info['business_length'], main_business_item['liability of age size'] / business_info['business_length'],
+                                    main_business_item['resource counter'] / business_info[4]['business_length'], main_business_item['opportunity counter'] / business_info[4]['business_length'],
+                                    main_business_item['venture life cycle'] / business_info[4]['business_length'], main_business_item['liability of age size'] / business_info[4]['business_length'],
                                     // tslint:disable-next-line:max-line-length
-                                main_business_item['organisation'] / business_info['business_length'], main_business_item['entrepreneur'] / business_info['business_length'],
+                                    main_business_item['organisation'] / business_info[4]['business_length'], main_business_item['entrepreneur'] / business_info[4]['business_length'],
                                     // tslint:disable-next-line:max-line-length
-                                main_business_item['environment'] / business_info['business_length'], main_business_item['impact sector'] / business_info['business_length'], ],
+                                    main_business_item['environment'] / business_info[4]['business_length'], main_business_item['impact sector'] / business_info[4]['business_length'], ],
                                 label: 'Average Scoring'}
                         ];
                         this.radarChartData[index] = this.scoring[index] as any[];
@@ -162,7 +155,7 @@ export class CatalogdashboardComponent {
         this.buysellService.modal_content = 'Are you going to buy this item?';
         this.buysellService.action = 'buy';
         this.buysellService.business_name = business['business name'];
-        this.buysellService.commission = this.businessInfo[9]['commission'][0];
+        this.buysellService.commission = this.businessInfo[5]['commission'][0];
         this.buysellService.business_id = business['business_id'];
         this.openDialog();
     }
@@ -227,11 +220,7 @@ export class CatalogdashboardComponent {
             }
             this.tabIndex[tab] = $event.index;
             this.catalogueService.getTabData(this.userData.u_id, JSON.stringify(this.mainBusiness), tab).
-            pipe().subscribe(
-                ( data =>   {
-                        this.setTabData($event.index, data);
-                    }
-                ));
+            pipe().subscribe( data => {this.setTabData($event.index, data); });
         }
     }
     setTabData(index, data) {
@@ -244,6 +233,9 @@ export class CatalogdashboardComponent {
             this.stakeholdersButton4 = this.stakeholders['button4'];
             this.stakeholdersConsideration = this.stakeholders['consideration'];
             this.stakeholdersMap = this.stakeholders['maps'];
+            this.stakeholdersProvince = this.stakeholders['province'];
+            this.stakeholdersDistrict = this.stakeholders['district'];
+            this.stakeholdersMunicipality = this.stakeholders['municipality'];
         } else {
             this.unSdg = data['unSdg'];
         }
