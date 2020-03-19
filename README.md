@@ -3,12 +3,15 @@ Thank you for visiting my git repository!
 
 ## How to run this project
 Angular
+
 'git clone'
+
 'npm install'
+
 'ng serve'
 
-PHP
--Directory
+PHP folder
+
 Angular-PHP/mse
 
 ### Requirements
