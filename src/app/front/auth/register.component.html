@@ -1,84 +1,85 @@
 <div class="w3layouts-main">
   <div class="bg-layer">
-<!--    <h1>Slide Register form</h1>-->
-    <div class="header-main">
-      <div class="main-icon">
-        <img src="assets/imgs/auth_logo.png" style="width: 140px; margin-bottom: 40px">
+    <div class="login-form">
+      <div class="header-main">
+        <div class="main-icon">
+          <img src="assets/imgs/auth_logo.png" style="width: 140px; margin-bottom: 40px">
+        </div>
+        <div class="header-left-bottom">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="icon1">
+              <span class="fa fa-user"></span>
+              <input type="text" formControlName="u_name" placeholder="User Name" required=""
+                     [ngClass]="{ 'is-invalid': submitted && f.u_name.errors }" />
+              <div *ngIf="submitted && f.u_name.errors" class="invalid-feedback">
+                <div *ngIf="f.u_name.errors.required">First Name is required</div>
+              </div>
+            </div>
+            <div class="icon1">
+              <span class="fa fa-user"></span>
+              <input type="email" formControlName="u_email" placeholder="Email Address" required=""
+                     [ngClass]="{ 'is-invalid': submitted && f.u_email.errors }" />
+              <div *ngIf="duplicate">
+                <p style="color: #dc3545; font-size: 80%;">Email alreay exist</p>
+              </div>
+              <div *ngIf="submitted && f.u_email.errors" class="invalid-feedback">
+                <div *ngIf="f.u_email.errors.required">User email is required</div>
+                <div *ngIf="f.u_email.errors.email">Email must be a valid email address</div>
+              </div>
+            </div>
+            <div class="icon1">
+              <span class="fa fa-lock"></span>
+              <input type="password"  id="password" formControlName="u_password" placeholder="Password" required=""
+                     [ngClass]="{ 'is-invalid': submitted && f.u_password.errors }"/>
+              <div *ngIf="submitted && f.u_password.errors" class="invalid-feedback">
+                <div *ngIf="f.u_password.errors.required">Password is required</div>
+                <div *ngIf="f.u_password.errors.minlength">Password must be at least 6 characters</div>
+              </div>
+            </div>
+            <div class="icon1">
+              <span class="fa fa-lock"></span>
+              <input type="password" formControlName="u_confirmPassword" placeholder="Confirm Password" required=""
+                     [ngClass]="{ 'is-invalid': submitted && f.u_confirmPassword.errors }"/>
+              <div *ngIf="submitted && f.u_confirmPassword.errors" class="invalid-feedback">
+                <div *ngIf="f.u_confirmPassword.errors.required">Password is required</div>
+                <div *ngIf="f.u_confirmPassword.errors.mustMatch">Passwords must match</div>
+              </div>
+            </div>
+            <div class="icon1">
+              <span class="fa fa-lock"></span>
+              <input type="text" formControlName="u_phonenum" placeholder="Phone Number" required=""
+                     [ngClass]="{ 'is-invalid': submitted && f.u_phonenum.errors }"/>
+              <div *ngIf="submitted && f.u_phonenum.errors" class="invalid-feedback">
+                <div *ngIf="f.u_phonenum.errors.required">Phone Number is required</div>
+              </div>
+            </div>
+            <div class="login-check">
+              <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i> Keep me logged in</label>
+            </div>
+            <div class="bottom">
+              <button class="btn">Register</button>
+            </div>
+            <div class="links">
+              <p class="text-center" style="width:100%"><a routerLink="/login">Already have account? Login</a></p>
+              <div class="clear"></div>
+            </div>
+          </form>
+        </div>
+        <div class="social">
+          <ul>
+            <li>or login using : </li>
+            <li><a href="#" class="facebook"><span class="fa fa-facebook"></span></a></li>
+            <li><a href="#" class="twitter"><span class="fa fa-twitter"></span></a></li>
+            <li><a href="#" class="google"><span class="fa fa-google-plus"></span></a></li>
+          </ul>
+        </div>
       </div>
-      <div class="header-left-bottom">
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <div class="icon1">
-            <span class="fa fa-user"></span>
-            <input type="text" formControlName="u_name" placeholder="User Name" required=""
-                   [ngClass]="{ 'is-invalid': submitted && f.u_name.errors }" />
-            <div *ngIf="submitted && f.u_name.errors" class="invalid-feedback">
-              <div *ngIf="f.u_name.errors.required">First Name is required</div>
-            </div>
-          </div>
-          <div class="icon1">
-            <span class="fa fa-user"></span>
-            <input type="email" formControlName="u_email" placeholder="Email Address" required=""
-                   [ngClass]="{ 'is-invalid': submitted && f.u_email.errors }" />
-            <div *ngIf="duplicate">
-              <p style="color: #dc3545; font-size: 80%;">Email alreay exist</p>
-            </div>
-            <div *ngIf="submitted && f.u_email.errors" class="invalid-feedback">
-              <div *ngIf="f.u_email.errors.required">User email is required</div>
-              <div *ngIf="f.u_email.errors.email">Email must be a valid email address</div>
-            </div>
-          </div>
-          <div class="icon1">
-            <span class="fa fa-lock"></span>
-            <input type="password"  id="password" formControlName="u_password" placeholder="Password" required=""
-                   [ngClass]="{ 'is-invalid': submitted && f.u_password.errors }"/>
-            <div *ngIf="submitted && f.u_password.errors" class="invalid-feedback">
-              <div *ngIf="f.u_password.errors.required">Password is required</div>
-              <div *ngIf="f.u_password.errors.minlength">Password must be at least 6 characters</div>
-            </div>
-          </div>
-          <div class="icon1">
-            <span class="fa fa-lock"></span>
-            <input type="password" formControlName="u_confirmPassword" placeholder="Confirm Password" required=""
-                   [ngClass]="{ 'is-invalid': submitted && f.u_confirmPassword.errors }"/>
-            <div *ngIf="submitted && f.u_confirmPassword.errors" class="invalid-feedback">
-              <div *ngIf="f.u_confirmPassword.errors.required">Password is required</div>
-              <div *ngIf="f.u_confirmPassword.errors.mustMatch">Passwords must match</div>
-            </div>
-          </div>
-          <div class="icon1">
-            <span class="fa fa-lock"></span>
-            <input type="text" formControlName="u_phonenum" placeholder="Phone Number" required=""
-                   [ngClass]="{ 'is-invalid': submitted && f.u_phonenum.errors }"/>
-            <div *ngIf="submitted && f.u_phonenum.errors" class="invalid-feedback">
-              <div *ngIf="f.u_phonenum.errors.required">Phone Number is required</div>
-            </div>
-          </div>
-          <div class="login-check">
-            <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i> Keep me logged in</label>
-          </div>
-          <div class="bottom">
-            <button class="btn">Register</button>
-          </div>
-          <div class="links">
-            <p class="text-center" style="width:100%"><a routerLink="/login">Already have account? Login</a></p>
-            <div class="clear"></div>
-          </div>
-        </form>
-      </div>
-      <div class="social">
-        <ul>
-          <li>or login using : </li>
-          <li><a href="#" class="facebook"><span class="fa fa-facebook"></span></a></li>
-          <li><a href="#" class="twitter"><span class="fa fa-twitter"></span></a></li>
-          <li><a href="#" class="google"><span class="fa fa-google-plus"></span></a></li>
-        </ul>
+      <div class="copyright">
+        <div class="header">Impact Designs with SUN Co.</div>
+        <div>| ETH: <span>0xf6da3f05cc3b61ebb8baaff4f502bb9f975b613c</span></div>
+        <div>| BTC: <span>3KDiFsErakchF9x9RAw8bDaxGagi6mVdwA</span></div>
+        <div>| RIP: <span>rE1sdh25BJQ3qFwngiTBwaq3zPGGYcrjp1</span> RIP TAG: <span>64695</span></div>
       </div>
     </div>
-
-    <!-- copyright -->
-<!--    <div class="copyright">-->
-<!--      <p>© 2019 Slide Login Form . All rights reserved | Design by <a href="#" target="_blank">Sun</a></p>-->
-<!--    </div>-->
-    <!-- //copyright -->
   </div>
 </div>

@@ -1,2 +1,4 @@
-.navbar-collapse{display: flex!important;}.navbar{margin-bottom:0!important;}.navbar-brand{padding:0!important;}
-.show{opacity: 1!important;}.logoText{font-size: 2em;color: #f86e03;margin-right:12em}
+.navbar{margin-bottom:0!important;}.navbar-brand{padding:0!important;}.show{opacity: 1!important;}.logoText{font-size: 2em;color: #f86e03;margin-right:12em;margin-top:1.2rem}
+.header-nav .navigation .navbar .navbar-nav .nav-item a {color: #111}
+@media only screen and (max-width:991px){.btn-right {display: none;}.header-nav .navigation .navbar .navbar-nav .nav-item a {color: white}}
+

@@ -2,9 +2,10 @@ import {Component, Input, ViewEncapsulation, Inject, OnInit} from '@angular/core
 import { SideMenuService } from '../../side-menu/side-menu.service';
 import { ResponsiveBreakpointsService } from '../../responsive-breakpoints/responsive-breakpoints.service';
 import { APP_BASE_HREF } from '@angular/common';
-import { filter } from 'rxjs/operators';
+import {filter, first} from 'rxjs/operators';
 import {AuthenticationService} from '../../../_services/authentication/authentication.service';
 import {Router} from '@angular/router';
+import {MessagesMenuService, NotificationsMenuService} from '../..';
 
 @Component({
   selector: 'app-top-navbar-content',
@@ -26,6 +27,8 @@ export class TopNavbarContentComponent implements OnInit {
     @Inject(APP_BASE_HREF) private baseHref: string,
     private authService: AuthenticationService,
     private router: Router,
+    private notificationsMenuService: NotificationsMenuService,
+    private messagesMenuService: MessagesMenuService
   ) {
     this.baseUrl = baseHref;
     responsiveService.responsiveSubject
@@ -62,5 +65,14 @@ export class TopNavbarContentComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['']);
+  }
+  toggleNotificationsMenu(): void {
+    this.notificationsMenuService.sidenav.toggle();
+  }
+  check(id: any) {
+    this.messagesMenuService.setData(id)
+        .pipe(first())
+        .subscribe();
+    this.messages[0].count = this.messages[0].count - 1;
   }
 }

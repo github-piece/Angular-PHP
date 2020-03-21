@@ -10,6 +10,7 @@
 
 .messages {
   width: 350px;
+  max-height: 560px;
   .message-wrapper {
     display: flex;
     justify-content: space-between;

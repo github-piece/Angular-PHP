@@ -56,17 +56,17 @@
                 <div class="col-lg-12">
                     <div class="navigation">
                         <nav class="navbar navbar-expand-lg navbar-light ">
-                            <a class="navbar-brand" href="/">
-                                <img src="assets/imgs/auth_logo.png" style="width: 64px; margin-top: -8px">
-                            </a>
-                            <div class="logoText">M&nbsp;S&nbsp;E</div>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation" (click)="onShow()">
                                 <span class="toggler-icon"></span>
                                 <span class="toggler-icon"></span>
                                 <span class="toggler-icon"></span>
                             </button>
-                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                                <ul class="navbar-nav">
+                            <a class="navbar-brand float-left" routerLink="/">
+                                <img src="assets/imgs/auth_logo.png" style="width: 64px; margin-top: -8px">
+                                <span class="logoText">M&nbsp;S&nbsp;E</span>
+                            </a>
+                            <div class="collapse navbar-collapse sub-menu-bar {{show}}" style="display: {{show}}">
+                                <ul class="navbar-nav" style="margin: initial">
                                     <li class="nav-item">
                                         <a class="nav-link" routerLink="/">Home</a>
                                     </li>
@@ -76,12 +76,17 @@
                                     <li class="nav-item">
                                         <a class="nav-link" routerLink="/contact">Contact Us</a>
                                     </li>
+                                    <li class="nav-item" *ngIf="auth">
+                                        <a class="nav-link" routerLink="/login">Login</a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="auth">
+                                        <a class="nav-link" routerLink="/register">Sign Up</a>
+                                    </li>
                                 </ul>
-                                <span class="btn-right">
-
-                  <a class="main-btn main-btn-2 mr-2" routerLink="/login">Login</a>
-                  <a class="main-btn main-btn-2" routerLink="/register">Signup</a>
-                </span>
+                            </div>
+                            <div class="btn-right">
+                                <a class="main-btn main-btn-2 mr-2" routerLink="/login">Login</a>
+                                <a class="main-btn main-btn-2" routerLink="/register">Sign Up</a>
                             </div>
                         </nav>
                     </div>

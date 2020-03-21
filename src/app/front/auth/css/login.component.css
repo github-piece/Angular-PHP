@@ -99,17 +99,12 @@ a {
 .header-main {
   width: 420px;
   margin: 0 auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 999;
   padding: 3em 2em;
   background: rgba(255, 255, 255, 0.04);
   -webkit-box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
   box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
-
 }
 
 .sign-up {
@@ -315,9 +310,8 @@ h3 a {
   text-decoration: underline;
 }
 .copyright {
-  padding: 2em 0;
+  padding: 1em 0;
   color: white;
-  padding-top: 84vh;
 }
 .copyright div {
   color: white;
@@ -334,10 +328,15 @@ h3 a {
 }
 
 @media(max-width:667px){
-
   h1 {
     font-size: 40px;
     letter-spacing: 3px;
+  }
+  .copyright {
+    padding: 2em 1em;
+  }
+  .copyright .header {
+    margin-left: 0;
   }
 }
 
@@ -374,4 +373,10 @@ h3 a {
 }
 .social-btn:hover {
   background: #607d8b!important;
+}
+.login-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

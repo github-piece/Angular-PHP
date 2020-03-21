@@ -78,10 +78,15 @@ app-top-navbar-content {
       margin-left: 16px;
       margin-top: 0;
     }
+    @media only screen and (max-width: 768px) {
+      .brand-name {
+        margin-left: 36px;
+      }
+    }
   }
 
   app-search-bar {
-    max-width: 45%;
+    max-width: 36%;
     margin-left: 64px;
     position: relative;
     width: 400px;
@@ -91,7 +96,6 @@ app-top-navbar-content {
     align-items: center;
     display: flex;
     margin-left: auto;
-    margin-right: 20px;
   }
 
   @media only screen and (max-width: $top-navbar-breakpoint) {
@@ -114,7 +118,7 @@ app-top-navbar-content {
 
     .branding-col {
       .brand-wrapper {
-        margin-left: 10px;
+        margin-left: 32px;
         margin-right: 0;
 
         .brand-name {

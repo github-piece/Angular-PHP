@@ -194,10 +194,16 @@ p {
   font-size: 40px;
   line-height: 55px
 }
+.navbar-brand {
+  margin-right: -4rem;
+}
 
 @media only screen and (min-width:992px) and (max-width:1200px) {
   .section-title .title {
     font-size: 38px
+  }
+  .navbar-brand {
+    margin-right: -17.5rem;
   }
 }
 
@@ -486,12 +492,6 @@ p {
   }
 }
 
-@media(max-width:767px) {
-  .header-nav {
-    padding: 16px 0
-  }
-}
-
 .header-nav.sticky {
   position: fixed;
   top: 0;
@@ -535,13 +535,15 @@ p {
 }
 
 .header-nav .navigation .navbar .navbar-toggler {
-  border: 0
+  border: 0;
+  position: absolute;
+  right: 0;
 }
 
 .header-nav .navigation .navbar .navbar-toggler .toggler-icon {
   width: 30px;
   height: 2px;
-  background-color: #fff;
+  background-color: #263248;
   margin: 5px 0;
   display: block;
   position: relative;
@@ -550,6 +552,10 @@ p {
   -ms-transition: all .3s ease-out 0s;
   -o-transition: all .3s ease-out 0s;
   transition: all .3s ease-out 0s
+}
+
+.shown-xs {
+  display: none!important;
 }
 
 .header-nav .navigation .navbar .navbar-toggler.active .toggler-icon:nth-of-type(1) {
@@ -580,7 +586,7 @@ p {
     top: 130%;
     left: 0;
     width: 100%;
-    background-color: #0154f7;
+    background-color: rgba(0, 0, 0, .6);
     z-index: 8;
     padding: 10px 16px;
     box-shadow: 0 26px 48px 0 rgba(0, 0, 0, .15)
@@ -593,22 +599,13 @@ p {
     top: 130%;
     left: 0;
     width: 100%;
-    background-color: #0154f7;
+    background-color: rgba(0, 0, 0, .6);
     z-index: 8;
     padding: 10px 16px;
     box-shadow: 0 26px 48px 0 rgba(0, 0, 0, .15)
   }
-}
-
-@media only screen and (min-width:768px) and (max-width:991px) {
-  .header-nav .navigation .navbar .navbar-nav {
-    margin-right: 0
-  }
-}
-
-@media(max-width:767px) {
-  .header-nav .navigation .navbar .navbar-nav {
-    margin-right: 0
+  .shown-xs {
+    display: block!important;
   }
 }
 
@@ -619,7 +616,6 @@ p {
 .header-nav .navigation .navbar .navbar-nav .nav-item a {
   font-size: 18px;
   font-weight: 500;
-  color: #111;
   text-transform: capitalize;
   position: relative;
   -webkit-transition: all .3s ease-out 0s;
@@ -9440,4 +9436,15 @@ input.mat-input-element, mat-label, .mat-title, .mat-list-text {
   width: 400px!important;
   margin-top: 100px;
   margin-left: 100px;
+}
+
+@media(max-width:767px) {
+  .header-nav {
+    padding: 16px 0
+  }
+  .table-responsive {
+    margin-left: 0;
+    margin-top: 16px;
+    margin-bottom: 0;
+  }
 }

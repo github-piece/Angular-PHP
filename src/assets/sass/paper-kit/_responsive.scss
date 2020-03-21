@@ -20,10 +20,6 @@
         height: 400px;
         overflow-y: scroll;
     }
-    .navbar .navbar-collapse.collapse,
-    .navbar .navbar-collapse.collapse.in,
-    .navbar .navbar-collapse.collapsing{
-    }
     .demo-header .motto{
         padding-top: 30% !important;
     }
@@ -125,7 +121,6 @@
     [class*="navbar-"] .navbar-nav {
         & > li > a, > li > a:hover, > li > a:focus, .active > a, .active > a:hover, .active > a:focus, .open .dropdown-menu > li > a, .open .dropdown-menu > li > a:hover, .open .dropdown-menu > li > a:focus, .navbar-nav .open .dropdown-menu > li > a:active {
             color: white;
-
         }
 
         & > li > a:not(.btn),

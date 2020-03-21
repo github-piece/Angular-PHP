@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-main',
@@ -8,7 +9,6 @@ import { Component, OnInit } from '@angular/core';
 export class MainComponent implements OnInit {
   onShow: any;
   constructor() { }
-
   ngOnInit() {
     this.onShow = localStorage.getItem('siteShow');
   }
