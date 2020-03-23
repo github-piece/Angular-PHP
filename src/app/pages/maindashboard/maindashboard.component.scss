@@ -11,14 +11,19 @@
 }
 
 .search-btn {
-  min-width: 400px;
-  margin-left: calc(100% - 416px);
+  width: 360px;
+  margin-left: calc(100% - 376px);
   .location-btn {
     cursor: pointer;
     &:hover {
       background: #eceff1;
       border-radius: 50%;
     }
+  }
+  @media(max-width: 448px) {
+    width: 100%;
+    margin-left: 16px;
+    margin-right: 16px;
   }
 }
 
@@ -77,5 +82,11 @@ agm-map {
       letter-spacing: -0.04px;
     }
   }
-
+}
+.initial-tab {
+  .mat-tab-header-pagination-controls-enabled {
+    .mat-tab-header-pagination {
+      display: none;
+    }
+  }
 }

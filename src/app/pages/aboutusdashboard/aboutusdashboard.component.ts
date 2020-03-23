@@ -18,18 +18,6 @@ import {UserService} from '../../_services/user/user.service';
 })
 export class AboutusdashboardComponent implements OnInit {
     step = 0;
-
-    setStep(index: number) {
-        this.step = index;
-    }
-
-    nextStep() {
-        this.step++;
-    }
-
-    prevStep() {
-        this.step--;
-    }
     @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
     @ViewChild('fileInput') fileInput: ElementRef;
     @Input() aboutForm: FormGroup;
@@ -54,7 +42,7 @@ export class AboutusdashboardComponent implements OnInit {
         })
     );
     displayedColumns: string[] = ['no', 'headline', 'article_createdate', 'u_accounttype'];
-    rowData = [];  // datas for userlist
+    rowData = [];
 
     showActions = false;
     showCrud = false;
@@ -63,23 +51,17 @@ export class AboutusdashboardComponent implements OnInit {
 
     u_id: any;
     u_parentid: any;
-    u_imgurl: any;
 
     u_accounttype: any;
     freezedflag: any;
     imgurl: any;
     articleloading = false;
-    showDeleteBtn = false;
     showUnselectBtn = false;
     public message: string;
     private rowSelection;
     rowselect_id: any;
-    centered: false;
     disabled: false;
-    unbounded: false;
     radius: number;
-    color: '#ccc';
-
     /** Based on the screen size, switch from standard to one column per row */
 
     constructor(
@@ -228,6 +210,17 @@ export class AboutusdashboardComponent implements OnInit {
             panelClass: 'custom-dialog-panel-class',
             data: {...updateData}
         });
+    }
+    setStep(index: number) {
+        this.step = index;
+    }
+
+    nextStep() {
+        this.step++;
+    }
+
+    prevStep() {
+        this.step--;
     }
 }
 

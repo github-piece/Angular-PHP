@@ -20,13 +20,37 @@
 .dashboard-card-content {
   text-align: center;
 }
-.row img {
-  cursor: pointer;
-  opacity: 1;
-  transition: 0.3s;
+.row{
+  img {
+    cursor: pointer;
+    opacity: 1;
+    transition: 0.3s;
+  }
+  .matHeight {
+    height: 400px;
+    .mat-card-header {
+      padding-bottom: 8px;
+    }
+    p {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      line-height: 20px;
+      letter-spacing: -0.05px;
+      text-align: justify;
+    }
+  }
+  @media(max-width: 991px) {
+    .matHeight {
+      height: 450px;
+    }
+  }
+  @media(max-width: 767px) {
+    .matHeight {
+      height: auto;
+    }
+  }
 }
 .row:hover img {
-  opacity: 0.6;
+  opacity: 0.9;
 }
 .card header h2 {
   font-size: 18px;
@@ -42,19 +66,8 @@
 .card header h2:hover {
   background: rgba(0, 0, 0, 0.5);
 }
-.card .row p {
-  text-align: center;
-  padding: 15px;
-}
-
-.custom-mat-header {
-  margin:0 -16px!important;
-}
 
 .custom-card-img {
   max-width: none;
   cursor: pointer;
-  &:hover {
-
-  }
 }

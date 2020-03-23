@@ -1,6 +1,7 @@
 <div class="grid-container" *ngIf="showActions">
-    <h1 class="mat-h1" style="margin-left: 20px;margin-bottom: 48px">About Us</h1>
     <div class="container">
+        <div class="p-header">About Us</div>
+        <div class="p-title">Here is detail about us</div>
         <mat-accordion>
             <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
                 <mat-expansion-panel-header>
@@ -13,11 +14,11 @@
                 </mat-expansion-panel-header>
                 <div class="row" style="padding: 0 16px 16px 16px;">
                     <mat-card class="description" style="background: #f4f6f8">
-                        <div class="header px-5 pt-5 pb-2">
-                            <img src="../../assets/imgs/small-logo.png" class="logo-title" alt="img"/>
-                            <span>MSE</span>
+                        <div class="header px-5 pb-2">
+                            <img src="../../assets/imgs/auth_logo.png" class="logo-title hidden-xs" alt="img"/>
+                            <div>MSE</div>
                         </div>
-                        <p class="pb-5 pt-2 px-5 text-justify" style="color: black">
+                        <p class="pb-5 pt-2 px-sm-5 text-justify" style="color: black">
                             &nbsp;Lorem Ipsum is simply dummy text of the printing and typesetting
                             industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
                             when an unknown printer took a galley of type and scrambled it to make a type specimen
@@ -74,67 +75,63 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="row" style="display: block;">
-                    <div>
-                        <form enctype="multipart/form-data" [formGroup]="aboutForm">
-                            <div class="row" *ngFor="let card of cards | async" style="height: auto;">
-                                <mat-card class="dashboard-card">
-                                    <div *ngIf="card.showoption == 'section1'">
-                                        <div class="form-group text-center">
-                                            <input type="file" #fileInput (change)="fileChangeEvent($event)"
-                                                   style="display: none;"/>
-                                            <img class="user-avatar" (click)="chooseImage()" [src]="croppedImage"
-                                                 style="display: block;margin: 0 auto 15px auto;"/>
-                                            <div *ngIf="imageSelected" class="image-cropper-container">
-                                                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                                                               [aspectRatio]="1.5 / 1.5" [resizeToWidth]="128"
-                                                               [cropperMinWidth]="128" [onlyScaleDown]="true" [roundCropper]="false"
-                                                               format="png" outputType="base64"
-                                                               (imageCropped)="imageCropped($event)"
-                                                               (imageLoaded)="imageLoaded()"
-                                                               [style.display]="showCropper ? null : 'none'"
-                                                               [alignImage]="'center'"></image-cropper>
-                                                <div class="divider"></div>
-                                                <div style="width: 100%;padding: 0 10px;margin-bottom: 15px;">
-                                                    <div class="half-width">
-                                                        <button type="button" (click)="imageSelected = false">Use
-                                                            this photo
-                                                        </button>
-                                                    </div>
-                                                    <div class="half-width">
-                                                        <button type="button" (click)="chooseImage()">another
-                                                        </button>
-                                                    </div>
-                                                </div>
+                    <form enctype="multipart/form-data" [formGroup]="aboutForm">
+                        <div class="row" *ngFor="let card of cards | async">
+                            <mat-card class="dashboard-card">
+                                <div class="form-group text-center">
+                                    <input type="file" #fileInput (change)="fileChangeEvent($event)"
+                                           style="display: none;"/>
+                                    <img class="user-avatar" (click)="chooseImage()" [src]="croppedImage"
+                                         style="display: block;margin: 0 auto 15px auto;"/>
+                                    <div *ngIf="imageSelected" class="image-cropper-container">
+                                        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                                                       [aspectRatio]="1.5 / 1.5" [resizeToWidth]="128"
+                                                       [cropperMinWidth]="128" [onlyScaleDown]="true" [roundCropper]="false"
+                                                       format="png" outputType="base64"
+                                                       (imageCropped)="imageCropped($event)"
+                                                       (imageLoaded)="imageLoaded()"
+                                                       [style.display]="showCropper ? null : 'none'"
+                                                       [alignImage]="'center'"></image-cropper>
+                                        <div class="divider"></div>
+                                        <div style="width: 100%;padding: 0 10px;margin-bottom: 15px;">
+                                            <div class="half-width">
+                                                <button type="button" (click)="imageSelected = false">Use
+                                                    this photo
+                                                </button>
                                             </div>
-                                            <button mat-raised-button style="background: #1b5e20;color: white;" (click)="chooseImage()">
-                                                <i class="fa fa-image"></i>
-                                                Add Photo
-                                            </button>
-                                        </div>
-                                        <mat-form-field style="width: 100%">
-                                            <input matInput type="text" placeholder="Name" value={{rowselect_headline}}
-                                                   formControlName="headline" [ngClass]="{ 'is-invalid': submitted && f.headline.errors }">
-                                        </mat-form-field>
-                                        <mat-form-field style="width: 100%">
-                                            <textarea matInput placeholder="Sur Name" formControlName="section1" value={{rowselect_section1}}
-                                                      [ngClass]="{ 'is-invalid': submitted && f.section1.errors }"></textarea>
-                                        </mat-form-field>
-                                        <mat-form-field style="width: 100%">
-                                            <textarea matInput placeholder="Short Details..." formControlName="section2" value={{rowselect_section2}}
-                                                      [ngClass]="{ 'is-invalid': submitted && f.section2.errors }"></textarea>
-                                        </mat-form-field>
-                                        <div class="row" style="padding: 0 32px 0 32px;">
-                                            <button mat-raised-button style="background: #1b5e20;color: white;width: 100%" [disabled]="articleloading"
-                                                    (click)="submitArticle();">
-                                                Create Card
-                                                <img *ngIf="articleloading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-                                            </button>
+                                            <div class="half-width">
+                                                <button type="button" (click)="chooseImage()">another
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </mat-card>
-                            </div>
-                        </form>
-                    </div>
+                                    <button mat-raised-button style="background: #1b5e20;color: white;" (click)="chooseImage()">
+                                        <i class="fa fa-image"></i>
+                                        Add Photo
+                                    </button>
+                                </div>
+                                <mat-form-field style="width: 100%">
+                                    <input matInput type="text" placeholder="Name" value={{rowselect_headline}}
+                                           formControlName="headline" [ngClass]="{ 'is-invalid': submitted && f.headline.errors }">
+                                </mat-form-field>
+                                <mat-form-field style="width: 100%">
+                                    <textarea matInput placeholder="Sur Name" formControlName="section1" value={{rowselect_section1}}
+                                              [ngClass]="{ 'is-invalid': submitted && f.section1.errors }"></textarea>
+                                </mat-form-field>
+                                <mat-form-field style="width: 100%">
+                                    <textarea matInput placeholder="Short Details..." formControlName="section2" value={{rowselect_section2}}
+                                              [ngClass]="{ 'is-invalid': submitted && f.section2.errors }"></textarea>
+                                </mat-form-field>
+                                <div class="row" style="padding: 0 32px 0 32px;">
+                                    <button mat-raised-button style="background: #1b5e20;color: white;width: 100%" [disabled]="articleloading"
+                                            (click)="submitArticle();">
+                                        Create Card
+                                        <img *ngIf="articleloading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                                    </button>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </form>
                 </div>
                 <mat-action-row>
                     <button mat-button color="warn" (click)="prevStep()">Previous</button>

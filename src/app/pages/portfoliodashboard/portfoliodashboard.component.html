@@ -1,17 +1,36 @@
 <div class="p-header">Portfolio</div>
 <div class="p-title">Here are contractions between users</div>
-<div class="initial-tab">
+<div class="initial-tab mb-4">
     <mat-tab-group>
         <mat-tab label="Portfolio">
-            <div *ngIf="historyList.length" style="margin-bottom: 32px">
-                <mat-grid-list cols="3" rowHeight="580px" style="margin-left: -16px; margin-right: -16px">
-                    <mat-grid-tile
-                            *ngFor="let chart of charts"
-                            [colspan]="chart.length"
+            <div *ngIf="historyList.length">
+                <mat-card class="mb-2">
+                    <div class="mat-card-header">
+                        {{charts[0].title}}
+                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                aria-label="Toggle menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item>Expand</button>
+                            <button mat-menu-item>Remove</button>
+                        </mat-menu>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <google-chart [type]="charts[0].type"
+                                  [data]="charts[0].data"
+                                  [columnNames]="charts[0].columnNames"
+                                  [roles]="charts[0].roles"
+                                  [options]="charts[0].options"
+                                  style="width: 100%; height: 480px; padding-top: 16px; pointer-events: none"
                     >
-                        <mat-card style="margin-left: 16px; margin-right: 16px">
+                    </google-chart>
+                </mat-card>
+                <div class="row">
+                    <div class="col-lg-4 mb-2">
+                        <mat-card>
                             <div class="mat-card-header">
-                                {{chart.title}}
+                                {{charts[1].title}}
                                 <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
                                         aria-label="Toggle menu">
                                     <mat-icon>more_vert</mat-icon>
@@ -22,36 +41,41 @@
                                 </mat-menu>
                             </div>
                             <mat-divider></mat-divider>
-                            <google-chart *ngIf="chart.length == 3"
-                                          [type]="chart.type"
-                                          [data]="chart.data"
-                                          [columnNames]="chart.columnNames"
-                                          [roles]="chart.roles"
-                                          [options]="chart.options"
-                                          style="width: 100%; height: 480px; padding-top: 16px; pointer-events: none"
-                            >
-                            </google-chart>
-                            <google-chart *ngIf="chart.length == 2"
-                                          [type]="chart.type"
-                                          [data]="chart.data"
-                                          [columnNames]="chart.columnNames"
-                                          [roles]="chart.roles"
-                                          [options]="chart.options"
-                                          style="width: 100%; height: 480px; padding-top: 16px"
-                            >
-                            </google-chart>
-                            <google-chart *ngIf="chart.length == 1"
-                                          [type]="chart.type"
-                                          [data]="chart.data"
-                                          [columnNames]="chart.columnNames"
-                                          [roles]="chart.roles"
-                                          [options]="chart.options"
-                                          style="width: 100%; height: 300px; padding-top: 16px"
+                            <google-chart [type]="charts[1].type"
+                                          [data]="charts[1].data"
+                                          [columnNames]="charts[1].columnNames"
+                                          [roles]="charts[1].roles"
+                                          [options]="charts[1].options"
+                                          style="width: 100%;padding-top: 16px; height: 300px"
                             >
                             </google-chart>
                         </mat-card>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                    </div>
+                    <div class="col-lg-8 mb-2">
+                        <mat-card>
+                            <div class="mat-card-header">
+                                {{charts[2].title}}
+                                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                                        aria-label="Toggle menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" xPosition="before">
+                                    <button mat-menu-item>Expand</button>
+                                    <button mat-menu-item>Remove</button>
+                                </mat-menu>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <google-chart [type]="charts[2].type"
+                                          [data]="charts[2].data"
+                                          [columnNames]="charts[2].columnNames"
+                                          [roles]="charts[2].roles"
+                                          [options]="charts[2].options"
+                                          style="width: 100%; height: 480px; padding-top: 16px"
+                            >
+                            </google-chart>
+                        </mat-card>
+                    </div>
+                </div>
                 <mat-card>
                     <div class="mat-card-header">
                         Business List

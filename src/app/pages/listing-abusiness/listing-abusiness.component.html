@@ -66,24 +66,39 @@
 </div>
 <div *ngIf="showActions && !showProfile" id="forms-wizard">
     <div class="container">
-        <a mat-raised-button class="theme-primary-btn float-right text-white" href="./src/assets/Business.xlsx" style="color: white">
-            <mat-icon>get_app</mat-icon>
-            <span class="theme-primary-btn-text">DOWNLOAD AS EXCEL</span>
-        </a>
-        <label for="answer" class="float-right mr-4">
-            <div class="file-upload-btn-excel-label">Upload</div>
-        </label>
+        <div class="hidden-xs float-right">
+            <a mat-raised-button class="theme-primary-btn text-white mr-2" href="./src/assets/Business.xlsx" style="color: white">
+                <mat-icon>get_app</mat-icon>
+                <span class="theme-primary-btn-text">DOWNLOAD AS EXCEL</span>
+            </a>
+            <label for="answer">
+                <div class="file-upload-btn-excel-label">Upload</div>
+            </label>
+        </div>
         <div class="p-header">Questions</div>
-        <div class="p-title">Please complete the following questionnaire</div>
-        <mat-card>
+        <div class="p-title my-3">Please complete the following questionnaire</div>
+        <input type="file" id="answer" class="file-upload-btn-excel" (change)="import($event)" multiple="false"/>
+        <mat-card class="mb-4">
             <div class="mat-title">
                 Question {{rowData['id']}}
             </div>
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                    aria-label="Toggle menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" class="menu">
+                <button mat-menu-item>
+                    <a href="./src/assets/Business.xlsx">Download as Excel</a>
+                </button>
+                <button mat-menu-item>
+                    <label for="answer">Upload your answers</label>
+                </button>
+            </mat-menu>
             <mat-divider></mat-divider>
             <mat-card-content style="padding-top: 16px">
                 <div class="detail">
                     <mat-icon>error_outline</mat-icon>
-                    Once you choose the project name you can’t change it unless you contact customer support.
+                    You can download all questions as excel and upload your answers!
                 </div>
                 <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" *ngIf="!submitted" class="form-input">
                     <div *ngFor="let i of rangeMain">
@@ -177,8 +192,8 @@
                                 </mat-selection-list>
                             </ng-template>
                             <!--Upload for image-->
-                            <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('uploadimage')" >
-                                <div class="col-lg-4">
+                            <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('uploadimage')">
+                                <div class="col-lg-4 col-md-12">
                                     <mat-card style="height: 480px; margin-bottom: 16px;">
                                         <div class="mat-card-header" style="height: 50px">
                                             {{rowData['col_'+i+'_header']}}
@@ -191,7 +206,6 @@
                                     </mat-card>
                                 </div>
                             </ng-template>
-
                             <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('email')">
                                 <mat-form-field>
                                     <mat-label>{{rowData['col_'+i+'_header']}}</mat-label>
@@ -205,26 +219,6 @@
                                     <textarea matInput formControlName="col_{{i}}_header"></textarea>
                                 </mat-form-field>
                             </ng-template>
-                            <!--tag option-->
-                            <!--<ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('tag')" >-->
-                            <!--<mat-label>{{rowData['col_'+i+'_header']}}</mat-label>-->
-                            <!--<mat-chip-list mdPrefix #chipListRegular>-->
-                            <!--<mat-chip *ngFor="let chip of chips"-->
-                            <!--class="regular"-->
-                            <!--[selectable]="selectable"-->
-                            <!--[removable]="removable"-->
-                            <!--(removed)="removeTag(chip,'','')" >-->
-                            <!--{{ chip }}-->
-                            <!--<i matChipRemove class="fa fa-times" *ngIf="removable"></i>-->
-                            <!--</mat-chip>-->
-                            <!--<input mdInput formControlName="col_{{i}}_header"-->
-                            <!--[matChipInputFor]="chipListRegular"-->
-                            <!--[matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
-                            <!--[matChipInputAddOnBlur]="addOnBlur"-->
-                            <!--(matChipInputTokenEnd)="addTag($event,'', '')" class='focus' />-->
-                            <!--</mat-chip-list>-->
-                            <!--</ng-template>-->
-                            <!--phone number option-->
                             <ng-template [ngIf]="rowData['col_'+i]&&rowData['col_'+i].toLowerCase().includes('phone')" >
                                 <div class="mat-title">Please insert your phone number</div>
                                 <ngx-intl-tel-input
@@ -1545,7 +1539,6 @@
                 </div>
             </mat-card-content>
         </mat-card>
-        <input type="file" id="answer" class="file-upload-btn-excel" (change)="import($event)" multiple="false"/>
     </div>
 </div>
 <div *ngIf="!showActions">

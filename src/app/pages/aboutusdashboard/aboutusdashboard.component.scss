@@ -96,14 +96,24 @@ section {
 }
 
 .header {
-  span {
-    margin-left: calc(50% - 120px - 5rem);
+  div {
     font-size: 3.6rem;
     font-weight: 400;
     letter-spacing: 20px;
+    text-align: center;
+    height: 80px;
+    padding-top: 26px
   }
   img {
-   width: 120px;
+    width: 100px;
+    position: absolute;
+    top: 0
+  }
+  @media (max-width: 767px) {
+    div {
+      padding: 16px;
+      height: auto;
+    }
   }
 }
 

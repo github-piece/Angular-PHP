@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {first} from 'rxjs/operators';
 import {MatDialog} from '@angular/material';
 import {AuthenticationService} from '../../_services/authentication/authentication.service';
@@ -61,6 +61,7 @@ export class CatalogdashboardComponent {
     tabList = ['Business', 'Financial', 'Sustainability', 'Scoring', 'Funding', 'Badges'];
     tabIndex = [];
     p = 1;
+    tabNum = 0;
     constructor(
         private authenticationService: AuthenticationService,
         private catalogueService: CatalogueService,
@@ -75,6 +76,7 @@ export class CatalogdashboardComponent {
             this.getBusinessList();
         }
     }
+
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     getBusinessList() {
         this.businessInfo = [];
@@ -98,26 +100,31 @@ export class CatalogdashboardComponent {
                     this.countryList = this.businessInfo[1].countryList;
                     this.goalList = this.businessInfo[3].goalList;
                     this.buysellService.fundTypes = this.businessInfo[6].instruments;
-                    this.radarChartLabels = ['resource counter', 'opportunity counter', 'venture life cycle', 'liability of age size'
-                        , 'organisation', 'entrepreneur', 'environment', 'impact sector'];
+                    this.radarChartLabels = ['resource counter', 'opportunity counter', 'venture life cycle', 'liability of age size', 'organisation', 'entrepreneur', 'environment', 'impact sector'];
                     this.mainBusiness.forEach((main_business_item, index) => {
                         this.scoring[index] = [
-                            { data: [main_business_item['resource counter'], main_business_item['opportunity counter'],
-                                    main_business_item['venture life cycle'], main_business_item['liability of age size'],
-                                    main_business_item['organisation'], main_business_item['entrepreneur'],
-                                    main_business_item['environment'], main_business_item['impact sector'], ],
-                                label: main_business_item['business name'] },
-                            {data: [
+                            {
+                                data: [
+                                    main_business_item['resource counter'], main_business_item['opportunity counter'], main_business_item['venture life cycle'], main_business_item['liability of age size'], main_business_item['organisation'], main_business_item['entrepreneur'], main_business_item['environment'], main_business_item['impact sector']
+                                ],
+                                label: main_business_item['business name']
+                            },
+                            {
+                                data: [
                                     main_business_item['resource counter'] / business_info[4]['business_length'], main_business_item['opportunity counter'] / business_info[4]['business_length'],
                                     main_business_item['venture life cycle'] / business_info[4]['business_length'], main_business_item['liability of age size'] / business_info[4]['business_length'],
-                                    // tslint:disable-next-line:max-line-length
                                     main_business_item['organisation'] / business_info[4]['business_length'], main_business_item['entrepreneur'] / business_info[4]['business_length'],
-                                    // tslint:disable-next-line:max-line-length
-                                    main_business_item['environment'] / business_info[4]['business_length'], main_business_item['impact sector'] / business_info[4]['business_length'], ],
-                                label: 'Average Scoring'}
+                                    main_business_item['environment'] / business_info[4]['business_length'], main_business_item['impact sector'] / business_info[4]['business_length']
+                                ],
+                                label: 'Average Scoring'
+                            }
                         ];
                         this.radarChartData[index] = this.scoring[index] as any[];
                     });
+                    this.catalogueService.getTabData(this.userData.u_id, JSON.stringify(this.mainBusiness), 'Sustainability').
+                    pipe().subscribe( data => {this.setTabData(2, data); });
+                    this.catalogueService.getTabData(this.userData.u_id, JSON.stringify(this.mainBusiness), 'Badges').
+                    pipe().subscribe( data => {this.setTabData(5, data); });
                 });
     }
     getHistory() {
@@ -212,18 +219,7 @@ export class CatalogdashboardComponent {
         }
         return parseFloat(string).toFixed(2);
     }
-    getTabData($event) {
-        const tab = this.tabList[$event.index];
-        if (($event.index === 2) || ($event.index === 5)) {
-            if (this.tabIndex[tab] === $event.index) {
-                return;
-            }
-            this.tabIndex[tab] = $event.index;
-            this.catalogueService.getTabData(this.userData.u_id, JSON.stringify(this.mainBusiness), tab).
-            pipe().subscribe( data => {this.setTabData($event.index, data); });
-        }
-    }
-    setTabData(index, data) {
+    setTabData(index: number, data) {
         if (index === 2) {
             this.unSdg = data['unSdg'];
             this.interactions = data['interactions'];
@@ -239,6 +235,9 @@ export class CatalogdashboardComponent {
         } else {
             this.unSdg = data['unSdg'];
         }
+    }
+    groupShow(index: number) {
+        this.tabNum = index;
     }
 }
 

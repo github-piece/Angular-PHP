@@ -1,139 +1,161 @@
 <div *ngIf="showActions">
     <div class="p-header">Home</div>
     <div class="p-title">Hi, please see what happens!</div>
-    <div class="grid-container">
-        <mat-card style="margin-bottom: 16px">
-            <div class="mat-card-header">
-                Your World, Today
-                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
-                        aria-label="Toggle menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item>Expand</button>
-                    <button mat-menu-item>Remove</button>
-                </mat-menu>
-            </div>
-            <mat-divider></mat-divider>
-            <mat-card-content style="margin-top: 16px">
-                <div class="row">
-                    <div class="float-right search-btn">
-                        <mat-form-field class="float-right" style="width:400px;">
-                            <mat-label>Please insert place address</mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let business of businessData" value="{{business.name}}" (click)="onAddress(business.id)">{{business.name}}</mat-option>
-                                <mat-option value="All" (click)="onAddressAll()">Default</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+    <mat-card class="mb-4">
+        <div class="mat-card-header">
+            Your World, Today
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                    aria-label="Toggle menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>Expand</button>
+                <button mat-menu-item>Remove</button>
+            </mat-menu>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-card-content style="margin-top: 16px">
+            <div class="row">
+                <div class="float-right search-btn">
+                    <mat-form-field class="float-right">
+                        <mat-label>Please insert place address</mat-label>
+                        <mat-select>
+                            <mat-option *ngFor="let business of businessData" value="{{business.name}}" (click)="onAddress(business.id)">{{business.name}}</mat-option>
+                            <mat-option value="All" (click)="onAddressAll()">Default</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-                <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
-                    <agm-marker
-                            *ngFor="let data of mapData"
-                            [latitude]="data.lat"
-                            [longitude]="data.lng"
-                    >
-                        <agm-info-window>
-                            <div class="feed">
-                                <img [src]="data.pic">
-                                <div class="content">
-                                    {{data.name}}<br/>
-                                    {{data.address}}<br/>
-                                    <span>by</span> {{data.userName}}
-                                </div>
+            </div>
+            <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+                <agm-marker
+                        *ngFor="let data of mapData"
+                        [latitude]="data.lat"
+                        [longitude]="data.lng"
+                >
+                    <agm-info-window>
+                        <div class="feed">
+                            <img [src]="data.pic">
+                            <div class="content">
+                                {{data.name}}<br/>
+                                {{data.address}}<br/>
+                                <span>by</span> {{data.userName}}
                             </div>
-                        </agm-info-window>
-                    </agm-marker>
-                </agm-map>
-            </mat-card-content>
-        </mat-card>
-        <mat-grid-list cols="3" rowHeight="580px" style="margin-left: -16px; margin-right: -16px">
-            <mat-grid-tile
-                    *ngFor="let chart of charts"
-                    [colspan]="chart.length"
-            >
-                <mat-card style="margin-left: 16px; margin-right: 16px">
-                    <div class="mat-card-header">
-                        {{chart.title}}
-                        <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
-                                aria-label="Toggle menu">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #menu="matMenu" xPosition="before">
-                            <button mat-menu-item>Expand</button>
-                            <button mat-menu-item>Remove</button>
-                        </mat-menu>
-                    </div>
-                    <mat-divider></mat-divider>
-                    <google-chart *ngIf="chart.length == 3"
-                                  [type]="chart.type"
-                                  [data]="chart.data"
-                                  [columnNames]="chart.columnNames"
-                                  [roles]="chart.roles"
-                                  [options]="chart.options"
-                                  style="width: 100%; height: 480px; padding-top: 16px; pointer-events: none"
-                    >
-                    </google-chart>
-                    <google-chart *ngIf="chart.length == 2"
-                                  [type]="chart.type"
-                                  [data]="chart.data"
-                                  [columnNames]="chart.columnNames"
-                                  [roles]="chart.roles"
-                                  [options]="chart.options"
-                                  style="width: 100%; height: 480px; padding-top: 16px"
-                    >
-                    </google-chart>
-                    <google-chart *ngIf="chart.length == 1"
-                                  [type]="chart.type"
-                                  [data]="chart.data"
-                                  [columnNames]="chart.columnNames"
-                                  [roles]="chart.roles"
-                                  [options]="chart.options"
-                                  style="width: 100%; height: 300px; padding-top: 16px"
-                    >
-                    </google-chart>
-                </mat-card>
-            </mat-grid-tile>
-        </mat-grid-list>
-        <mat-card style="margin-bottom: 32px; margin-top: 16px">
-            <div class="mat-card-header">
-                Business List
-                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
-                        aria-label="Toggle menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item>Expand</button>
-                    <button mat-menu-item>Remove</button>
-                </mat-menu>
-            </div>
-            <mat-divider></mat-divider>
-            <div class="table-responsive">
-                <table class="table-devias">
-                    <thead>
-                        <tr>
-                            <th>Number</th>
-                            <th>Business Name</th>
-                            <th>Business Location</th>
-                            <th>Business Address</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let task of dataSource">
-                            <td>{{task.no}}</td>
-                            <td>{{task.name}}</td>
-                            <td>{{task.location}}</td>
-                            <td>{{task.address}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
-                           [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
-            </mat-paginator>
-        </mat-card>
+                        </div>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-map>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="mb-4">
+        <div class="mat-card-header">
+            {{charts[0].title}}
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                    aria-label="Toggle menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>Expand</button>
+                <button mat-menu-item>Remove</button>
+            </mat-menu>
+        </div>
+        <mat-divider></mat-divider>
+        <google-chart [type]="charts[0].type"
+                      [data]="charts[0].data"
+                      [columnNames]="charts[0].columnNames"
+                      [roles]="charts[0].roles"
+                      [options]="charts[0].options"
+                      style="width: 100%; height: 480px; padding-top: 16px; pointer-events: none"
+        >
+        </google-chart>
+    </mat-card>
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <mat-card>
+                <div class="mat-card-header">
+                    {{charts[1].title}}
+                    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                            aria-label="Toggle menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item>Expand</button>
+                        <button mat-menu-item>Remove</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+                <google-chart [type]="charts[1].type"
+                              [data]="charts[1].data"
+                              [columnNames]="charts[1].columnNames"
+                              [roles]="charts[1].roles"
+                              [options]="charts[1].options"
+                              style="width: 100%;padding-top: 16px; height: 300px"
+                >
+                </google-chart>
+            </mat-card>
+        </div>
+        <div class="col-lg-8 mb-4">
+            <mat-card>
+                <div class="mat-card-header">
+                    {{charts[2].title}}
+                    <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                            aria-label="Toggle menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item>Expand</button>
+                        <button mat-menu-item>Remove</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+                <google-chart [type]="charts[2].type"
+                              [data]="charts[2].data"
+                              [columnNames]="charts[2].columnNames"
+                              [roles]="charts[2].roles"
+                              [options]="charts[2].options"
+                              style="width: 100%; height: 480px; padding-top: 16px"
+                >
+                </google-chart>
+            </mat-card>
+        </div>
     </div>
+    <mat-card class="mb-4">
+        <div class="mat-card-header">
+            Business List
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu"
+                    aria-label="Toggle menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>Expand</button>
+                <button mat-menu-item>Remove</button>
+            </mat-menu>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="table-responsive">
+            <table class="table-devias">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Business Name</th>
+                        <th>Business Location</th>
+                        <th>Business Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let task of dataSource">
+                        <td>{{task.no}}</td>
+                        <td>{{task.name}}</td>
+                        <td>{{task.location}}</td>
+                        <td>{{task.address}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
+                       [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+        </mat-paginator>
+    </mat-card>
 </div>
 <div *ngIf="!showActions">
     <div style="text-align:center">

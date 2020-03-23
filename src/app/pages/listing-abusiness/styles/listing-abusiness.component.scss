@@ -184,7 +184,7 @@ $card-pbar-inactive-bg-color: $inactive-bg-color;
 
 .index .mat-card {
   padding-bottom: 50px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   .quiz-bg {
     height: 30vh;
     margin-bottom: 0!important;
@@ -247,6 +247,19 @@ mat-card-actions {
   .action-btn {
     position: absolute;
     right: 16px;
+  }
+}
+
+.mat-menu-item {
+  a, label {
+    color: #263238;
+    font-size: 16px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.05px;
+    display: -webkit-box;
+    display: flex;
+    text-decoration-line: none;
   }
 }
 

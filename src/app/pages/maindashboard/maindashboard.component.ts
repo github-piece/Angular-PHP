@@ -177,8 +177,6 @@ export class MaindashboardComponent implements OnInit {
                         length: 2
                     });
                     this.getTasks();
-                }, error => {
-                    console.log(error);
                 });
     }
     getTasks() {

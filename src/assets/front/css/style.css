@@ -8786,24 +8786,6 @@ mat-card-title {
   z-index: -1;
 }
 
-.file-input-btn + label {
-  font-size: 12px;
-  margin-bottom: 20px;
-  background: #1b5e20;
-  cursor: pointer;
-  border-radius: 5px;
-  color: #fff;
-  padding: 10px 15px;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  box-shadow: 0 5px 5px 0 grey;
-  margin-top: 20px;
-  width:100%;
-}
-
-.file-input-btn + label:hover {
-  background-color: #66bb6a;
-}
 .file-upload-btn {
   width: 0.1px;
   height: 0.1px;
@@ -9007,7 +8989,6 @@ tbody, td {
   width: fit-content!important;
   border-radius: 8px 8px 0 0!important;
   background: #c8e6c9!important;
-  color: #1b5e20!important;
 }
 
 .body-tab .mat-tab-label-active {
@@ -9111,7 +9092,7 @@ tbody, td {
   font-weight: 500;
   line-height: 28px;
   letter-spacing: -0.06px;
-  margin-bottom: 16px;
+  margin-bottom: 16px
 }
 
 .mat-card-header {
@@ -9277,7 +9258,7 @@ input.mat-input-element, mat-label, .mat-title, .mat-list-text {
 }
 
 .initial-tab .mat-card {
-  margin-top: 24px;
+  margin-top: 8px;
 }
 .initial-tab .mat-tab-labels {
   background: transparent;
@@ -9437,7 +9418,20 @@ input.mat-input-element, mat-label, .mat-title, .mat-list-text {
   margin-top: 100px;
   margin-left: 100px;
 }
-
+.pagination /deep/ .ngx-pagination .current {
+  background: #546e7a;
+}
+.flex-none .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
+  display: none;
+}
+.bg-main-carousel {
+  height:850px;position:absolute!important;top:170px;width:100%
+}
+@media(max-width: 991px) {
+  .bg-main-carousel {
+    margin-top: -45px
+  }
+}
 @media(max-width:767px) {
   .header-nav {
     padding: 16px 0

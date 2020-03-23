@@ -4,7 +4,6 @@ import {AuthenticationService} from '../../_services/authentication/authenticati
 import {BusinessServiceService} from '../../_services/business/business-service.service';
 import {first} from 'rxjs/operators';
 import {BuysellService} from '../../_services/buysell/buysell.service';
-import {GoogleChartComponent} from 'angular-google-charts';
 
 @Component({
     selector: 'app-portfoliodashboard',

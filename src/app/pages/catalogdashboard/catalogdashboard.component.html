@@ -2,64 +2,81 @@
     <div class="p-header">Catalogue</div>
     <div class="p-title">Here are all businesses</div>
     <div class="search-box" style="position: relative">
-        <mat-form-field class="mr-3" style="width: 400px">
-            <mat-label>Name</mat-label>
-            <mat-select>
-                <mat-option *ngFor="let businessName of mainBusiness" [value]="businessName['business name']" (click)="businessSearch(businessName['business name'], countrySearch, goalSearch)">
-                    {{businessName['business name']}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="mr-3" style="width: 200px">
-            <mat-label>Country</mat-label>
-            <mat-select>
-                <mat-option *ngFor="let countryName of countryList" [value]="countryName['country']" (click)="businessSearch(nameSearch, countryName['country'], goalSearch)">
-                    {{countryName['country']}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="mr-5" style="width: 200px">
-            <mat-label>Goal</mat-label>
-            <mat-select>
-                <mat-option *ngFor="let goalName of goalList" [value]="goalName['goal_name']" (click)="businessSearch(nameSearch, countrySearch, goalName['goal_name'])">
-                    {{goalName['goal_name']}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div class="row">
+            <mat-form-field class="col-md-6">
+                <mat-label>Name</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let businessName of mainBusiness" [value]="businessName['business name']" (click)="businessSearch(businessName['business name'], countrySearch, goalSearch)">
+                        {{businessName['business name']}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+                <mat-label>Country</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let countryName of countryList" [value]="countryName['country']" (click)="businessSearch(nameSearch, countryName['country'], goalSearch)">
+                        {{countryName['country']}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+                <mat-label>Goal</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let goalName of goalList" [value]="goalName['goal_name']" (click)="businessSearch(nameSearch, countrySearch, goalName['goal_name'])">
+                        {{goalName['goal_name']}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
     <div *ngIf="businessMatch">
         <ul>
             <li *ngFor="let business of showBusiness | paginate: { itemsPerPage: 10, currentPage: p } let index = index">
                 <mat-accordion>
-                    <mat-expansion-panel style="margin-bottom: 16px; margin-top: 16px;">
+                    <mat-expansion-panel class="my-4">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="mat-card-header p-0">
                                 {{business['business name']}}
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <div class="card-header" style="text-align:right;">
-                            Total {{amount[index]}} : {{business["how much they're raising"]}} remaining...
-                            <button mat-raised-button class="btn btn-success" (click)="catalogueService.populateForm()">
-                                &nbsp;                       Edit&nbsp;
-                            </button>&nbsp;
-                            <button mat-raised-button class="btn btn-danger" (click)="onDelete()">
-                                Delete
-                            </button>
+                        <div class="text-right">
+                            <div class="mat-card-header d-block">Total {{amount[index]}} : {{business["how much they're raising"]}} remaining...</div>
                         </div>
-                        <mat-tab-group class="tabs-vertical menu-tab" (selectedTabChange)="getTabData($event)">
-                            <mat-tab label="Business Summary">
-                                <mat-tab-group class="body-tab">
-                                    <mat-tab label="Business Information">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <div class="bg" [style.background-image] ="'url(' + mainBusiness[index]['image for front page'] + ')'"></div>
-                                                <div *ngIf="!mainBusiness[index][10]" class="bg" [style.background-image] ="'url(https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg)'"></div>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <table class="table table-striped">
+                        <div class="mb-4">
+                            <button mat-raised-button class="float-left" [matMenuTriggerFor]="submenu" style="font-size: 18px">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <mat-menu #submenu="matMenu">
+                                <button mat-menu-item (click)="groupShow(0)">Business Summary</button>
+                                <button mat-menu-item (click)="groupShow(1)">Financial Summary</button>
+                                <button mat-menu-item (click)="groupShow(2)">Sustainability Measures</button>
+                                <button mat-menu-item (click)="groupShow(3)">Scoring Summary</button>
+                                <button mat-menu-item (click)="groupShow(4)">Funding Channels</button>
+                                <button mat-menu-item (click)="groupShow(5)">Badges</button>
+                            </mat-menu>
+                            <div class="mat-card-header pb-0 text-right d-block">
+                                <button mat-raised-button class="theme-btn" (click)="catalogueService.populateForm()">
+                                    Edit
+                                </button>&nbsp;
+                                <button mat-raised-button (click)="onDelete()">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="initial-tab">
+                            <mat-tab-group class="body-tab" *ngIf="tabNum == 0">
+                                <mat-tab label="Business Information">
+                                    <div class="row mt-2">
+                                        <div class="col-lg-5">
+                                            <div class="bg" [style.background-image] ="'url(' + mainBusiness[index]['image for front page'] + ')'"></div>
+                                            <div *ngIf="!mainBusiness[index][10]" class="bg" [style.background-image] ="'url(https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg)'"></div>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <div class="table-responsive">
+                                                <table class="table-devias">
                                                     <thead>
                                                     <tr>
-                                                        <th style="min-width: 200px">Metric</th>
+                                                        <th>Metric</th>
                                                         <th>Value</th>
                                                     </tr>
                                                     </thead>
@@ -104,13 +121,13 @@
                                                 </table>
                                             </div>
                                         </div>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </mat-tab>
-                            <mat-tab label="Financial Summary">
-                                <mat-tab-group class="body-tab">
-                                    <mat-tab label="Financial Information">
-                                        <table class="table table-striped">
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                            <mat-tab-group class="body-tab" *ngIf="tabNum == 1">
+                                <mat-tab label="Financial Information">
+                                    <div class="table-responsive">
+                                        <table class="table-devias">
                                             <thead>
                                             <tr>
                                                 <th>Metric</th>
@@ -184,9 +201,11 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                    </mat-tab>
-                                    <mat-tab label="Balance Sheet">
-                                        <table class="table table-striped">
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Balance Sheet">
+                                    <div class="table-responsive">
+                                        <table class="table-devias">
                                             <thead>
                                             <tr>
                                                 <th>Item Type</th>
@@ -234,9 +253,11 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                    </mat-tab>
-                                    <mat-tab label="Income Statement">
-                                        <table class="table table-striped">
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Income Statement">
+                                    <div class="table-responsive">
+                                        <table class="table-devias">
                                             <thead>
                                             <tr>
                                                 <th>Income State Items</th>
@@ -246,19 +267,17 @@
                                             </thead>
                                             <tbody>
                                             <tr *ngFor="let item of mainBusiness[index]['income items'].split(','); let item_index = index;">
-                                                <td >
-                                                    {{item}}
-                                                </td>
-                                                <td >
-                                                    {{round(mainBusiness[index]['income amounts'].split(',')[item_index])}}
-                                                </td>
+                                                <td>{{item}}</td>
+                                                <td>{{round(mainBusiness[index]['income amounts'].split(',')[item_index])}}</td>
                                                 <td><button class="btn btn-success">Button 1</button></td>
                                             </tr>
                                             </tbody>
                                         </table>
-                                    </mat-tab>
-                                    <mat-tab label="Cash Flow Statement">
-                                        <table class="table table-striped">
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Cash Flow Statement">
+                                    <div class="table-responsive">
+                                        <table class="table-devias">
                                             <thead>
                                             <tr>
                                                 <th>Cash Flow Items</th>
@@ -299,13 +318,13 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </mat-tab>
-                            <mat-tab label="Sustainability Measures">
-                                <mat-tab-group class="body-tab">
-                                    <mat-tab label="UN SDG's">
-                                        <table class="table table-striped">
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                            <mat-tab-group class="body-tab" *ngIf="tabNum == 2">
+                                <mat-tab label="UN SDG's">
+                                    <div class="table-responsive">
+                                        <table class="table-devias">
                                             <thead>
                                             <tr>
                                                 <th>Symbol</th>
@@ -318,363 +337,346 @@
                                             <tbody>
                                             <ng-container *ngIf="unSdg.length">
                                                 <tr *ngFor="let unSdg_path of unSdg[index]['path']; let sdg_index = index;">
-                                                    <td class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+unSdg_path+')'"></td>
-                                                    <td>
-                                                        {{unSdg[index]['goal_number'][sdg_index]}}
-                                                    </td>
-                                                    <td>
-                                                        {{unSdg[index]['goal_description'][sdg_index]}}
-                                                    </td>
+                                                    <td class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+unSdg_path+')'" style="background-position: center"></td>
+                                                    <td>{{unSdg[index]['goal_number'][sdg_index]}}</td>
+                                                    <td>{{unSdg[index]['goal_description'][sdg_index]}}</td>
                                                     <td><button class="btn btn-success">Button 1</button></td>
                                                     <td><button class="btn btn-success">Button 1</button></td>
                                                 </tr>
                                             </ng-container>
                                             </tbody>
                                         </table>
-                                    </mat-tab>
-                                    <mat-tab label="Interactions" class="full-height">
-                                        <div class="full-height">
-                                            <div class="col-xs-12 full-height">
-                                                <ng-container *ngIf="unSdg.length&&interactions.length">
-                                                    <div class="col-xs-3  tab-scroll">
-                                                        <p class="padding-top-20">*Please select goal interaction.</p>
-                                                        <ng-container *ngFor="let goal_number of unSdg[index]['goal_number']">
-                                                            <label class="form-label full-width padding-top-20">
-                                                                <span>{{goal_number}}</span>&nbsp;<span>Interaction.</span>
-                                                                <mat-select class="form-control">
-                                                                    <mat-option *ngFor="let interaction of interactions[index][goal_number]; let goal_index = index;" value="" (click)="explain_content(goal_index, goal_number)">
-                                                                        <p>{{interaction['goal_main']}}  -  {{interaction['goal_alternative_1']}}</p>
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </label>
-                                                        </ng-container>
-                                                    </div>
-                                                    <div class="col-xs-9 tab-scroll">
-                                                        <ng-container *ngFor="let interaction_item of interactions[index]|keyvalue">
-                                                            <ng-container class="full-width padding-top-20">
-                                                                <ng-container *ngFor="let interaction of interaction_item.value ; let goal_index = index;">
-                                                                    <ng-container *ngIf="(explain_number==interaction_item.key)&&(explain_index==goal_index)">
-                                                                        <ng-container *ngFor="let interact of interaction|keyvalue">
-                                                                            <ng-container *ngIf="interact.value">
-                                                                                <h4><b>- {{interact.key}}</b></h4>
-                                                                                {{interact.value}}
-                                                                            </ng-container>
-                                                                        </ng-container>
-                                                                    </ng-container>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Interactions">
+                                    <ng-container *ngIf="unSdg.length&&interactions.length">
+                                        <div class="col-lg-3 col-xs-12">
+                                            <div class="mat-card-header my-4">*Please select goal interaction.</div>
+                                            <mat-form-field class="my-4" *ngFor="let goal_number of unSdg[index]['goal_number']">
+                                                <mat-label>{{goal_number}} Interaction</mat-label>
+                                                <mat-select>
+                                                    <mat-option *ngFor="let interaction of interactions[index][goal_number]; let goal_index = index;" value="" (click)="explain_content(goal_index, goal_number)">
+                                                        {{interaction['goal_main']}}  -  {{interaction['goal_alternative_1']}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-9 col-xs-12">
+                                            <ng-container *ngFor="let interaction_item of interactions[index]|keyvalue">
+                                                <ng-container class="full-width padding-top-20">
+                                                    <ng-container *ngFor="let interaction of interaction_item.value ; let goal_index = index;">
+                                                        <ng-container *ngIf="(explain_number==interaction_item.key)&&(explain_index==goal_index)">
+                                                            <ng-container *ngFor="let interact of interaction|keyvalue">
+                                                                <ng-container *ngIf="interact.value">
+                                                                    <h4><b>- {{interact.key}}</b></h4>
+                                                                    {{interact.value}}
                                                                 </ng-container>
                                                             </ng-container>
-                                                            <mat-divider></mat-divider>
                                                         </ng-container>
-                                                    </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <mat-divider></mat-divider>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </mat-tab>
+                                <mat-tab label="Stakeholders">
+                                    <ng-container *ngIf="stakeholders">
+                                        <div class="row">
+                                            <div class="my-2 col-lg-2  btn_stake_group">
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('stake_country',index)">Country</button>
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('stake_button_3', index)">Button 3</button>
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('stake_button_4', index)">Button 4</button>
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('stake_consideration', index)">Considerations</button>
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('Province', index)">Province</button>
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('District', index)">District</button>
+                                                <button mat-raised-button class="theme-btn full-width" (click)="explain_content('Municipality', index)">Municipality</button>
+                                            </div>
+                                            <div class="my-2 col-lg-6">
+                                                <ng-container *ngIf="(explain_index=='stake_country')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_country_item of stakeholdersCountry[index]">
+                                                        <ng-container *ngIf="stakeholder_country_item">
+                                                            <ng-container *ngFor="let item of stakeholder_country_item|keyvalue">
+                                                                <h4>
+                                                                    - {{item.key}}.
+                                                                </h4>
+                                                                <p>
+                                                                    {{item.value}}
+                                                                </p>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="(explain_index=='stake_button_3')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_button3_item of stakeholdersButton3[index]">
+                                                        <ng-container *ngIf="stakeholder_button3_item">
+                                                            <ng-container *ngFor="let item of stakeholder_button3_item|keyvalue">
+                                                                <h5>
+                                                                    - {{item.key}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{item.value}}
+                                                                </p>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="(explain_index=='stake_button_4')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_button4_item of stakeholdersButton4[index]">
+                                                        <ng-container *ngIf="stakeholder_button4_item">
+                                                            <ng-container *ngFor="let item of stakeholder_button4_item|keyvalue">
+                                                                <h5>
+                                                                    - {{item.key}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{item.value}}
+                                                                </p>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container  *ngIf="(explain_index=='stake_consideration')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_consideration_item of stakeholdersConsideration[index]">
+                                                        <ng-container *ngIf="stakeholder_consideration_item">
+                                                            <ng-container *ngFor="let item of stakeholder_consideration_item|keyvalue">
+                                                                <h5>
+                                                                    - {{item.key}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{item.value}}
+                                                                </p>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container  *ngIf="(explain_index=='Province')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_province_item of stakeholdersProvince[index]">
+                                                        <ng-container *ngFor="let stakeholder_province of stakeholder_province_item">
+                                                            <ng-container *ngIf="stakeholder_province">
+                                                                <h5>
+                                                                    - {{stakeholder_province.question1}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_province.result}}
+                                                                </p>
+                                                                <h5>
+                                                                    - {{stakeholder_province.question2}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_province.result}}
+                                                                </p>
+                                                                <h5>
+                                                                    - {{stakeholder_province.question3}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_province.result}}
+                                                                </p>
+                                                                <h5>
+                                                                    - {{stakeholder_province.question4}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_province.result}}
+                                                                </p>
+                                                                <mat-divider></mat-divider>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container  *ngIf="(explain_index=='District')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_district_item of stakeholdersDistrict[index]">
+                                                        <ng-container *ngFor="let stakeholder_district of stakeholder_district_item">
+                                                            <ng-container *ngIf="stakeholder_district">
+                                                                <h5>
+                                                                    - {{stakeholder_district.question1}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_district.result}}
+                                                                </p>
+                                                                <h5>
+                                                                    - {{stakeholder_district.question2}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_district.result}}
+                                                                </p>
+                                                                <h5>
+                                                                    - {{stakeholder_district.question3}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_district.result}}
+                                                                </p>
+                                                                <h5>
+                                                                    - {{stakeholder_district.question4}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_district.result}}
+                                                                </p>
+                                                                <mat-divider></mat-divider>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container  *ngIf="(explain_index=='Municipality')&&(explain_number==index)">
+                                                    <ng-container *ngFor="let stakeholder_municipality_item of stakeholdersMunicipality[index]">
+                                                        <ng-container *ngFor="let stakeholder_municipality of stakeholder_municipality_item">
+                                                            <ng-container *ngIf="stakeholder_municipality">
+                                                                <h5>
+
+                                                                    - {{stakeholder_municipality.question1}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_municipality.result}}
+                                                                </p>
+                                                                <h5>
+
+                                                                    - {{stakeholder_municipality.question2}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_municipality.result}}
+                                                                </p>
+                                                                <h5>
+
+                                                                    - {{stakeholder_municipality.question3}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_municipality.result}}
+                                                                </p>
+                                                                <h5>
+
+                                                                    - {{stakeholder_municipality.question4}}.
+                                                                </h5>
+                                                                <p>
+                                                                    {{stakeholder_municipality.result}}
+                                                                </p>
+                                                                <mat-divider></mat-divider>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
                                                 </ng-container>
                                             </div>
-                                        </div>
-                                    </mat-tab>
-                                    <mat-tab label="Stakeholders" class="full-height">
-                                        <ng-container *ngIf="stakeholders">
-                                            <div class="full-height">
-                                                <div class="col-xs-12  tab-scroll">
-                                                    <div class="col-xs-2  btn_stake_group">
-                                                        <ng-container >
-                                                            <button class="btn btn-success full-width" (click)="explain_content('stake_country',index)">Country</button>
-                                                            <br>
-                                                            <button class="btn btn-success full-width" (click)="explain_content('stake_button_3', index)">Button 3</button>
-                                                            <br>
-                                                            <button class="btn btn-success full-width" (click)="explain_content('stake_button_4', index)">Button 4</button>
-                                                            <br>
-                                                            <button class="btn btn-success full-width" (click)="explain_content('stake_consideration', index)">Considerations</button>
-                                                            <br>
-                                                            <button class="btn btn-success full-width" (click)="explain_content('Province', index)">Province</button>
-                                                            <br>
-                                                            <button class="btn btn-success full-width" (click)="explain_content('District', index)">District</button>
-                                                            <br>
-                                                            <button class="btn btn-success full-width" (click)="explain_content('Municipality', index)">Municipality</button>
-                                                            <br>
-                                                        </ng-container>
-                                                    </div>
-                                                    <div class="col-xs-6 tab-scroll">
-                                                        <ng-container *ngIf="(explain_index=='stake_country')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_country_item of stakeholdersCountry[index]">
-                                                                <ng-container *ngIf="stakeholder_country_item">
-                                                                    <ng-container *ngFor="let item of stakeholder_country_item|keyvalue">
-                                                                        <h4>
-                                                                            - {{item.key}}.
-                                                                        </h4>
-                                                                        <p>
-                                                                            {{item.value}}
-                                                                        </p>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="(explain_index=='stake_button_3')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_button3_item of stakeholdersButton3[index]">
-                                                                <ng-container *ngIf="stakeholder_button3_item">
-                                                                    <ng-container *ngFor="let item of stakeholder_button3_item|keyvalue">
-                                                                        <h5>
-                                                                            - {{item.key}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{item.value}}
-                                                                        </p>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="(explain_index=='stake_button_4')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_button4_item of stakeholdersButton4[index]">
-                                                                <ng-container *ngIf="stakeholder_button4_item">
-                                                                    <ng-container *ngFor="let item of stakeholder_button4_item|keyvalue">
-                                                                        <h5>
-                                                                            - {{item.key}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{item.value}}
-                                                                        </p>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container  *ngIf="(explain_index=='stake_consideration')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_consideration_item of stakeholdersConsideration[index]">
-                                                                <ng-container *ngIf="stakeholder_consideration_item">
-                                                                    <ng-container *ngFor="let item of stakeholder_consideration_item|keyvalue">
-                                                                        <h5>
-                                                                            - {{item.key}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{item.value}}
-                                                                        </p>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container  *ngIf="(explain_index=='Province')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_province_item of stakeholdersProvince[index]">
-                                                                <ng-container *ngFor="let stakeholder_province of stakeholder_province_item">
-                                                                    <ng-container *ngIf="stakeholder_province">
-                                                                        <h5>
-                                                                            - {{stakeholder_province.question1}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_province.result}}
-                                                                        </p>
-                                                                        <h5>
-                                                                            - {{stakeholder_province.question2}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_province.result}}
-                                                                        </p>
-                                                                        <h5>
-                                                                            - {{stakeholder_province.question3}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_province.result}}
-                                                                        </p>
-                                                                        <h5>
-                                                                            - {{stakeholder_province.question4}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_province.result}}
-                                                                        </p>
-                                                                        <mat-divider></mat-divider>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container  *ngIf="(explain_index=='District')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_district_item of stakeholdersDistrict[index]">
-                                                                <ng-container *ngFor="let stakeholder_district of stakeholder_district_item">
-                                                                    <ng-container *ngIf="stakeholder_district">
-                                                                        <h5>
-                                                                            - {{stakeholder_district.question1}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_district.result}}
-                                                                        </p>
-                                                                        <h5>
-                                                                            - {{stakeholder_district.question2}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_district.result}}
-                                                                        </p>
-                                                                        <h5>
-                                                                            - {{stakeholder_district.question3}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_district.result}}
-                                                                        </p>
-                                                                        <h5>
-                                                                            - {{stakeholder_district.question4}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_district.result}}
-                                                                        </p>
-                                                                        <mat-divider></mat-divider>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                        <ng-container  *ngIf="(explain_index=='Municipality')&&(explain_number==index)">
-                                                            <ng-container *ngFor="let stakeholder_municipality_item of stakeholdersMunicipality[index]">
-                                                                <ng-container *ngFor="let stakeholder_municipality of stakeholder_municipality_item">
-                                                                    <ng-container *ngIf="stakeholder_municipality">
-                                                                        <h5>
-
-                                                                            - {{stakeholder_municipality.question1}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_municipality.result}}
-                                                                        </p>
-                                                                        <h5>
-
-                                                                            - {{stakeholder_municipality.question2}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_municipality.result}}
-                                                                        </p>
-                                                                        <h5>
-
-                                                                            - {{stakeholder_municipality.question3}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_municipality.result}}
-                                                                        </p>
-                                                                        <h5>
-
-                                                                            - {{stakeholder_municipality.question4}}.
-                                                                        </h5>
-                                                                        <p>
-                                                                            {{stakeholder_municipality.result}}
-                                                                        </p>
-                                                                        <mat-divider></mat-divider>
-                                                                    </ng-container>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </ng-container>
-                                                    </div>
-                                                    <div class="col-xs-4 text-center full-height">
-                                                        <h1>Stakeholder Map</h1>
-                                                        <table class="table_financial_summary">
-                                                            <tr>
-                                                                <th>Categorization</th>
-                                                                <th>Stakeholder Members</th>
-                                                            </tr>
-                                                            <tr *ngFor="let stakeholder of stakeholdersMap[index]|keyvalue">
-                                                                <td>{{stakeholder.key}}</td>
-                                                                <td>
-                                                                    <ng-container *ngIf="stakeholder.value">
-                                                                        <ng-container *ngFor="let stakeholder_item of stakeholder.value">
-                                                                            <span>{{stakeholder_item}}</span>
-                                                                        </ng-container>
-                                                                    </ng-container>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </mat-tab>
-                            <mat-tab label="Scoring Summary">
-                                <mat-tab-group class="body-tab">
-                                    <mat-tab label="Scoring Summary">
-                                        <div class="row">
-                                            <div class="col-4 pl-5">
-                                                <h4>Skills distribution</h4>
-                                                <h6>By team members</h6>
-                                                <div class="chart-wrapper">
-                                                    <canvas baseChart
-                                                            [datasets]="radarChartData[index]"
-                                                            [options]="radarChartOptions"
-                                                            [labels]="radarChartLabels"
-                                                            [chartType]="radarChartType">
-                                                    </canvas>
-                                                </div>
-                                            </div>
-                                            <div class="col-8" style="overflow: auto">
-                                                <table class="table table-striped">
+                                            <div class="my-2 col-lg-4">
+                                                <div class="p-title">Stakeholder Map</div>
+                                                <table class="table-devias">
                                                     <thead>
-                                                    <tr>
-                                                        <th>Category</th>
-                                                        <th>Resource Counter</th>
-                                                        <th>Opportunity Counter</th>
-                                                        <th>Venture Life Cycle</th>
-                                                        <th>Liability of Age Size</th>
-                                                        <th>Organisation</th>
-                                                        <th>Entrepreneur</th>
-                                                        <th>Environment</th>
-                                                        <th>Impact Sector</th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th>Categorization</th>
+                                                            <th>Stakeholder Members</th>
+                                                        </tr>
                                                     </thead>
-                                                    <tr>
-                                                        <td>{{business['business name']}}</td>
-                                                        <td>{{business['resource counter']}}</td>
-                                                        <td>{{business['opportunity counter']}}</td>
-                                                        <td>{{business['venture life cycle']}}</td>
-                                                        <td>{{business['liability of age size']}}</td>
-                                                        <td>{{business['organisation']}}</td>
-                                                        <td>{{business['entrepreneur']}}</td>
-                                                        <td>{{business['environment']}}</td>
-                                                        <td>{{business['impact sector']}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Average</td>
-                                                        <td>{{round(business['resource counter']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['opportunity counter']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['venture life cycle']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['liability of age size']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['organisation']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['entrepreneur']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['environment']/businessInfo['business_length'])}}</td>
-                                                        <td>{{round(business['impact sector']/businessInfo['business_length'])}}</td>
-                                                    </tr>
                                                     <tbody>
+                                                        <tr *ngFor="let stakeholder of stakeholdersMap[index]|keyvalue">
+                                                            <td>{{stakeholder.key}}</td>
+                                                            <td>
+                                                                <ng-container *ngIf="stakeholder.value">
+                                                                    <ng-container *ngFor="let stakeholder_item of stakeholder.value">
+                                                                        <span>{{stakeholder_item}}</span>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </mat-tab>
-                            <mat-tab label="Funding Channels">
-                                <mat-tab-group class="body-tab">
-                                    <mat-tab label="Funding Chanel">
-                                        <div class="fund_btn_1  col-xs-6 full-height">
-                                            <button class="btn btn-success">Button 1</button>
-                                            <button class="btn btn-success">Button 2</button>
-                                            <button class="btn btn-success">Button 3</button>
+                                    </ng-container>
+                                </mat-tab>
+                            </mat-tab-group>
+                            <mat-tab-group class="body-tab" *ngIf="tabNum == 3">
+                                <mat-tab label="Scoring Summary">
+                                    <div class="row mt-2">
+                                        <div class="col-lg-4 pl-5">
+                                            <div class="p-title">Skills distribution</div>
+                                            <div class="mat-card-header">By team members</div>
+                                            <div class="chart-wrapper">
+                                                <canvas baseChart
+                                                        [datasets]="radarChartData[index]"
+                                                        [options]="radarChartOptions"
+                                                        [labels]="radarChartLabels"
+                                                        [chartType]="radarChartType">
+                                                </canvas>
+                                            </div>
                                         </div>
-                                        <div class="fund_btn_2 col-xs-6 full-height">
-                                            <button class="btn btn-success ">Button 4</button>
+                                        <div class="col-lg-8" style="overflow: auto">
+                                            <div class="table-responsive">
+                                                <table class="table-devias">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Category</th>
+                                                            <th>Resource Counter</th>
+                                                            <th>Opportunity Counter</th>
+                                                            <th>Venture Life Cycle</th>
+                                                            <th>Liability of Age Size</th>
+                                                            <th>Organisation</th>
+                                                            <th>Entrepreneur</th>
+                                                            <th>Environment</th>
+                                                            <th>Impact Sector</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{business['business name']}}</td>
+                                                            <td>{{business['resource counter']}}</td>
+                                                            <td>{{business['opportunity counter']}}</td>
+                                                            <td>{{business['venture life cycle']}}</td>
+                                                            <td>{{business['liability of age size']}}</td>
+                                                            <td>{{business['organisation']}}</td>
+                                                            <td>{{business['entrepreneur']}}</td>
+                                                            <td>{{business['environment']}}</td>
+                                                            <td>{{business['impact sector']}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Average</td>
+                                                            <td>{{round(business['resource counter']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['opportunity counter']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['venture life cycle']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['liability of age size']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['organisation']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['entrepreneur']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['environment']/businessInfo['business_length'])}}</td>
+                                                            <td>{{round(business['impact sector']/businessInfo['business_length'])}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </mat-tab>
-                            <mat-tab label="Badges">
-                                <mat-tab-group class="body-tab">
-                                    <mat-tab label="Badges">
-                                        <ng-container *ngIf="unSdg.length">
-                                            <ng-container *ngFor="let goal_list of unSdg[index]['path']">
-                                                <div class="col-md-3 padding-top-20">
-                                                    <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+goal_list+')'"></div>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>
-                                    </mat-tab>
-                                </mat-tab-group>
-                            </mat-tab>
-                        </mat-tab-group>
-                        <div class="card-header" style="text-align:right;">
-                            <button mat-raised-button class="btn btn-success mr-3" (click)="buy(business['u_id'], business)">
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                            <mat-tab-group class="body-tab" *ngIf="tabNum == 4">
+                                <mat-tab label="Funding Chanel">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <button mat-raised-button class="theme-btn full-width mt-3">Button 1</button>
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <button mat-raised-button class="theme-btn full-width mt-3">Button 2</button>
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <button mat-raised-button class="theme-btn full-width mt-3">Button 3</button>
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <button mat-raised-button class="theme-btn full-width mt-3">Button 4</button>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                            <mat-tab-group class="body-tab" *ngIf="tabNum == 5">
+                                <mat-tab label="Badges">
+                                    <div class="row" *ngIf="unSdg.length">
+                                        <div class="col-sm-3 text-sm-center d-block mt-3" *ngFor="let goal_list of unSdg[index]['path']">
+                                            <div class="bg" [style.background-image] ="'url(assets/imgs/catalogue/'+goal_list+')'" style="background-position: center"></div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                        <div class="card-header text-md-right text-center d-block">
+                            <button mat-raised-button class="theme-btn mr-3 md-full-width" (click)="buy(business['u_id'], business)">
                                 FUND BUSINESS
                             </button>
-                            <button mat-raised-button class="btn btn-success" (click)="sell(businessUser.id)" *ngIf="businessInfo.sell_enabled">
+                            <button mat-raised-button class="theme-btn md-full-width" (click)="sell(businessUser.id)" *ngIf="businessInfo.sell_enabled">
                                 SELL FINANCIAL INTEREST
                             </button>
-                            <button mat-raised-button class="btn btn-danger" *ngIf="!businessInfo.sell_enabled">
+                            <button mat-raised-button class="md-full-width" *ngIf="!businessInfo.sell_enabled">
                                 You cannot Sell!
                             </button>
                         </div>

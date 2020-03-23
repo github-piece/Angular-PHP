@@ -1,12 +1,11 @@
 <div *ngIf="showActions">
-    <h1 class="mat-h1" style="margin-left: 20px;margin-bottom: 48px">How To Invest</h1>
-    <div class="grid-container">
-        <div class="col-lg-6 col-xl-3" *ngFor="let card of imgList">
-            <mat-card style="height: 450px">
+    <div class="p-header">How To Invest</div>
+    <div class="p-title">You can see Invest examples, here</div>
+    <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-4" *ngFor="let card of imgList">
+            <mat-card class="matHeight">
                 <img mat-card-image  [src]="card.image" (click)="detailShow(card)" class="custom-card-img" alt="Invest Image"/>
-                <mat-card-header>
-                    <mat-card-title class="custom-mat-header">{{card.title}}</mat-card-title>
-                </mat-card-header>
+                    <div class="mat-card-header">{{card.title}}</div>
                 <mat-card-content>
                     <p>{{card.text | slice:0:200}}</p>
                 </mat-card-content>

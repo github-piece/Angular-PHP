@@ -4,25 +4,27 @@
     <div class="news-header">There are total {{articles.length}} news feed stories</div>
     <div class="row">
         <div class="col-lg-4">
-            <mat-card class="feed" *ngFor="let task of dataSource">
-                <td style="width: 100px">
-                    <img src="{{task.u_avatar}}" alt="userPhoto" style="border-radius: 50%">
-                </td>
-                <td style="width: 40%">
-                    {{task.headline}}<br/>
-                    <span>by</span> {{task.u_name}}
-                </td>
-                <td style="width: 40%">
-                    {{task.article_date}}<br/>
-                    <span>News Feed Created</span>
-                </td>
-                <td>
-                    <button mat-stroked-button (click)="viewArticle(task.id)">View</button>
-                </td>
-            </mat-card>
-            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[3, 6, 12, 24]" [showFirstLastButtons]="true" [length]="totalSize"
-                           [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
-            </mat-paginator>
+            <ul>
+                <li *ngFor="let task of articles | paginate: { itemsPerPage: 4, currentPage: p }">
+                    <mat-card class="feed">
+                        <td style="width: 100px">
+                            <img src="{{task.u_avatar}}" alt="userPhoto" style="border-radius: 50%">
+                        </td>
+                        <td style="width: 40%">
+                            {{task.headline}}<br/>
+                            <span>by</span> {{task.u_name}}
+                        </td>
+                        <td style="width: 40%">
+                            {{task.article_date}}<br/>
+                            <span>News Feed Created</span>
+                        </td>
+                        <td>
+                            <button mat-stroked-button (click)="viewArticle(task.id)">View</button>
+                        </td>
+                    </mat-card>
+                </li>
+            </ul>
+            <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
         </div>
         <div class="col-lg-8">
             <div class="row">
